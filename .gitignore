@@ -1,0 +1,160 @@
+.vs
+Migrations
+
+# Resultados de compilação
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+## Ignore arquivos temporários do Visual Studio, resultados de compilação e
+## arquivos gerados por complementos populares do Visual Studio.
+
+# Arquivos específicos do usuário
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Arquivos específicos do usuário (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# Resultados de compilação
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Diretório de cache/opções do Visual Studio 2015
+.vs/
+
+# Resultados de teste MSTest
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUNIT
+*.VisualState.xml
+TestResult.xml
+
+# Resultados de compilação de um projeto ATL
+[Dd]ebugPS/
+[Rr]eleasePS/
+dlldata.c
+
+# Projeto DNX
+project.lock.json
+artifacts/
+
+# Arquivos C
+*_i.c
+*_p.c
+*_i.h
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# Arquivos de teste Chutzpah
+_Chutzpah*
+
+# Arquivos de cache do Visual C++
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+
+# Profiler do Visual Studio
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Espaço de trabalho local do TFS 2012
+$tf/
+
+# Guidance Automation Toolkit
+*.gpState
+
+# ReSharper é um complemento de codificação .NET
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# JustCode é um complemento de codificação .NET
+.JustCode
+
+# TeamCity é um complemento de compilação
+_TeamCity*
+
+# DotCover é uma ferramenta de cobertura de código
+*.dotCover
+
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# MightyMoose
+*.mm.*
+AutoTest.Net/
+
+# Web workbench (sass)
+.sass-cache/
+
+# Pasta de saída do Installshield
+[Ee]xpress/
+
+# DocProject é um complemento gerador de documentação
+DocProject/buildhelp/
+DocProject/Help/*.HxT
+DocProject/Help/*.HxC
+DocProject/Help/*.hhc
+DocProject/Help/*.hhk
+DocProject/Help/*.hhp
+DocProject/Help/Html2
+DocProject/Help/html
+
+# Diretório Click-Once
+publish/
+
+# Saída da Web Publish
+*.[Pp]ublish.xml
+*.azurePubxml
+
+# Pasta Migrations do Entity Framework
+Migrations/
+Debug/
+bin/
+obj

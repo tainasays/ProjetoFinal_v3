@@ -1,0 +1,72 @@
+﻿@model IEnumerable<PFinal_v2.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Funcionário</h1>
+<br />
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<form asp-controller="Usuarios" asp-action="Index">
+    <p>
+        Title: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataContratacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAdmin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Senha)
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataContratacao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsAdmin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Senha)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.UsuarioId"><i class="bi bi-pencil-square"></i>Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.UsuarioId"><i class="bi bi-card-list"></i>Listar</a>
+                    <a asp-action="Delete" asp-route-id="@item.UsuarioId"><i class="bi bi-trash3"></i>Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Index", "Admin")" class="btn btn-outline-secondary">Voltar</a>

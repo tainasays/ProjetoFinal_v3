@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Painel do Administrador";
+}
+
+<h2>Painel do Administrador</h2>
+
+<nav>
+    <ul>
+
+        <li><a asp-controller="Usuarios" asp-action="Index">Cadastro de funcionário</a></li>
+        <li><a asp-controller="Usuarios" asp-action="Index">Cadastro de departamento</a></li>
+        <li><a asp-controller="Wbs" asp-action="Index">Cadastro de Wbs</a></li>
+        <li><a asp-controller="Usuarios" asp-action="Index">Listar funcionário</a></li>
+        <li><a asp-controller="Usuarios" asp-action="Index">Listar departamentos</a></li>
+
+
+        <li><a asp-action="Wbs">Manage Products</a></li>
+        <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+    </ul>
+</nav>
