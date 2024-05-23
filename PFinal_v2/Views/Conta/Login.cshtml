@@ -1,24 +1,59 @@
 ﻿@{
     ViewData["Title"] = "Login";
 }
- 
-<h2>Login</h2>
- 
-<form asp-action="Login" method="post">
-<div>
-<label for="username">Username</label>
-<input type="text" id="username" name="username" required />
+<style>
+    .rounded-form {
+        border-radius: 50px; /* Define o raio de arredondamento dos cantos */
+        background-color: #f2f2f2; /* Define a cor de fundo do formulário */
+        padding: 20px; /* Adiciona espaçamento interno ao redor do formulário */
+    }
+
+    .rounded-button {
+        border-radius: 10px; /* Define o raio de arredondamento dos cantos */
+    }
+
+    .custom-card-header {
+        background-color: #f2f2f2; /* Define a cor de fundo */
+    }
+
+</style>
+
+<div class="container">
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+        <div class="col-md-4">
+            <div class="card rounded-form">
+                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;">LOGIN</div>
+                <div class="card-body">
+                    <form asp-action="Login" method="post">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="bi bi-envelope"></i>
+                            </span>
+                            <input type="text" id="username" name="username" class="form-control" placeholder="E-mail" required />
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="bi bi-lock"></i>
+                            </span>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Senha" required />
+                        </div>
+                        <br />
+                        <form>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary rounded-button">Entrar</button>
+                            </div>
+                        </form>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-<label for="password">Password</label>
-<input type="password" id="password" name="password" required />
-</div>
-<button type="submit">Login</button>
-</form>
- 
+
+
 @if (ViewBag.ErrorMessage != null)
 {
-<div style="color: red;">
+    <div style="color: red;">
         @ViewBag.ErrorMessage
-</div>
+    </div>
 }
