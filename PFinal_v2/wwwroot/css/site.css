@@ -17,6 +17,47 @@ html {
   min-height: 100%;
 }
 
+
+
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background: linear-gradient(#ffa90aff);
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    list-style: none; 
+    padding: 0; 
+}
+
+.card {
+    margin-right: 10px; /* espaço entre os cards */
+}
+
+
+.custom-table {
+    background-color: #A37B73;
+    border-radius: 10px;
+    color: white
+}
+
+.custom-filter-button {
+    background-color: #3F292B;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+ .custom-filter-button:hover {
+        background-color: #798B71;
+}
+
+.custom-white-icon {
+    color: #3F292B;
+    font-weight: 800;
+    font-size: 20px;
 }
