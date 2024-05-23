@@ -155,9 +155,11 @@ namespace PFinal_v2.Controllers
                 return NotFound();
             }
 
-
+            // Configura a ViewBag antes de retornar a view
             ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
-            return View();
+
+            // Passa o objeto `dia` para a view
+            return View(dia);
 
 
         }
