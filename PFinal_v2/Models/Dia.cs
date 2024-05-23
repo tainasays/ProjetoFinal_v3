@@ -18,6 +18,5 @@ namespace PFinal_v2.Models
         public double Horas { get; set; }
 
 
-
     }
 }

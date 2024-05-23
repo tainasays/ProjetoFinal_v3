@@ -8,5 +8,8 @@
         public List<Wbs>? ListaWbs { get; set; }
         public int Quinzena { get; set; }
         public string? Mes { get; set; }
+
+
+        public string? MensagemErro { get; set;}
     }
 }

@@ -63,6 +63,7 @@ namespace PFinal_v2.Controllers
                 .Where(d => d.UsuarioId == usuarioId && d.DiaData >= startDate && d.DiaData <= endDate)
                 .ToListAsync();
 
+
             // carrega as wbs
             var wbsCadastrados = await _context.Wbs.ToListAsync();
 
@@ -90,6 +91,8 @@ namespace PFinal_v2.Controllers
                 Quinzena = quinzena,
                 Mes = mes
             };
+
+
 
             return View(viewModel);
         }
@@ -128,15 +131,26 @@ namespace PFinal_v2.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Atribui o UsuarioId ao ID do usuário logado
+                // vê se a data é fim de semana
+                if (dia.DiaData.DayOfWeek == DayOfWeek.Saturday || dia.DiaData.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    // adiciona um erro ao ModelState
+                    ModelState.AddModelError(string.Empty, "Registros não são permitidos durante o fim de semana.");
+                    
+                    // recarregar a lista Wbs
+                    ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
+                    return View(dia);
+                }
+
+                // atribui o UsuarioId ao ID do usuário logado
                 dia.UsuarioId = int.Parse(User.FindFirst("UsuarioId").Value);
 
                 _context.Add(dia);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
 
+            ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
             return View(dia);
         }
 
@@ -155,10 +169,10 @@ namespace PFinal_v2.Controllers
                 return NotFound();
             }
 
-            // Configura a ViewBag antes de retornar a view
+            // configura ViewBag
             ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
 
-            // Passa o objeto `dia` para a view
+            // passa o objeto 'dia' pra view
             return View(dia);
 
 

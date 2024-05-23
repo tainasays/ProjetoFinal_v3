@@ -8,6 +8,7 @@
 
 
 <hr />
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
@@ -24,7 +25,7 @@
 
             <div class="form-group">
                 <label asp-for="DiaData" class="control-label"></label>
-                <input asp-for="DiaData" class="form-control" />
+                <input asp-for="DiaData" readonly class="form-control readonly" />
                 <span asp-validation-for="DiaData" class="text-danger"></span>
             </div>
             <div class="form-group">
