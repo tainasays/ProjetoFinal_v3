@@ -4,40 +4,42 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h2 style="margin-bottom: 40px;">Departamentos cadastrados</h1>
 
-<p>
+
+@* <p>
     <a asp-action="Create">Create New</a>
-</p>
+</p> *@
 
 <form asp-controller="Departamentos" asp-action="Index">
-    <p>
-        Title: <input type="text" name="SearchString" />
-        <input type="submit" value="Filter" />
-    </p>
-</form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
+        <p>
+            <input type="text" name="SearchString" placeholder="Código ou descrição" class="custom-search-input" />
+            <input type="submit" value="Filter" class="custom-filter-button" />
+        </p>
+    </form>
+    <table class="table custom-table" style="margin-top: 40px;">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.DepartamentoId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DepartamentoId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DepartamentoId">Delete</a>
+                        <a class="icon-edit" asp-action="Edit" asp-route-id="@item.DepartamentoId"><i class="bi bi-pencil custom-white-icon"></i></a> |
+                        <a asp-action="Details" asp-route-id="@item.DepartamentoId"><i class="bi bi-search custom-white-icon"></i></a> |
+                        <a asp-action="Delete" asp-route-id="@item.DepartamentoId"><i class="bi bi-trash custom-white-icon"></i></a>
                     
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+    <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar</a>
+

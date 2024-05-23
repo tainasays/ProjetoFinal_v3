@@ -4,44 +4,34 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Funcionário</h1>
-<br />
+<h2 style="margin-bottom: 40px;">Funcionários cadastrados</h1>
 
-<p>
+
+@* <p>
     <a asp-action="Create">Create New</a>
-</p>
+</p> *@
 
 <form asp-controller="Usuarios" asp-action="Index">
-    <p>
-        Title: <input type="text" name="SearchString" />
-        <input type="submit" value="Filter" />
-    </p>
-</form>
+        <p>
+            <input type="text" name="SearchString" placeholder="Nome" class="custom-search-input" />
+            <input type="submit" value="Filter" class="custom-filter-button" />
+        </p>
+    </form>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataContratacao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsAdmin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Senha)
-            </th>
-            
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+        <table class="table custom-table" style="margin-top: 40px;">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Data de contratação
+                    <th scope="col">Administrador</th>
+                    <th scope="col">Senha
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -60,13 +50,13 @@
                     @Html.DisplayFor(modelItem => item.Senha)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.UsuarioId"><i class="bi bi-pencil-square"></i>Editar</a>
-                    <a asp-action="Details" asp-route-id="@item.UsuarioId"><i class="bi bi-card-list"></i>Listar</a>
-                    <a asp-action="Delete" asp-route-id="@item.UsuarioId"><i class="bi bi-trash3"></i>Excluir</a>
+                            <a asp-action="Edit" asp-route-id="@item.UsuarioId"><i class="bi bi-pencil custom-white-icon"></i></a> |
+                            <a asp-action="Details" asp-route-id="@item.UsuarioId"><i class="bi bi-search custom-white-icon"></i></a> |
+                            <a asp-action="Delete" asp-route-id="@item.UsuarioId"><i class="bi bi-trash custom-white-icon"></i></a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<a href="@Url.Action("Index", "Admin")" class="btn btn-outline-secondary">Voltar</a>
+        <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar </a>
