@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PFinal_v2.Data;
 using PFinal_v2.Models;
+using PFinal_v2.Models.ViewModels;
 
 namespace PFinal_v2.Controllers
 {
@@ -20,9 +21,77 @@ namespace PFinal_v2.Controllers
         }
 
         // GET: Dias
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string mes, int quinzena)
         {
-            return View(await _context.Dia.ToListAsync());
+            if (!User.HasClaim(c => c.Type == "UsuarioId"))
+            {
+                // Redireciona pra página de login caso não haja usuário logado
+                return RedirectToAction("Login", "Conta");
+            }
+
+            // Apanha o UsuarioId logado
+            int usuarioId = int.Parse(User.FindFirst("UsuarioId").Value);
+
+            // se 'mes' é null, a variável recebe mês atual no formato escrito abaixo
+            if (string.IsNullOrEmpty(mes))
+            {
+                mes = DateTime.Now.ToString("yyyy-MM");
+            }
+
+            DateTime startDate;
+            if (!DateTime.TryParse(mes + "-01", out startDate))
+            {
+                // retorna erro se a data não puder ser analisada
+                return BadRequest("Data inválida");
+            }
+
+            // define primeira e segunda quinzena
+
+            DateTime endDate;
+            if (quinzena == 1)
+            {
+                endDate = startDate.AddDays(14);
+            }
+            else
+            {
+                startDate = startDate.AddDays(15);
+                endDate = startDate.AddMonths(1).AddDays(-1);
+            }
+
+            // busca os lançamentos do usuário no período definido
+            var diasDoUsuario = await _context.Dia
+                .Where(d => d.UsuarioId == usuarioId && d.DiaData >= startDate && d.DiaData <= endDate)
+                .ToListAsync();
+
+            // carrega as wbs
+            var wbsCadastrados = await _context.Wbs.ToListAsync();
+
+            // filtra as wbs que possuem horas registradas
+            var wbsComHoras = wbsCadastrados
+                .Where(w => diasDoUsuario.Any(d => d.WbsId == w.WbsId && d.Horas > 0))
+                .ToList();
+
+            // se as wbs com horas registradas forem menores que 4, adicionar uma nova linha
+            while (wbsComHoras.Count < 4)
+            {
+                wbsComHoras.Add(new Wbs());
+            }
+
+            // cria a data atual, usada no Index
+            var dataAtual = DateTime.Today;
+
+            // instancia a classe DiaFormViewModel pra passar os dados necessários pra View
+            var viewModel = new DiaFormViewModel
+            {
+                UsuarioId = usuarioId,
+                Lancamentos = diasDoUsuario,
+                DataAtual = dataAtual,
+                ListaWbs = wbsComHoras,
+                Quinzena = quinzena,
+                Mes = mes
+            };
+
+            return View(viewModel);
         }
 
         // GET: Dias/Details/5
@@ -46,6 +115,7 @@ namespace PFinal_v2.Controllers
         // GET: Dias/Create
         public IActionResult Create()
         {
+            ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
             return View();
         }
 
@@ -54,20 +124,26 @@ namespace PFinal_v2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DiaId,UsuarioId,WbsId,DiaData,Horas")] Dia dia)
+        public async Task<IActionResult> Create([Bind("DiaId,WbsId,DiaData,Horas")] Dia dia)
         {
             if (ModelState.IsValid)
             {
+                // Atribui o UsuarioId ao ID do usuário logado
+                dia.UsuarioId = int.Parse(User.FindFirst("UsuarioId").Value);
+
                 _context.Add(dia);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
+
             return View(dia);
         }
 
         // GET: Dias/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -78,7 +154,12 @@ namespace PFinal_v2.Controllers
             {
                 return NotFound();
             }
-            return View(dia);
+
+
+            ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
+            return View();
+
+
         }
 
         // POST: Dias/Edit/5
@@ -86,7 +167,7 @@ namespace PFinal_v2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DiaId,UsuarioId,WbsId,DiaData,Horas")] Dia dia)
+        public async Task<IActionResult> Edit(int id, [Bind("DiaId,WbsId,DiaData,Horas")] Dia dia)
         {
             if (id != dia.DiaId)
             {
@@ -97,6 +178,8 @@ namespace PFinal_v2.Controllers
             {
                 try
                 {
+                    dia.UsuarioId = int.Parse(User.FindFirst("UsuarioId").Value);
+
                     _context.Update(dia);
                     await _context.SaveChangesAsync();
                 }
@@ -115,6 +198,7 @@ namespace PFinal_v2.Controllers
             }
             return View(dia);
         }
+
 
         // GET: Dias/Delete/5
         public async Task<IActionResult> Delete(int? id)
