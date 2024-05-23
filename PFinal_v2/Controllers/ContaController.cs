@@ -32,7 +32,9 @@ public class ContaController : Controller
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Nome),
-                new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "Colaborador")
+                new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "Colaborador"),
+
+                new Claim("UsuarioId", user.UsuarioId.ToString())
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

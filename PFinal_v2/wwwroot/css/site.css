@@ -20,6 +20,7 @@ html {
 
 
 body {
+
     margin-bottom: 60px;
     background: linear-gradient(#ffa90aff);
 }
@@ -32,7 +33,7 @@ body {
 }
 
 .card {
-    margin-right: 10px; /* espa�o entre os cards */
+    margin-right: 10px; /* espaço entre os cards */
 }
 
 
@@ -60,4 +61,12 @@ body {
     color: #3F292B;
     font-weight: 800;
     font-size: 20px;
+
+  margin-bottom: 60px;
+}
+
+.celula-dia.weekend {
+    background-color: #f2f2f2 !important; /* Define a cor de fundo para cinza */
+    color: #999; /* Define a cor do texto para cinza mais claro */
+    pointer-events: none; /* Desativa eventos de mouse, tornando as células não clicáveis */
 }

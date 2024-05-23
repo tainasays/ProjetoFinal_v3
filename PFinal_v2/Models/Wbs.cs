@@ -16,5 +16,6 @@ namespace PFinal_v2.Models
 
         [Display(Name = "Is chargeability? ")]
         public bool IsChargeable { get; set; }
+        public string CodigoDescricao => $"{Codigo} - {Descricao}";
     }
 }

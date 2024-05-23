@@ -1,28 +1,24 @@
 ﻿@model PFinal_v2.Models.Dia
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Lançamento";
 }
 
-<h1>Create</h1>
+<h1>Cadastrar Registro</h1>
 
-<h4>Dia</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UsuarioId" class="control-label"></label>
-                <input asp-for="UsuarioId" class="form-control" />
-                <span asp-validation-for="UsuarioId" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="WbsId" class="control-label"></label>
-                <input asp-for="WbsId" class="form-control" />
+                <select asp-for="WbsId" class="form-control" asp-items="ViewBag.WbsList">
+                    <option value="">Selecione o código</option>
+                </select>
                 <span asp-validation-for="WbsId" class="text-danger"></span>
             </div>
-           
+
             <div class="form-group">
                 <label asp-for="DiaData" class="control-label"></label>
                 <input asp-for="DiaData" class="form-control" />
@@ -34,16 +30,17 @@
                 <span asp-validation-for="Horas" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Cadastrar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-info">Voltar</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
