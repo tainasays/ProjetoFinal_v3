@@ -72,8 +72,8 @@ body {
 .total-horas {
     background-color: #f2f2f2 !important;
 }
-thead {
-    background-color: white;
+.tabela-horas-thead {
+background-color: white;
 }
 
 .horario-trabalho, .horas-excedentes {
