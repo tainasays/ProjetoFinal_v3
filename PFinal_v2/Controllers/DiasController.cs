@@ -135,9 +135,38 @@ namespace PFinal_v2.Controllers
                 if (dia.DiaData.DayOfWeek == DayOfWeek.Saturday || dia.DiaData.DayOfWeek == DayOfWeek.Sunday)
                 {
                     // adiciona um erro ao ModelState
-                    ModelState.AddModelError(string.Empty, "Registros não são permitidos durante o fim de semana.");
-                    
+                    ModelState.AddModelError(string.Empty, "Não é possível adicionar registros aos fins de semana.");
+
                     // recarregar a lista Wbs
+                    ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
+                    return View(dia);
+                }
+
+                // Verifica se as horas estão dentro de um intervalo válido
+                if (dia.Horas <= 0 || dia.Horas > 24)
+                {
+                    ModelState.AddModelError("Horas", "Valor inconsistente.");
+                    ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
+                    return View(dia);
+                }
+
+                // Verifica se a data escolhida está dentro do intervalo permitido
+                var hoje = DateTime.Today;
+                var inicioDaQuinzenaAnterior = hoje.AddDays(-(hoje.Day < 15 ? 15 : hoje.Day - 15));
+                var fimDaProximaQuinzena = hoje.AddDays(hoje.Day < 15 ? 15 - hoje.Day : DateTime.DaysInMonth(hoje.Year, hoje.Month) - hoje.Day + 15);
+
+                if (dia.DiaData < inicioDaQuinzenaAnterior || dia.DiaData > fimDaProximaQuinzena)
+                {
+                    ModelState.AddModelError(string.Empty, "Não são permitidos registros no período desejado.");
+                    ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
+                    return View(dia);
+                }
+
+                // Verifica se já existe um registro com o mesmo DiaId e WbsId
+                if (_context.Dia.Any(d => d.DiaData.Date == dia.DiaData.Date && d.WbsId == dia.WbsId))
+
+                {
+                    ModelState.AddModelError(string.Empty, "Este código de custo já está cadastrado neste registro. Alterações devem ser feitas em 'Editar'.");
                     ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
                     return View(dia);
                 }
@@ -188,6 +217,13 @@ namespace PFinal_v2.Controllers
             if (id != dia.DiaId)
             {
                 return NotFound();
+            }
+
+            if (dia.Horas <= 0 || dia.Horas > 24)
+            {
+                ModelState.AddModelError("Horas", "Valor inconsistente.");
+                ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
+                return View(dia);
             }
 
             if (ModelState.IsValid)
