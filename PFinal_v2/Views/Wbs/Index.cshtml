@@ -4,6 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
+<style>
+    .icons-container {
+        display: flex;
+    }
+</style>
+
+
 <h2 style="margin-bottom: 40px;">WBS cadastradas</h1>
 
 @* <p>
@@ -43,15 +50,55 @@
                 @Html.DisplayFor(modelItem => item.IsChargeable)
             </td>
             <td>
-                        <a asp-action="Edit" asp-route-id="@item.WbsId"><i class="bi bi-pencil custom-white-icon"></i></a> |
-                        <a asp-action="Details" asp-route-id="@item.WbsId"><i class="bi bi-search custom-white-icon"></i></a> |
-                        <a asp-action="Delete" asp-route-id="@item.WbsId"><i class="bi bi-trash custom-white-icon"></i></a>
-                   
+                        <div class="icons-container">
+                            <a asp-action="Edit" asp-route-id="@item.WbsId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
+                            <a asp-action="Details" asp-route-id="@item.WbsId"><i class="bi bi-search custom-white-icon"></i></a> |&nbsp;
+                            <form id="deleteForm_@item.WbsId" asp-action="Delete" method="post">
+                                <input type="hidden" name="id" value="@item.WbsId" />
+                                <a>
+                                    <i onclick="openConfirmationModal('@item.WbsId'); return false;" class="bi bi-trash custom-white-icon"></i>
+                                </a>
+                            </form>
+                        </div>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+    <div class="modal" id="confirmModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmação de Exclusão</h5>
+                    <button type="button" class="close" data-dismiss="modal" onclick="cancelChanges()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Deseja realmente excluir esta WBS?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelChanges()">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function openConfirmationModal(wbsId) {
+            $('#confirmModal').modal('show'); // Abre o modal de confirmação
+            $('#confirmDeleteButton').click(function () {
+                submitDeleteForm(wbsId); // Chama a função para enviar o formulário de exclusão ao clicar em "Confirmar"
+            });
+        }
+
+        function submitDeleteForm(wbsId) {
+            $('#deleteForm_' + wbsId).submit(); // Envia o formulário de exclusão com o ID da WBS
+        }
+
+        function cancelChanges() {
+            $('#confirmModal').modal('hide');
+        }
+    </script>
 
     <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar</a>
 

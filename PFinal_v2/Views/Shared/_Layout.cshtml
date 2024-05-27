@@ -14,47 +14,31 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PFinal_v2</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Conta" asp-action="Login">Avaccenture</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Conta" asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Departamentos" asp-action="Index">Departamentos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Colaborador" asp-action="Index">Colaborador</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Dias" asp-action="Index">Dia</a>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Wbs" asp-action="Index">Wbs</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Conta" asp-action="Logout">Wbs</a>
-                        </li>
-                    </ul>
-                </div>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-black" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-fill"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item text-black" href="@Url.Action("Index", "Dias")">Cadastrar horas</a></li>
+                        <li><a class="dropdown-item text-black" href="@Url.Action("Edit", "Usuarios")">Alterar senha em teste</a></li>
+                            @if (User.IsInRole("Admin")) // Verifica se o usuário está no papel de administrador
+                            {
+                            <li><a class="dropdown-item text-black" href="@Url.Action("Index", "Admin")">Painel administrador</a></li>
+                            }
+                            else
+                            {
+                            <li><a class="dropdown-item text-black" href="@Url.Action("Login", "Conta")">Painel administrador</a></li>
+                            }
+                        <li><a class="dropdown-item text-black" href="@Url.Action("Login", "Conta")">Logout</a></li>
+                        </ul>
+                    </div>
             </div>
+
         </nav>
     </header>
     <div class="container">
@@ -63,11 +47,11 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    @* <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - PFinal_v2 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - Avaccenture  <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> 
         </div>
-    </footer>
+    </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

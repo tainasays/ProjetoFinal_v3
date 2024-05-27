@@ -23,11 +23,51 @@
                 <input asp-for="Descricao" class="form-control" />
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsChargeable" /> @Html.DisplayNameFor(model => model.IsChargeable)
-                </label>
+            <div class="modal" tabindex="-1" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Atenção</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="modalMessage"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelChanges()">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="saveChanges()">Confirmar</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <label style="position: relative;">
+                <input id="ChargeableCheckbox" class="form-check-input" asp-for="IsChargeable" type="checkbox" onclick="handleCheckboxClick();" /> @Html.DisplayNameFor(model => model.IsChargeable)
+            </label>
+
+            <script>
+                function handleCheckboxClick() {
+                    var checkbox = document.getElementById("ChargeableCheckbox");
+                    var message = checkbox.checked ?
+                        "Deseja colocar a WBS como Chargeable?" :
+                        "Deseja remover a WBS como Chargeable?";
+                    document.getElementById("modalMessage").textContent = message;
+                    // Abre o modal quando o checkbox é clicado
+                    $('#myModal').modal('show');
+                }
+
+                function saveChanges() {
+                    $('#myModal').modal('hide');
+                }
+
+                function cancelChanges() {
+                    document.getElementById("ChargeableCheckbox").checked = false;
+                    $('#myModal').modal('hide');
+                }
+            </script>
+
+
+            
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
