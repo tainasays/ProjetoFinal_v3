@@ -48,7 +48,7 @@ public class ContaController : Controller
             }
             else
             {
-                return RedirectToAction("Index", "Colaborador");
+                return RedirectToAction("Index", "Dias");
             }
         }
 

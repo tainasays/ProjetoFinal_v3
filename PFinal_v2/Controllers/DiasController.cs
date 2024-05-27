@@ -205,6 +205,8 @@ namespace PFinal_v2.Controllers
             // passa o objeto 'dia' pra view
             return View(dia);
 
+            // Passa o objeto `dia` para a view
+            return View(dia);
 
         }
 
