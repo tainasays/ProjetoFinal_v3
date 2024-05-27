@@ -145,7 +145,7 @@ namespace PFinal_v2.Controllers
                 // Verifica se as horas estão dentro de um intervalo válido
                 if (dia.Horas <= 0 || dia.Horas > 24)
                 {
-                    ModelState.AddModelError("Horas", "Valor inconsistente.");
+                    ModelState.AddModelError("Horas", "Insira um valor válido.");
                     ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
                     return View(dia);
                 }
@@ -224,7 +224,7 @@ namespace PFinal_v2.Controllers
 
             if (dia.Horas <= 0 || dia.Horas > 24)
             {
-                ModelState.AddModelError("Horas", "Valor inconsistente.");
+                ModelState.AddModelError("Horas", "Insira um valor válido.");
                 ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
                 return View(dia);
             }
