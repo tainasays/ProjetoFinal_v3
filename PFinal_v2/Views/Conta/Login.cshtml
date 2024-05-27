@@ -11,13 +11,12 @@
     }
 
     .rounded-button {
-        border-radius: 10px; /* Define o raio de arredondamento dos cantos */
+        border-radius: 10px;
     }
 
     .custom-card-header {
-        background-color: #f2f2f2; /* Define a cor de fundo */
+        background-color: #f2f2f2;
     }
-
     .custom-bg-color {
         background-color: #3F292B; /* Define a cor de fundo do botão */
         color: #ffffff; /* Define a cor do texto */
@@ -44,6 +43,9 @@
                                 <i class="bi bi-lock"></i>
                             </span>
                             <input type="password" id="password" name="password" class="form-control" placeholder="Senha" required />
+                            <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility()">
+                                <i id="togglePasswordIcon" class="bi bi-eye"></i>
+                            </button>
                         </div>
                         <br />
                         <div class="text-center">
@@ -56,6 +58,21 @@
     </div>
 </div>
 
+<script>
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("password");
+        var toggleIcon = document.getElementById("togglePasswordIcon");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleIcon.classList.remove("bi-eye");
+            toggleIcon.classList.add("bi-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            toggleIcon.classList.remove("bi-eye-slash");
+            toggleIcon.classList.add("bi-eye");
+        }
+    }
+</script>
 
 @if (ViewBag.ErrorMessage != null)
 {

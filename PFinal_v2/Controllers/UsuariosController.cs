@@ -19,27 +19,38 @@ namespace PFinal_v2.Controllers
             _context = context;
         }
 
+        // Verifica se o usuário logado é administrador
+        private bool IsUserAdmin()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return User.IsInRole("Admin");
+            }
+            return false;
+        }
+
         // GET: Usuarios
         public async Task<IActionResult> Index(string searchString)
         {
             if (_context.Usuario == null)
             {
-                return Problem("Entidate sem Dados.. Null");
+                return Problem("Entidade sem Dados.. Null");
             }
+
+            ViewBag.IsAdmin = IsUserAdmin();
 
             var usuarios = from u in _context.Usuario select u;
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 usuarios = usuarios.Where(s => s.Nome!.Contains(searchString));
-
             }
 
             return View(await usuarios.ToListAsync());
         }
 
-            // GET: Usuarios/Details/5
-            public async Task<IActionResult> Details(int? id)
+        // GET: Usuarios/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {

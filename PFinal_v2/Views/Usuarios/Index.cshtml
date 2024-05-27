@@ -2,7 +2,9 @@
 
 @{
     ViewData["Title"] = "Index";
+    var isAdmin = ViewBag.IsAdmin as bool? ?? false;
 }
+
 
 <style>
     .icons-container {
@@ -17,39 +19,52 @@
     <a asp-action="Create">Create New</a>
 </p> *@
 
-<form asp-controller="Usuarios" asp-action="Index">
-        <p>
-            <input type="text" name="SearchString" placeholder="Nome" class="custom-search-input" />
-            <input type="submit" value="Filter" class="custom-filter-button" />
-        </p>
-    </form>
 
-<table class="table">
-        <table class="table custom-table" style="margin-top: 40px;">
-            <thead>
-                <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Data de contratação
-                    <th scope="col">Administrador</th>
-                    <th scope="col">Senha
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+<form asp-controller="Usuarios" asp-action="Index">
+    <p>
+        <input type="text" name="SearchString" placeholder="Nome" class="custom-search-input" />
+        <input type="submit" value="Filter" class="custom-filter-button" />
+    </p>
+</form>
+
+<table class="table custom-table" style="margin-top: 40px;">
+    <thead>
+        <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Email</th>
+            <th scope="col">Data de contratação</th>
+            <th scope="col">Administrador</th>
+            <th scope="col">Senha</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
         {
             <tr>
+                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.DataContratacao)</td>
+                <td>@Html.DisplayFor(modelItem => item.IsAdmin)</td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
+                    @if (isAdmin)
+                    {
+                        <div class="password-container">
+                            <span class="password-text" style="display: none;">@item.Senha</span>
+                            <i class="bi bi-eye toggle-password" style="cursor: pointer;"></i>
+                        </div>
+                    }
+                    else
+                    {
+                        <span>******</span>
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
+                    <a asp-action="Edit" asp-route-id="@item.UsuarioId"><i class="bi bi-pencil custom-white-icon"></i></a> |
+                    <a asp-action="Details" asp-route-id="@item.UsuarioId"><i class="bi bi-search custom-white-icon"></i></a> |
+                    <a asp-action="Delete" asp-route-id="@item.UsuarioId"><i class="bi bi-trash custom-white-icon"></i></a>
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataContratacao)
-                </td>
-                <td>
+            </tr>
                     @Html.DisplayFor(modelItem => item.IsAdmin)
                 </td>
                 <td>
@@ -115,4 +130,25 @@
     </script>
 
 
-        <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar </a>
+<a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar</a>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('.toggle-password').forEach(element => {
+                element.addEventListener('click', function () {
+                    let passwordText = this.previousElementSibling;
+                    if (passwordText.style.display === 'none') {
+                        passwordText.style.display = 'inline';
+                        this.classList.remove('bi-eye');
+                        this.classList.add('bi-eye-slash');
+                    } else {
+                        passwordText.style.display = 'none';
+                        this.classList.remove('bi-eye-slash');
+                        this.classList.add('bi-eye');
+                    }
+                });
+            });
+        });
+    </script>
+}
