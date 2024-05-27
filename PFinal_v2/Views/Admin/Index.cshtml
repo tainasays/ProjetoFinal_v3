@@ -2,13 +2,14 @@
     ViewData["Title"] = "Painel do Administrador";
 }
 
-<h1 style="margin-bottom: 40px;">Painel do Administrador</h1>
+<h3 style="margin-bottom: 40px;">Olá, @User.Identity.Name!</h3>
 
-<h4 style="margin-bottom: 40px;">O que deseja fazer hoje?</h4> 
+
+<h5 style="margin-bottom: 40px;">Painel do administrador</h5> 
 
 <nav>
     <ul class="card-container">
-        <li class="card" style="width: 18rem; background-color: #A37B73;">
+        <li class="card" style="width: 18rem; background-color: #3F292B;">
             <div class="card-body" style="color: white;">
                 <h5 class="card-title" style="text-align: center; padding-bottom: 10px;">Funcionário</h5>
                 <div class="dropdown" style="text-align: center;">
@@ -18,12 +19,11 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" asp-controller="Usuarios" asp-action="Create">Cadastrar</a></li>
                         <li><a class="dropdown-item" asp-controller="Usuarios" asp-action="Index">Listar</a></li>
-                        <li><a class="dropdown-item" asp-controller="Usuarios" asp-action="Index">Lançar horas</a></li>
                     </ul>
                 </div>
             </div>
         </li>
-        <li class="card" style="width: 18rem; background-color: #A37B73;">
+        <li class="card" style="width: 18rem; background-color: #3F292B;">
             <div class="card-body" style="color: white;">
                 <h5 class="card-title" style="text-align: center; padding-bottom: 10px;">Wbs</h5>
                 <div class="dropdown" style="text-align: center;">
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </li>
-        <li class="card" style="width: 18rem; background-color: #A37B73;">
+        <li class="card" style="width: 18rem; background-color: #3F292B;">
             <div class="card-body" style="color: white;">
                 <h5 class="card-title" style="text-align: center; padding-bottom: 10px;">Departamento</h5>
                 <div class="dropdown" style="text-align: center;">
@@ -48,7 +48,7 @@
                         <li><a class="dropdown-item" asp-controller="Departamentos" asp-action="Create">Cadastrar</a></li>
                         <li><a class="dropdown-item" asp-controller="Departamentos" asp-action="Index">Listar</a></li>
                     </ul>
-        <li class="card" style="width: 18rem; background-color: #A37B73;">
+        <li class="card" style="width: 18rem; background-color: #3F292B;">
             <div class="card-body" style="color: white;">
                 <h5 class="card-title" style="text-align: center; padding-bottom: 10px;">Relatório</h5>
                 <div class="dropdown" style="text-align: center;">
@@ -56,8 +56,8 @@
                         Ver detalhes
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="Wbs" asp-action="Index">Cadastrar</a></li>
-                        <li><a class="dropdown-item" asp-controller="Wbs" asp-action="Index">Listar</a></li>
+                        <li><a class="dropdown-item" asp-controller="#" asp-action="#">Cadastrar</a></li>
+                        <li><a class="dropdown-item" asp-controller="#" asp-action="#">Listar</a></li>
                     </ul>
                 </div>
             </div>

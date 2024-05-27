@@ -1,11 +1,13 @@
 ﻿@{
     ViewData["Title"] = "Login";
 }
+
+
 <style>
     .rounded-form {
-        border-radius: 50px;
-        background-color: #f2f2f2;
-        padding: 20px;
+        border-radius: 30px; /* Define o raio de arredondamento dos cantos */
+        background-color: #f2f2f2; /* Define a cor de fundo do formulário */
+        padding: 20px; /* Adiciona espaçamento interno ao redor do formulário */
     }
 
     .rounded-button {
@@ -15,13 +17,19 @@
     .custom-card-header {
         background-color: #f2f2f2;
     }
+    .custom-bg-color {
+        background-color: #3F292B; /* Define a cor de fundo do botão */
+        color: #ffffff; /* Define a cor do texto */
+        border-color: #3F292B; /* Define a cor da borda */
+    }
 </style>
-
 <div class="container">
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
         <div class="col-md-4">
             <div class="card rounded-form">
-                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;">LOGIN</div>
+                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;">
+                    <i class="bi bi-person-circle" style="font-size: 3rem;"></i><br> User Login
+                </div>
                 <div class="card-body">
                     <form asp-action="Login" method="post">
                         <div class="input-group mb-3">
@@ -40,11 +48,9 @@
                             </button>
                         </div>
                         <br />
-                        <form>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary rounded-button">Entrar</button>
-                            </div>
-                        </form>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary rounded-button custom-bg-color">Entrar</button>
+                        </div>
                     </form>
                 </div>
             </div>

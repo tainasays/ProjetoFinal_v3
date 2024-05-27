@@ -70,6 +70,8 @@ namespace PFinal_v2.Controllers
         // GET: Usuarios/Create
         public IActionResult Create()
         {
+            ViewBag.DepartamentoList = new SelectList(_context.Departamento, "DepartamentoId", "Nome");
+
             return View();
         }
 
@@ -86,8 +88,12 @@ namespace PFinal_v2.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.DepartamentoList = new SelectList(_context.Departamento, "DepartamentoId", "Nome"); 
+
             return View(usuario);
         }
+
 
         // GET: Usuarios/Edit/5
         public async Task<IActionResult> Edit(int? id)

@@ -20,9 +20,8 @@ html {
 
 
 body {
-
     margin-bottom: 60px;
-    background: linear-gradient(#ffa90aff);
+    background: linear-gradient(to bottom, #D2B48C, #BC8F8F);
 }
 
 .card-container {
@@ -38,10 +37,14 @@ body {
 
 
 .custom-table {
-    background-color: #A37B73;
+    background-color: linear-gradient(to bottom, #D2B48C, #BC8F8F);
     border-radius: 10px;
-    color: white
+    color: black;
+    /*background-color: #f2f2f2 !important;
+    color: #999;
+    pointer-events: none;*/
 }
+
 
 .custom-filter-button {
     background-color: #3F292B;
@@ -61,12 +64,20 @@ body {
     color: #3F292B;
     font-weight: 800;
     font-size: 20px;
-
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
-.celula-dia.weekend {
+.celula-dia.weekend, .local-trabalho {
     background-color: #f2f2f2 !important; /* Define a cor de fundo para cinza */
-    color: #999; /* Define a cor do texto para cinza mais claro */
     pointer-events: none; /* Desativa eventos de mouse, tornando as células não clicáveis */
+}
+.total-horas {
+    background-color: #f2f2f2 !important;
+}
+.tabela-horas-thead {
+background-color: white;
+}
+
+.horario-trabalho, .horas-excedentes {
+    background-color: #F0FFFF !important;
 }

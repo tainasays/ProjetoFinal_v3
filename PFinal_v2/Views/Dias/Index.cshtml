@@ -1,7 +1,13 @@
-﻿@model PFinal_v2.Models.ViewModels.DiaFormViewModel
+﻿ @model PFinal_v2.Models.ViewModels.DiaFormViewModel
 
 <p>Olá, @User.Identity.Name!</p>
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 
 <form asp-action="Index" method="get" class="row align-items-end mb-3">
     <div class="col-5">
@@ -26,7 +32,7 @@
 
 
 <table class="table table-bordered">
-    <thead>
+    <thead class="tabela-horas-thead">
         <tr>
             <th>Código de Custo</th>
             @{
@@ -37,18 +43,29 @@
                 {
                     var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
 
-                    <th>@data.ToString("ddd dd/MM")</th>
+
+
+                    if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        <th class="celula-dia weekend" data-dia-id="">
+                            @data.ToString("ddd dd/MM")
+                        </th>
+                    }
+                    else
+                    {
+                        <th>@data.ToString("ddd dd/MM")</th>
+                    }
                 }
             }
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>Local de Trabalho</td>
+            <td class="local-trabalho">Local de Trabalho</td>
             @{
                 foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
                 {
-                    <td>RE</td>
+                    <td class="local-trabalho">RE</td>
                 }
             }
         </tr>
@@ -72,7 +89,7 @@
                         <td data-dia-id="@((lancamentoDoDia != null) ? lancamentoDoDia.DiaId : "")" contenteditable="true" class="celula-dia">
                             @if (lancamentoDoDia != null && lancamentoDoDia.Horas > 0)
                             {
-                                @lancamentoDoDia.Horas
+                                @lancamentoDoDia.Horas.ToString("0.0")
                             }
                         </td>
                     }
@@ -84,21 +101,38 @@
 
 
         <tr>
-            <td>Horas totais</td>
+            <td class="total-horas">Horas totais</td>
             @{
                 foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
                 {
                     var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
-                    var lancamentosDoDia = Model.Lancamentos.Where(l => l.DiaData.Date == data);
-                    var totalHoras = lancamentosDoDia.Sum(l => l.Horas);
-                    <td class="total-horas" data-date="@data.ToString("dd/MM")">@totalHoras</td>
+                    if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        <td class="celula-dia weekend" data-dia-id="">
+                        </td>
+                    }
+                    else
+                    {
+
+
+                        var lancamentosDoDia = Model.Lancamentos.Where(l => l.DiaData.Date == data);
+                        var totalHoras = lancamentosDoDia.Sum(l => l.Horas);
+
+                        <td class="total-horas" data-date="@data.ToString("dd/MM")">
+                            @if (totalHoras > 0)
+                            {
+                                @totalHoras.ToString("0.0")
+                            }
+                        </td>
+                    }
+
                 }
             }
         </tr>
     </tbody>
     <tfoot>
         <tr>
-            <td>Horário de trabalho</td>
+            <td class="horario-trabalho">Horário de trabalho</td>
             @{
                 foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
                 {
@@ -111,12 +145,47 @@
                     else
                     {
 
-                        <td class="celula-dia">8,0</td>
+                        <td class="horario-trabalho">8,0</td>
 
                     }
                 }
             }
         </tr>
+
+
+
+        <tr>
+            <td class="horas-excedentes">Horas excedentes</td>
+            @{
+                foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
+                {
+                    var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
+                    if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        <td class="celula-dia weekend" data-dia-id="" style="background-color: gray;">
+                        </td>
+                    }
+                    else
+                    {
+
+                        var lancamentosDoDia = Model.Lancamentos.Where(l => l.DiaData.Date == data);
+                        var totalHoras = lancamentosDoDia.Sum(l => l.Horas);
+                        var horasExcedentes = totalHoras > 8 ? totalHoras - 8 : 0;
+                        <td class="horas-excedentes" data-date="@data.ToString("dd/MM")">
+                            @if (horasExcedentes > 0)
+                            {
+                                @horasExcedentes.ToString("0.0")
+                            }
+                        </td>
+                    }
+                }
+            }
+        </tr>
+
+
+
+
+
     </tfoot>
 
 
@@ -207,3 +276,4 @@
 </script>
 
 
+ 
