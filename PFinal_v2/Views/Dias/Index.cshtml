@@ -1,7 +1,13 @@
-﻿@model PFinal_v2.Models.ViewModels.DiaFormViewModel
+﻿ @model PFinal_v2.Models.ViewModels.DiaFormViewModel
 
 <p>Olá, @User.Identity.Name!</p>
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 
 <form asp-action="Index" method="get" class="row align-items-end mb-3">
     <div class="col-5">
@@ -270,3 +276,4 @@
 </script>
 
 
+ 

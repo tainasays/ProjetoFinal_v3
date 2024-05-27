@@ -189,7 +189,8 @@ namespace PFinal_v2.Controllers
 
             if (id == null)
             {
-                return NotFound();
+                TempData["ErrorMessage"] = "Nenhum registro foi selecionado.";
+                return RedirectToAction(nameof(Index));
             }
 
             var dia = await _context.Dia.FindAsync(id);
@@ -257,7 +258,8 @@ namespace PFinal_v2.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["ErrorMessage"] = "Nenhum registro foi selecionado.";
+                return RedirectToAction(nameof(Index));
             }
 
             var dia = await _context.Dia
