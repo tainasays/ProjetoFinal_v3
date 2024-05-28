@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PFinal_v2.Data;
 using PFinal_v2.Models;
 using System.Security.Claims;
+
 namespace PFinal_v2
 {
     public class Program
@@ -17,11 +18,9 @@ namespace PFinal_v2
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-
-
-
-            // código ACRESCENTADO
+            // Código acrescentado
             builder.Services.AddControllersWithViews();
+
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -35,15 +34,12 @@ namespace PFinal_v2
                 options.AddPolicy("ColaboradorPolicy", policy => policy.RequireClaim(ClaimTypes.Role, "Colaborador"));
             });
 
-
-
-
-            //  a injeção de dependência para o serviço LoginService
+            // Injeção de dependência para o serviço LoginService
             builder.Services.AddScoped<LoginService>();
-
 
             var app = builder.Build();
 
+            // Seed inicial dos dados
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -66,7 +62,6 @@ namespace PFinal_v2
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -75,13 +70,12 @@ namespace PFinal_v2
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Conta}/{action=Login}/{id?}");
-
-            
 
             app.Run();
         }
