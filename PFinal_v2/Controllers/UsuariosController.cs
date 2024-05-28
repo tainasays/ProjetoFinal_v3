@@ -94,7 +94,6 @@ namespace PFinal_v2.Controllers
             return View(usuario);
         }
 
-
         // GET: Usuarios/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -108,6 +107,8 @@ namespace PFinal_v2.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.DepartamentoList = new SelectList(_context.Departamento, "DepartamentoId", "Nome");
             return View(usuario);
         }
 

@@ -4,33 +4,73 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<style>
+    .rounded-form {
+        border-radius: 20px; /* Define o raio de arredondamento dos cantos */
+        background-color: #f2f2f2; /* Define a cor de fundo do formulário */
+        padding: 20px; /* Adiciona espaçamento interno ao redor do formulário */
+    }
 
-<div>
-    <h4>Wbs</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Codigo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Codigo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descricao)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Descricao)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsChargeable)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsChargeable)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.WbsId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    .rounded-button {
+        border-radius: 10px; /* Define o raio de arredondamento dos cantos */
+    }
+
+    .custom-card-header {
+        background-color: #f2f2f2; /* Define a cor de fundo */
+    }
+
+    .table.custom-table td {
+        word-wrap: break-word;
+    }
+
+    <style >
+    .rounded-form {
+        border-radius: 20px; /* Define o raio de arredondamento dos cantos */
+        background-color: #f2f2f2; /* Define a cor de fundo do formulário */
+        padding: 20px; /* Adiciona espaçamento interno ao redor do formulário */
+    }
+
+    .rounded-button {
+        border-radius: 10px; /* Define o raio de arredondamento dos cantos */
+    }
+
+    .custom-card-header {
+        background-color: #f2f2f2; /* Define a cor de fundo */
+    }
+</style>
+<div class="container">
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+        <div class="col-md-4">
+            <div class="card rounded-form">
+                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Detalhes</strong></div>
+                <div class="card-body">
+                        @if (Model != null)
+                        {
+                        <table class="table custom-table centered-table" style="margin-top: 40px">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Código</th>
+                                    <th scope="col">Descrição</th>
+                                    <th scope="col">Chargeable</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>@Html.DisplayFor(model => model.Codigo)</td>
+                                    <td>@Html.DisplayFor(model => model.Descricao)</td>
+                                    <td>@Html.DisplayFor(model => model.IsChargeable)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        }
+                        else
+                        {
+                        <p>Wbs não encontrada.</p>
+                        }
+                    <a asp-action="Edit" asp-route-id="@Model?.WbsId" class="custom-filter-button">Editar</a>
+                    <a asp-action="Index" class="custom-filter-button">Voltar</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

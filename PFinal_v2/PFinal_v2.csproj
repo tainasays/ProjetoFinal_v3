@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Content Remove="Views\Wbs\Search.cshtml" />
+    <Content Remove="wwwroot\css\Styles.css" />
   </ItemGroup>
 
   <ItemGroup>

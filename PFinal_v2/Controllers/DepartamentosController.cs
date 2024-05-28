@@ -34,11 +34,15 @@ namespace PFinal_v2.Controllers
                 departamentos = departamentos.Where(d => d.Nome!.Contains(searchString));
 
             }
+            foreach (var departamento in departamentos)
+            {
+                departamento.QuantidadeFuncionarios = _context.Usuario.Count(u => u.DepartamentoId == departamento.DepartamentoId);
+            }
+
             return View(await departamentos.ToListAsync());
         }
-
-            // GET: Departamentos/Details/5
-            public async Task<IActionResult> Details(int? id)
+        // GET: Departamentos/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {

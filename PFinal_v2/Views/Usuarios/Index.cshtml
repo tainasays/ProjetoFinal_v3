@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    SeedData.Initialize(ViewContext.HttpContext.RequestServices);
     var isAdmin = ViewBag.IsAdmin as bool? ?? false;
 }
 
@@ -20,20 +21,43 @@
     </p>
 </form>
 
-<table class="table custom-table" style="margin-top: 40px;">
-    <thead>
-        <tr>
-            <th scope="col">Nome</th>
-            <th scope="col">Email</th>
-            <th scope="col">Data de contratação</th>
-            <th scope="col">Administrador</th>
-            <th scope="col">Senha</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+<table class="table">
+        <table class="table custom-table" style="margin-top: 40px;">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Departamento</th>
+                    <th scope="col">Data de contratação</th>
+                    <th scope="col">Administrador</th>
+                    <th scope="col">Senha</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
         {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.Departamento.Nome)</td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataContratacao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsAdmin)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Senha)
+                        </td>
+                        <td>
+                            <div class="icons-container">
+                                <a asp-action="Edit" asp-route-id="@item.UsuarioId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
+                                <a asp-action="Details" asp-route-id="@item.UsuarioId"><i class="bi bi-search custom-white-icon"></i></a> |&nbsp;
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Nome)</td>
                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
@@ -123,4 +147,6 @@
             $('#confirmModal').modal('hide');
         }
     </script>
-}
+
+
+        <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar </a>

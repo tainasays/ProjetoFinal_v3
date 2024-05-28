@@ -28,5 +28,7 @@ namespace PFinal_v2.Models
         [Required(ErrorMessage = "O campo Senha é obrigatório")]
         public string? Senha { get; set; }
 
+        public Departamento Departamento { get; set; }
+
     }
 }
