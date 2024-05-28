@@ -39,12 +39,14 @@ namespace PFinal_v2.Controllers
 
             ViewBag.IsAdmin = IsUserAdmin();
 
-            var usuarios = from u in _context.Usuario select u;
+            IQueryable<Usuario> usuarios = _context.Usuario;
 
             if (!string.IsNullOrEmpty(searchString))
             {
                 usuarios = usuarios.Where(s => s.Nome!.Contains(searchString));
             }
+
+            usuarios = usuarios.Include(u => u.Departamento);
 
             return View(await usuarios.ToListAsync());
         }
