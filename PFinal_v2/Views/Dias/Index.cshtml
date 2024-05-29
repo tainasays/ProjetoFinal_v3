@@ -111,40 +111,23 @@
             <td class="local-trabalho">Local de Trabalho</td>
 
             @{
-
                 for (var dia = startDay; dia <= endDay; dia++)
-
                 {
-
                     <td class="local-trabalho">
-
                         @if (Model.Usuario != null && Model.Usuario.LocalTrabalho.HasValue)
-
                         {
-
                             <a href="@Url.Action("Localizacao", "Usuarios", new { id = Model.Usuario.UsuarioId })">
-
                                 @Model.Usuario.LocalTrabalho.ToString()
-
                                 <i class="bi bi-caret-down-fill"></i>
-
                             </a>
-
                         }
-
                         else
-
                         {
-
                             @:&nbsp; <!-- célula vazia -->
                         }
-
                     </td>
-
                 }
-
             }
-
         </tr>
 
 
@@ -196,8 +179,6 @@
             </tr>
 
         }
-
-        [9:43 AM] Thayna Mirele dos Santos de Santana
 
 
         <tr>

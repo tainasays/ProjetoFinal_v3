@@ -23,6 +23,7 @@ namespace PFinal_v2.Models
                         Email = "ana@email.com",
                         DepartamentoId = 1,
                         DataContratacao = new DateTime(2024, 01, 01),
+                        LocalTrabalho = 0,
                         IsAdmin = true,
                         Senha = "Senh@123"
                     },

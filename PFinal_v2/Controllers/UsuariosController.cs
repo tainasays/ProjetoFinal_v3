@@ -57,6 +57,9 @@ namespace PFinal_v2.Controllers
                 usuarios = usuarios.Where(s => s.Nome!.Contains(searchString));
             }
 
+            // Aplica o Include separadamente
+            usuarios = usuarios.Include(u => u.Departamento);
+
             usuarios = usuarios.Include(u => u.Departamento);
 
             var isAdmin = User.IsInRole("Admin");
@@ -207,6 +210,7 @@ namespace PFinal_v2.Controllers
         }
 
 
+
         [HttpGet]
         public async Task<IActionResult> Localizacao(int? id)
         {
@@ -265,6 +269,9 @@ namespace PFinal_v2.Controllers
             }
             return View(usuario);
         }
+
+
+
 
 
 
