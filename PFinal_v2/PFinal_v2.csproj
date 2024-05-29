@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\ViewModels\NovaPasta\**" />
+    <Content Remove="Models\ViewModels\NovaPasta\**" />
+    <EmbeddedResource Remove="Models\ViewModels\NovaPasta\**" />
+    <None Remove="Models\ViewModels\NovaPasta\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Views\Dias\Local.cshtml" />
     <Content Remove="Views\Wbs\Search.cshtml" />
     <Content Remove="wwwroot\css\Styles.css" />

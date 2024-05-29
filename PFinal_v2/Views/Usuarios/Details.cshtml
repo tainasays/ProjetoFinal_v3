@@ -47,7 +47,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Departamento:</label>
-                                <p>@Html.DisplayFor(model => model.DepartamentoId)</p>
+                                <p>@Html.DisplayFor(model => model.Departamento.Nome)</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Local de Trabalho:</label>
+                                <p>@Html.DisplayFor(model => model.LocalTrabalho)</p>
                             </div>
                             <div class="form-group">
                                 <label>Data de Contratação:</label>
@@ -57,6 +61,36 @@
                                 <label>É administrador:</label>
                                 <p>@Html.DisplayFor(model => model.IsAdmin)</p>
                             </div>
+
+
+                            <div class="form-group">
+                                <label>Funcionário há: </label>
+                            
+                            <p>
+                                @{
+                                    DateTime dataContratacao = Model?.DataContratacao ?? DateTime.MinValue;
+                                    DateTime dataAtual = DateTime.Now;
+                                    TimeSpan tempoContratacao = dataAtual - dataContratacao;
+                                        if (tempoContratacao.TotalDays >= 365) // Verifica se é mais de um ano
+                                        {
+                                            int anos = (int)(tempoContratacao.TotalDays / 365);
+                                            <text>@anos anos</text>
+                                        }
+                                        else if (tempoContratacao.TotalDays >= 30) // Verifica se é mais de um mês
+                                        {
+                                            int meses = (int)(tempoContratacao.TotalDays / 30);
+                                            <text>@meses meses</text>
+                                        }
+                                        else
+                                        {
+                                            <text>@tempoContratacao.Days dias</text>
+                                        }
+                                    
+                                }
+                            </p>
+                            </div>
+
+
                         </div>
                     }
                     else

@@ -67,6 +67,14 @@ body {
     margin-bottom: 60px;
 }
 
+.celula-dia {
+    background-color: white !important;
+}
+
+.table td {
+    background-color: white;
+}
+
 .celula-dia.weekend {
     background-color: #f2f2f2 !important; /* Define a cor de fundo para cinza */
     pointer-events: none; /* Desativa eventos de mouse, tornando as células não clicáveis */
