@@ -39,7 +39,34 @@
         padding-left: 8px;
         cursor: pointer; /* Altera o cursor ao passar sobre o select */
     }
+
+    .custom-filter-button {
+        background-color: #3F292B;
+        color: #ffffff;
+        border: 1px solid #3F292B;
+        border-radius: 10px;
+        padding: 5px 8px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .custom-filter-button:hover {
+            background-color: #6c6c6c; /* Altera a cor de fundo ao passar o mouse */
+            color: #ffffff;
+        }
+
+        .custom-filter-button:first-child {
+            margin-right: 10px;
+        }
+
+    .btn-group {
+        display: flex;
+        justify-content: center;
+    }
 </style>
+
+
 <div class="container">
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
         <div class="col-md-4">
@@ -130,9 +157,9 @@
 
                             <div class="form-group">
                                 <label asp-for="Senha" class="control-label"></label>
-                                <input asp-for="Senha" class="form-control" />
+                                <input asp-for="Senha" type="password" class="form-control" />
                                 <span asp-validation-for="Senha" class="text-danger"></span>
-                                <div class="form-group mt-3">
+                                <div class="form-group mt-3 btn-group">
                                     <input type="submit" value="Salvar" class="custom-filter-button" />
                                     <a asp-action="Index" class="custom-filter-button">Voltar</a>
                                 </div>
