@@ -2,13 +2,22 @@
 
 @{
     ViewData["Title"] = "Index";
-    SeedData.Initialize(ViewContext.HttpContext.RequestServices);
     var isAdmin = ViewBag.IsAdmin as bool? ?? false;
 }
 
 <style>
     .icons-container {
         display: flex;
+    }
+
+    .password-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .toggle-password {
+        cursor: pointer;
+        margin-left: 10px;
     }
 </style>
 
@@ -42,16 +51,14 @@
                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
                 <td>@Html.DisplayFor(modelItem => item.Departamento.Nome)</td>
                 <td>@Html.DisplayFor(modelItem => item.DataContratacao)</td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LocalTrabalho)
-                </td>
+                <td>@Html.DisplayFor(modelItem => item.LocalTrabalho)</td>
                 <td>@Html.DisplayFor(modelItem => item.IsAdmin)</td>
                 <td>
                     @if (isAdmin)
                     {
                         <div class="password-container">
                             <span class="password-text" style="display: none;">@item.Senha</span>
-                            <i class="bi bi-eye toggle-password" style="cursor: pointer;"></i>
+                            <i class="bi bi-eye toggle-password"></i>
                         </div>
                     }
                     else
