@@ -67,12 +67,23 @@ body {
     margin-bottom: 60px;
 }
 
-.celula-dia.weekend, .local-trabalho {
+.celula-dia.weekend {
     background-color: #f2f2f2 !important; /* Define a cor de fundo para cinza */
     pointer-events: none; /* Desativa eventos de mouse, tornando as células não clicáveis */
 }
+
+.local-trabalho {
+    background-color: #f2f2f2 !important;
+}
+
+    .local-trabalho a {
+        text-decoration: none;
+        color: inherit;
+    }
+
 .total-horas {
     background-color: #f2f2f2 !important;
+    text-decoration: none !important;
 }
 .tabela-horas-thead {
 background-color: white;

@@ -1,4 +1,5 @@
-﻿@model PFinal_v2.Models.Usuario
+﻿@model PFinal_v2.Models.Usuario;
+@using System.ComponentModel.DataAnnotations;
 
 @{
     ViewData["Title"] = "Create";
@@ -22,11 +23,28 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+                      
             <div class="form-group">
                 <label asp-for="DepartamentoId" class="control-label"></label>
-                <input asp-for="DepartamentoId" class="form-control" />
+                <select asp-for="DepartamentoId" class="form-control" asp-items="ViewBag.DepartamentoList">
+                    <option value="">Selecione o departamento</option>
+                </select>
                 <span asp-validation-for="DepartamentoId" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="LocalTrabalho" class="control-label"></label>
+                <select asp-for="LocalTrabalho" class="form-control">
+                    <option value="">Selecione um local</option>
+                    @foreach (var value in Enum.GetValues(typeof(LocalTrabalhoLista)))
+                    {
+                        var displayAttribute = typeof(LocalTrabalhoLista).GetMember(value.ToString())[0].GetCustomAttributes(typeof(DisplayAttribute), false).FirstOrDefault() as DisplayAttribute;
+                        var displayName = displayAttribute?.Name ?? value.ToString();
+                        <option value="@value">@displayName</option>
+                    }
+                </select>
+            </div>
+
             <div class="form-group">
                 <label asp-for="DataContratacao" class="control-label"></label>
                 <input asp-for="DataContratacao" class="form-control" />

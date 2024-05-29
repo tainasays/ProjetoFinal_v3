@@ -17,6 +17,8 @@ namespace PFinal_v2.Models
         public DateTime DiaData { get; set; }
         public double Horas { get; set; }
 
+        public Usuario? Usuario { get; set; }
+
 
     }
 }

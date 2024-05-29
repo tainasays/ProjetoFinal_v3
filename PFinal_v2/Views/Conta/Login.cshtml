@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "Login";
 }
 
@@ -56,6 +56,91 @@
     </div>
 </div>
 
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div style="color: red;">
+        @ViewBag.ErrorMessage
+    </div>
+} *@
+
+
+                        ﻿@{
+    ViewData["Title"] = "Login";
+}
+
+
+<style>
+    .rounded-form {
+        border-radius: 30px; /* Define o raio de arredondamento dos cantos */
+        background-color: #f2f2f2; /* Define a cor de fundo do formulário */
+        padding: 20px; /* Adiciona espaçamento interno ao redor do formulário */
+    }
+
+    .rounded-button {
+        border-radius: 10px;
+    }
+
+    .custom-card-header {
+        background-color: #f2f2f2;
+    }
+
+    .custom-bg-color {
+        background-color: #3F292B; /* Define a cor de fundo do botão */
+        color: #ffffff; /* Define a cor do texto */
+        border-color: #3F292B; /* Define a cor da borda */
+    }
+</style>
+<div class="container">
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+        <div class="col-md-4">
+            <div class="card rounded-form">
+                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;">
+                    <i class="bi bi-person-circle" style="font-size: 3rem;"></i><br> User Login
+                </div>
+                <div class="card-body">
+                    <form asp-action="Login" method="post">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="bi bi-envelope"></i>
+                            </span>
+                            <input type="text" id="username" name="username" class="form-control" placeholder="E-mail" required />
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="bi bi-lock"></i>
+                            </span>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Senha" required />
+                            <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility()">
+                                <i id="togglePasswordIcon" class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <br />
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary rounded-button custom-bg-color">Entrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("password");
+        var toggleIcon = document.getElementById("togglePasswordIcon");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleIcon.classList.remove("bi-eye");
+            toggleIcon.classList.add("bi-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            toggleIcon.classList.remove("bi-eye-slash");
+            toggleIcon.classList.add("bi-eye");
+        }
+    }
+</script>
 
 @if (ViewBag.ErrorMessage != null)
 {
