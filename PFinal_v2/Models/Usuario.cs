@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+
 
 namespace PFinal_v2.Models
 {
@@ -28,7 +30,27 @@ namespace PFinal_v2.Models
         [Required(ErrorMessage = "O campo Senha é obrigatório")]
         public string? Senha { get; set; }
 
-        public Departamento Departamento { get; set; }
+        [Display(Name = "Local de Trabalho")]
+        public LocalTrabalhoLista? LocalTrabalho { get; set; }
+
+        public ICollection<Dia>? Dias { get; set; }
+
+
+        // teste resolução de erro 2o
+        public Departamento? Departamento { get; set; }
 
     }
+
+    public enum LocalTrabalhoLista
+    {
+        [Display(Name = "Recife - Brasil")]
+        RE,
+
+        [Display(Name = "São Paulo - Brasil")]
+        SP,
+        [Display(Name = "Nova Lima - Brasil")]
+        NL
+    }
+
+
 }

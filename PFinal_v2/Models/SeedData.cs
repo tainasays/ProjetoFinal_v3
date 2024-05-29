@@ -18,7 +18,7 @@ namespace PFinal_v2.Models
                 {
                     context.Departamento.AddRange(
                         new Departamento
-                        {
+                        {   
                             Nome = "Recursos Humanos"
                         },
                         new Departamento
@@ -30,7 +30,7 @@ namespace PFinal_v2.Models
                             Nome = "Back-End Developer"
                         },
                         new Departamento
-                        {
+                        {   
                             Nome = "Front-End Developer"
                         },
                         new Departamento
@@ -47,34 +47,33 @@ namespace PFinal_v2.Models
                 }
 
                 // Verifica se existem usuários
-                if (!context.Usuario.Any())
                 {
-                    // Obtenha alguns IDs de departamento para garantir que os usuários tenham departamentos válidos
-                    var departamentoRH = context.Departamento.FirstOrDefault(d => d.Nome == "Recursos Humanos");
-                    var departamentoFullStack = context.Departamento.FirstOrDefault(d => d.Nome == "Full-Stack Developer");
+                    //// Obtenha alguns IDs de departamento para garantir que os usuários tenham departamentos válidos
+                    //var departamentoRH = context.Departamento.FirstOrDefault(d => d.Nome == "Recursos Humanos");
+                    //var departamentoFullStack = context.Departamento.FirstOrDefault(d => d.Nome == "Full-Stack Developer");
 
-                    if (departamentoRH != null && departamentoFullStack != null)
-                    {
-                        context.Usuario.AddRange(
-                            new Usuario
-                            {
-                                Nome = "Admin",
-                                Email = "admin@email.com", 
-                                DepartamentoId = departamentoRH.DepartamentoId,
-                                IsAdmin = true,
-                                Senha = "admin123" 
-                            },
-                            new Usuario
-                            {
-                                Nome = "Colaborador",
-                                Email = "colaborador@email.com", 
-                                DepartamentoId = departamentoFullStack.DepartamentoId,
-                                Senha = "senha123" 
-                            }
-                        );
+                    //if (departamentoRH != null && departamentoFullStack != null)
+                    //{
+                    //    context.Usuario.AddRange(
+                    //        new Usuario
+                    //        {
+                    //            Nome = "Admin",
+                    //            Email = "admin@email.com", 
+                    //            DepartamentoId = departamentoRH.DepartamentoId,
+                    //            IsAdmin = true,
+                    //            Senha = "admin123" 
+                    //        },
+                    //        new Usuario
+                    //        {
+                    //            Nome = "Colaborador",
+                    //            Email = "colaborador@email.com", 
+                    //            DepartamentoId = departamentoFullStack.DepartamentoId,
+                    //            Senha = "senha123" 
+                    //        }
+                    //    );
 
-                        context.SaveChanges();
-                    }
+                    //    context.SaveChanges();
+                    //}
                 }
             }
         }

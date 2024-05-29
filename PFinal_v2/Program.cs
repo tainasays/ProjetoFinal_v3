@@ -39,7 +39,6 @@ namespace PFinal_v2
 
             var app = builder.Build();
 
-            // Seed inicial dos dados
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -49,14 +48,16 @@ namespace PFinal_v2
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                UsuarioData.Initialize(services);
+                SeedData.Initialize(services);
             }
 
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                SeedData.Initialize(services);
+                UsuarioData.Initialize(services);
             }
+
+
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

@@ -9,7 +9,9 @@
         public int Quinzena { get; set; }
         public string? Mes { get; set; }
 
+        public Usuario? Usuario { get; set; }
 
-        public string? MensagemErro { get; set;}
+
+        public string? MensagemErro { get; set; }
     }
 }

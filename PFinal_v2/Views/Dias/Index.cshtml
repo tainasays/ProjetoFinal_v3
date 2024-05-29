@@ -1,188 +1,348 @@
-﻿ @model PFinal_v2.Models.ViewModels.DiaFormViewModel
+﻿[9:43 AM] Thayna Mirele dos Santos de Santana
+Index da tabela de registro de horas (Dia):
+
+@model PFinal_v2.Models.ViewModels.DiaFormViewModel
 
 <p>Olá, @User.Identity.Name!</p>
 
 @if (TempData["ErrorMessage"] != null)
+
 {
+
     <div class="alert alert-danger">
+
         @TempData["ErrorMessage"]
+
     </div>
+
 }
 
 <form asp-action="Index" method="get" class="row align-items-end mb-3">
+
     <div class="col-5">
+
         <div class="form-group">
+
             <label>Mês</label>
+
             <input type="month" name="mes" value="@Model.Mes" class="form-control" />
+
         </div>
+
     </div>
+
     <div class="col-5">
+
         <div class="form-group">
+
             <label>Quinzena</label>
+
             <select name="quinzena" class="form-control">
+
                 <option value="1" selected="@(Model.Quinzena == 1)">1ª Quinzena</option>
+
                 <option value="2" selected="@(Model.Quinzena == 2)">2ª Quinzena</option>
+
             </select>
+
         </div>
+
     </div>
+
     <div class="col-2">
-        <button type="submit" class="custom-filter-button">Filtrar</button>
+
+        <button type="submit" class="btn btn-primary btn-block">Filtrar</button>
+
     </div>
+
 </form>
 
 
 <table class="table table-bordered">
+
     <thead class="tabela-horas-thead">
+
         <tr>
+
             <th>Código de Custo</th>
+
             @{
+
                 int startDay = Model.Quinzena == 1 ? 1 : 16;
+
                 int endDay = Model.Quinzena == 1 ? 15 : DateTime.DaysInMonth(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month);
 
                 foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
+
                 {
+
                     var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
 
 
-
                     if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
+
                     {
+
                         <th class="celula-dia weekend" data-dia-id="">
+
                             @data.ToString("ddd dd/MM")
+
                         </th>
+
                     }
+
                     else
+
                     {
+
                         <th>@data.ToString("ddd dd/MM")</th>
+
                     }
+
                 }
+
             }
+
         </tr>
+
     </thead>
+
     <tbody>
+
         <tr>
+
             <td class="local-trabalho">Local de Trabalho</td>
+
             @{
-                foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
+
+                for (var dia = startDay; dia <= endDay; dia++)
+
                 {
-                    <td class="local-trabalho">RE</td>
+
+                    <td class="local-trabalho">
+
+                        @if (Model.Usuario != null && Model.Usuario.LocalTrabalho.HasValue)
+
+                        {
+
+                            <a href="@Url.Action("Localizacao", "Usuarios", new { id = Model.Usuario.UsuarioId })">
+
+                                @Model.Usuario.LocalTrabalho.ToString()
+
+                                <i class="bi bi-caret-down-fill"></i>
+
+                            </a>
+
+                        }
+
+                        else
+
+                        {
+
+                            @:&nbsp; <!-- célula vazia -->
+                        }
+
+                    </td>
+
                 }
+
             }
+
         </tr>
+
+
         @foreach (var wbs in Model.ListaWbs)
+
         {
+
             <tr>
 
                 <td>@wbs.Descricao @wbs.Codigo</td>
 
                 @foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
+
                 {
+
                     var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
+
                     if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
+
                     {
+
                         <td class="celula-dia weekend" data-dia-id="">
                         </td>
+
                     }
+
                     else
+
                     {
+
                         var lancamentoDoDia = Model.Lancamentos.FirstOrDefault(l => l.DiaData.Date == data && l.WbsId == wbs.WbsId);
+
                         <td data-dia-id="@((lancamentoDoDia != null) ? lancamentoDoDia.DiaId : "")" contenteditable="true" class="celula-dia">
+
                             @if (lancamentoDoDia != null && lancamentoDoDia.Horas > 0)
+
                             {
+
                                 @lancamentoDoDia.Horas.ToString("0.0")
+
                             }
+
                         </td>
+
                     }
+
                 }
 
             </tr>
+
         }
 
+        [9:43 AM] Thayna Mirele dos Santos de Santana
 
 
         <tr>
+
             <td class="total-horas">Horas totais</td>
+
             @{
+
                 foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
+
                 {
+
                     var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
+
                     if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
+
                     {
+
                         <td class="celula-dia weekend" data-dia-id="">
                         </td>
+
                     }
+
                     else
+
                     {
 
 
                         var lancamentosDoDia = Model.Lancamentos.Where(l => l.DiaData.Date == data);
+
                         var totalHoras = lancamentosDoDia.Sum(l => l.Horas);
 
                         <td class="total-horas" data-date="@data.ToString("dd/MM")">
+
                             @if (totalHoras > 0)
+
                             {
+
                                 @totalHoras.ToString("0.0")
+
                             }
+
                         </td>
+
                     }
 
                 }
+
             }
+
         </tr>
+
     </tbody>
+
     <tfoot>
+
         <tr>
+
             <td class="horario-trabalho">Horário de trabalho</td>
+
             @{
+
                 foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
+
                 {
+
                     var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
+
                     if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
+
                     {
+
                         <td class="celula-dia weekend" data-dia-id="" style="background-color: gray;">
                         </td>
+
                     }
+
                     else
+
                     {
 
                         <td class="horario-trabalho">8,0</td>
 
                     }
-                }
-            }
-        </tr>
 
+                }
+
+            }
+
+        </tr>
 
 
         <tr>
+
             <td class="horas-excedentes">Horas excedentes</td>
+
             @{
+
                 foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
+
                 {
+
                     var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
+
                     if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
+
                     {
+
                         <td class="celula-dia weekend" data-dia-id="" style="background-color: gray;">
                         </td>
+
                     }
+
                     else
+
                     {
 
                         var lancamentosDoDia = Model.Lancamentos.Where(l => l.DiaData.Date == data);
+
                         var totalHoras = lancamentosDoDia.Sum(l => l.Horas);
+
                         var horasExcedentes = totalHoras > 8 ? totalHoras - 8 : 0;
+
                         <td class="horas-excedentes" data-date="@data.ToString("dd/MM")">
+
                             @if (horasExcedentes > 0)
+
                             {
+
                                 @horasExcedentes.ToString("0.0")
+
                             }
+
                         </td>
+
                     }
+
                 }
+
             }
+
         </tr>
-
-
 
 
 
@@ -192,88 +352,133 @@
 </table>
 
 <!-- Modal para exibir alertas -->
+
 <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+
     <div class="modal-dialog" role="document">
+
         <div class="modal-content">
+
             <div class="modal-header">
+
                 <h5 class="modal-title" id="alertModalLabel">Alerta</h5>
 
             </div>
+
             <div class="modal-body">
+
                 <p id="alertText"></p>
+
             </div>
 
         </div>
+
     </div>
+
 </div>
 
 <!-- botões  -->
-<a class="custom-filter-button" asp-action="Create">Cadastrar Registro</a>
+
+<a class="btn btn-outline-success btn-sm" asp-action="Create">Cadastrar Registro</a>
+
 <a class="btn btn-outline-warning btn-sm edit-button">Editar Registro</a>
+
 <a class="btn btn-outline-danger btn-sm delete-button">Excluir Registro</a>
 
 <!-- Fim dos botões -->
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 
 <script>
+
     var diaIdAtivo;  // variável global pea armazenar o ID do dia da célula ativa
 
     $(document).ready(function () {
+
         // Quando uma célula da tabela é clicada...
+
         $('.celula-dia').click(function () {
+
             // Obtenha o ID do dia da célula e armazene na variável global
+
             diaIdAtivo = $(this).data('dia-id');
+
         });
 
         // Quando o botão de edição é clicado...
+
         $('.edit-button').click(function (e) {
+
             e.preventDefault();  // Impede o comportamento padrão do clique no link
 
             // Redireciona para a URL desejada
+
             window.location.href = '/Dias/Edit/' + diaIdAtivo;
+
         });
 
         // Quando o botão de exclusão é clicado...
+
         $('.delete-button').click(function (e) {
+
             e.preventDefault();  // Impede o comportamento padrão do clique no link
 
             // Redireciona para a URL desejada
+
             window.location.href = '/Dias/Delete/' + diaIdAtivo;
+
         });
 
         // Adiciona a classe "weekend" às células de fim de semana
+
         $('.celula-dia').each(function () {
+
             var dataClicada = new Date($(this).data('date'));
+
             if (dataClicada.getDay() === 0 || dataClicada.getDay() === 6) {
+
                 // Se for um fim de semana, adiciona a classe "weekend" à célula
+
                 $(this).addClass('weekend');
+
             }
+
         });
 
 
         // Caixa de alerta
+
         var diasInsuficientes = [];
 
         $('.total-horas').each(function () {
+
             var totalHoras = parseFloat($(this).text());
+
             var data = $(this).data('date');
+
             if (totalHoras < 8) {
+
                 diasInsuficientes.push(data);
+
             }
+
         });
 
         if (diasInsuficientes.length > 0) {
+
             var alertText = 'Atenção: Total de horas registrado nos seguintes dias é menor que 8 horas:\n' + diasInsuficientes.join(', ');
+
             $('#alertText').text(alertText);
+
             $('#alertModal').modal('show');
+
         }
 
     });
 
 
 </script>
-
-
- 
