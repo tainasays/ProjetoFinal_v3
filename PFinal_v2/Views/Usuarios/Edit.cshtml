@@ -1,4 +1,5 @@
-﻿@model PFinal_v2.Models.Usuario
+﻿@model PFinal_v2.Models.Usuario;
+@using System.ComponentModel.DataAnnotations;
 
 @{
     ViewData["Title"] = "Edit";
@@ -63,6 +64,18 @@
                                 <label asp-for="DepartamentoId" class="control-label"></label>
                                 <select asp-for="DepartamentoId" class="form-control custom-select" asp-items="ViewBag.DepartamentoList">
                                     <option value="">Selecione o departamento</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="LocalTrabalho" class="control-label"></label>
+                                <select asp-for="LocalTrabalho" class="form-control">
+                                    <option value="">Selecione um local</option>
+                                    @foreach (var value in Enum.GetValues(typeof(LocalTrabalhoLista)))
+                                    {
+                                        var displayAttribute = typeof(LocalTrabalhoLista).GetMember(value.ToString())[0].GetCustomAttributes(typeof(DisplayAttribute), false).FirstOrDefault() as DisplayAttribute;
+                                        var displayName = displayAttribute?.Name ?? value.ToString();
+                                        <option value="@value">@displayName</option>
+                                    }
                                 </select>
                             </div>
 

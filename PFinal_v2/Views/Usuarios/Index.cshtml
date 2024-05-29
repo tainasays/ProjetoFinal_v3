@@ -17,7 +17,7 @@
 <form asp-controller="Usuarios" asp-action="Index">
     <p>
         <input type="text" name="SearchString" placeholder="Nome" class="custom-search-input" />
-        <input type="submit" value="Filter" class="custom-filter-button" />
+        <input type="submit" value="Filtrar" class="custom-filter-button" />
     </p>
 </form>
 
@@ -25,9 +25,10 @@
     <thead>
         <tr>
             <th scope="col">Nome</th>
-            <th scope="col">Email</th>
+            <th scope="col">E-mail</th>
             <th scope="col">Departamento</th>
             <th scope="col">Data de contratação</th>
+            <th scope="col">Local de Trabalho</th>
             <th scope="col">Administrador</th>
             <th scope="col">Senha</th>
             <th scope="col">Ações</th>
@@ -41,6 +42,9 @@
                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
                 <td>@Html.DisplayFor(modelItem => item.Departamento.Nome)</td>
                 <td>@Html.DisplayFor(modelItem => item.DataContratacao)</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LocalTrabalho)
+                </td>
                 <td>@Html.DisplayFor(modelItem => item.IsAdmin)</td>
                 <td>
                     @if (isAdmin)
@@ -57,8 +61,8 @@
                 </td>
                 <td>
                     <div class="icons-container">
-                        <a asp-action="Edit" asp-route-id="@item.UsuarioId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
-                        <a asp-action="Details" asp-route-id="@item.UsuarioId"><i class="bi bi-search custom-white-icon"></i></a> |&nbsp;
+                        <a asp-action="Edit" asp-route-id="@item.UsuarioId"><i class="bi bi-pencil custom-white-icon"></i></a> &nbsp;
+                        <a asp-action="Details" asp-route-id="@item.UsuarioId"><i class="bi bi-search custom-white-icon"></i></a> &nbsp;
                         <form id="deleteForm_@item.UsuarioId" asp-action="Delete" method="post" style="display:inline;">
                             <input type="hidden" name="id" value="@item.UsuarioId" />
                             <a href="#" onclick="openConfirmationModal('@item.UsuarioId'); return false;"><i class="bi bi-trash custom-white-icon"></i></a>
@@ -126,5 +130,3 @@
         }
     </script>
 }
-
-        <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar </a>

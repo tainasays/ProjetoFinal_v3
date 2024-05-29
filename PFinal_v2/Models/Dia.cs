@@ -4,8 +4,6 @@ namespace PFinal_v2.Models
 {
     public class Dia
     {
-
-
         public int DiaId { get; set; }
         public int UsuarioId { get; set; }
 
@@ -16,6 +14,8 @@ namespace PFinal_v2.Models
         [DataType(DataType.Date)]
         public DateTime DiaData { get; set; }
         public double Horas { get; set; }
+
+        public Usuario? Usuario { get; set; }
 
 
     }
