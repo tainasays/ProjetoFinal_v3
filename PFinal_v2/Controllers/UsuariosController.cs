@@ -43,8 +43,13 @@ namespace PFinal_v2.Controllers
             // Aplica o Include separadamente
             usuarios = usuarios.Include(u => u.Departamento);
 
+            var isAdmin = User.IsInRole("Admin");
+
+            ViewBag.IsAdmin = isAdmin;
+
             return View(await usuarios.ToListAsync());
         }
+
 
 
         // GET: Usuarios/Details/5
