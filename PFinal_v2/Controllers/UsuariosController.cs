@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -51,12 +52,14 @@ namespace PFinal_v2.Controllers
 
             IQueryable<Usuario> usuarios = _context.Usuario; // Inicializa a consulta sem o Include
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 usuarios = usuarios.Where(s => s.Nome!.Contains(searchString));
             }
 
             // Aplica o Include separadamente
+            usuarios = usuarios.Include(u => u.Departamento);
+
             usuarios = usuarios.Include(u => u.Departamento);
 
             return View(await usuarios.ToListAsync());
@@ -103,7 +106,7 @@ namespace PFinal_v2.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.DepartamentoList = new SelectList(_context.Departamento, "DepartamentoId", "Nome"); 
+            ViewBag.DepartamentoList = new SelectList(_context.Departamento, "DepartamentoId", "Nome");
 
             return View(usuario);
         }

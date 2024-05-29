@@ -4,21 +4,53 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<style>
+    .rounded-form {
+        border-radius: 20px; /* Define o raio de arredondamento dos cantos */
+        background-color: #f2f2f2; /* Define a cor de fundo do formulário */
+        padding: 20px; /* Adiciona espaçamento interno ao redor do formulário */
+    }
 
-<div>
-    <h4>Departamento</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-    </dl>
+    .rounded-button {
+        border-radius: 10px; /* Define o raio de arredondamento dos cantos */
+    }
+
+    .custom-card-header {
+        background-color: #f2f2f2; /* Define a cor de fundo */
+    }
+</style>
+<div class="container">
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+        <div class="col-md-4">
+            <div class="card rounded-form">
+                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Detalhes</strong></div>
+                <div class="card-body">
+                    @if (Model != null)
+                    {
+                        <table class="table custom-table" style="margin-top: 40px;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Nome</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>@Html.DisplayFor(model => model.DepartamentoId)</td>
+                                    <td>@Html.DisplayFor(model => model.Nome)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>Departamento não encontrado.</p>
+                    }
+                    <a asp-action="Edit" class="custom-filter-button" asp-route-id="@Model?.DepartamentoId">Editar</a>
+                    <a asp-action="Index" class="custom-filter-button">Voltar</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.DepartamentoId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+

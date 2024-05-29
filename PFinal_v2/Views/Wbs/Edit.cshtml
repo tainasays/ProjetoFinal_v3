@@ -4,81 +4,101 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<style>
+    .rounded-form {
+        border-radius: 20px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
 
-<h4>Wbs</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="WbsId" />
-            <div class="form-group">
-                <label asp-for="Codigo" class="control-label"></label>
-                <input asp-for="Codigo" class="form-control" />
-                <span asp-validation-for="Codigo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" class="form-control" />
-                <span asp-validation-for="Descricao" class="text-danger"></span>
-            </div>
-            <div class="modal" tabindex="-1" id="myModal">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Atenção</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    .rounded-button {
+        border-radius: 10px;
+    }
+
+    .custom-card-header {
+        background-color: #f2f2f2;
+    }
+</style>
+</style>
+<div class="container">
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+        <div class="col-md-4">
+            <div class="card rounded-form" style="border-top-left-radius: 20px; border-top-right-radius: 20px;">
+                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Editar</strong></div>
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="WbsId" />
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label asp-for="Codigo" class="control-label"></label>
+                                <input asp-for="Codigo" class="form-control" style="background-color: #f2f2f2;" placeholder="Exemplo: WBS0912010 " />
+                                <span asp-validation-for="Codigo" class="text-danger"></span>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <p id="modalMessage"></p>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label asp-for="Descricao" class="control-label"></label>
+                                <input asp-for="Descricao" class="form-control" style="background-color: #f2f2f2;" placeholder="Exemplo: Férias " />
+                                <span asp-validation-for="Descricao" class="text-danger"></span>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelChanges()">Cancelar</button>
-                            <button type="button" class="btn btn-primary" onclick="saveChanges()">Confirmar</button>
+                        <div class="modal" tabindex="-1" id="myModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Atenção</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p id="modalMessage"></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelChanges()">Cancelar</button>
+                                        <button type="button" class="btn btn-primary" onclick="saveChanges()">Confirmar</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+
+                        <label style="position: relative;">
+                            <input id="ChargeableCheckbox" class="form-check-input" asp-for="IsChargeable" type="checkbox" onclick="handleCheckboxClick();" /> @Html.DisplayNameFor(model => model.IsChargeable)
+                        </label>
+
+                        <script>
+                            function handleCheckboxClick() {
+                                var checkbox = document.getElementById("ChargeableCheckbox");
+                                var message = checkbox.checked ?
+                                    "Deseja colocar a WBS como Chargeable?" :
+                                    "Deseja remover a WBS como Chargeable?";
+                                document.getElementById("modalMessage").textContent = message;
+                                // Abre o modal quando o checkbox é clicado
+                                $('#myModal').modal('show');
+                            }
+
+                            function saveChanges() {
+                                $('#myModal').modal('hide');
+                            }
+
+                            function cancelChanges() {
+                                document.getElementById("ChargeableCheckbox").checked = false;
+                                $('#myModal').modal('hide');
+                            }
+                        </script>
+
+                        <div class="form-group mt-3">
+                            <input type="submit" value="Salvar" class="custom-filter-button"</a>
+                            <a asp-action="Index" class="custom-filter-button">Voltar</a>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <label style="position: relative;">
-                <input id="ChargeableCheckbox" class="form-check-input" asp-for="IsChargeable" type="checkbox" onclick="handleCheckboxClick();" /> @Html.DisplayNameFor(model => model.IsChargeable)
-            </label>
-
-            <script>
-                function handleCheckboxClick() {
-                    var checkbox = document.getElementById("ChargeableCheckbox");
-                    var message = checkbox.checked ?
-                        "Deseja colocar a WBS como Chargeable?" :
-                        "Deseja remover a WBS como Chargeable?";
-                    document.getElementById("modalMessage").textContent = message;
-                    // Abre o modal quando o checkbox é clicado
-                    $('#myModal').modal('show');
-                }
-
-                function saveChanges() {
-                    $('#myModal').modal('hide');
-                }
-
-                function cancelChanges() {
-                    document.getElementById("ChargeableCheckbox").checked = false;
-                    $('#myModal').modal('hide');
-                }
-            </script>
-
-
-            
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }

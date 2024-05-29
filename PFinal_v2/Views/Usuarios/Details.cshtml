@@ -4,51 +4,71 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<style>
+    .rounded-form {
+        border-radius: 20px; /* Define o raio de arredondamento dos cantos */
+        background-color: #f2f2f2; /* Define a cor de fundo do formulário */
+        padding: 20px; /* Adiciona espaçamento interno ao redor do formulário */
+    }
 
-<div>
-    <h4>Usuario</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DepartamentoId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DepartamentoId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DataContratacao)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DataContratacao)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsAdmin)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsAdmin)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Senha)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Senha)
-        </dd>
-    </dl>
+    .rounded-button {
+        border-radius: 10px; /* Define o raio de arredondamento dos cantos */
+    }
+
+    .custom-card-header {
+        background-color: #f2f2f2; /* Define a cor de fundo */
+    }
+
+    .table.custom-table td {
+        word-wrap: break-word;
+    }
+
+    .centered-table {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<div class="container">
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+        <div class="col-md-4">
+            <div class="card rounded-form">
+                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Detalhes</strong></div>
+                <div class="card-body">
+                    @if (Model != null)
+                    {
+                        <div class="text-center">
+                            <div class="form-group">
+                                <label>Nome:</label>
+                                <p>@Html.DisplayFor(model => model.Nome)</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Email:</label>
+                                <p>@Html.DisplayFor(model => model.Email)</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Departamento:</label>
+                                <p>@Html.DisplayFor(model => model.DepartamentoId)</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Data de Contratação:</label>
+                                <p>@Html.DisplayFor(model => model.DataContratacao)</p>
+                            </div>
+                            <div class="form-group">
+                                <label>É administrador:</label>
+                                <p>@Html.DisplayFor(model => model.IsAdmin)</p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>Usuário não encontrado</p>
+                    }
+                    <a asp-action="Edit" asp-route-id="@Model?.UsuarioId" class="custom-filter-button">Editar</a>
+                    <a asp-action="Index" class="custom-filter-button">Voltar</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.UsuarioId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+ 

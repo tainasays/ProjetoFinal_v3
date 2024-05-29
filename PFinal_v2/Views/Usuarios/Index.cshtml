@@ -4,134 +4,6 @@
 
 @{
     ViewData["Title"] = "Index";
-}
-
-<style>
-    .icons-container {
-        display: flex;
-    }
-</style>
-
-<h2 style="margin-bottom: 40px;">
-    Funcionários cadastrados</h1>
-
-
-   @*  <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-
-    <form asp-controller="Usuarios" asp-action="Index">
-        <p>
-            <input type="text" name="SearchString" placeholder="Nome" class="custom-search-input" />
-            <input type="submit" value="Filtrar" class="custom-filter-button" />
-        </p>
-    </form>
-
-    <table class="table">
-        <table class="table custom-table" style="margin-top: 40px;">
-            <thead>
-                <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Data de contratação</th>
-                    <th scope="col">Departamento</th>
-                    <th scope="col">Local de Trabalho</th>
-                    <th scope="col">Administrador</th>
-                    <th scope="col">Senha
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Nome)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DataContratacao)
-                        </td>
-                        <td>@Html.DisplayFor(modelItem => item.DepartamentoId)</td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LocalTrabalho)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsAdmin)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Senha)
-                        </td>
-                        <td>
-                            <div class="icons-container">
-                                <a asp-action="Edit" asp-route-id="@item.UsuarioId"><i class="bi bi-pencil custom-white-icon"></i></a> &nbsp;
-                                <a asp-action="Details" asp-route-id="@item.UsuarioId"><i class="bi bi-search custom-white-icon"></i></a> &nbsp;
-
-                                <form id="deleteForm_@item.UsuarioId" asp-action="Delete" method="post">
-                                    <input type="hidden" name="id" value="@item.UsuarioId" />
-                                    <a>
-                                        <i onclick="openConfirmationModal('@item.UsuarioId'); return false;" class="bi bi-trash custom-white-icon"></i>
-                                    </a>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
-    </table>
-
-
-    <div class="modal" id="confirmModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirmação de Exclusão</h5>
-                    <button type="button" class="close" data-dismiss="modal" onclick="cancelChanges()">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p>Deseja realmente excluir este usuário?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelChanges()">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Confirmar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <script>
-
-        function openConfirmationModal(userId) {
-            $('#confirmModal').modal('show'); // Abre o modal de confirmação
-            $('#confirmDeleteButton').click(function () {
-                submitDeleteForm(userId); // Chama a função para enviar o formulário de exclusão ao clicar em "Confirmar"
-            });
-        }
-
-        function submitDeleteForm(userId) {
-            $('#deleteForm_' + userId).submit(); // Envia o formulário de exclusão com o ID do usuário
-        }
-
-
-        function cancelChanges() {
-            $('#confirmModal').modal('hide');
-        }
-    </script>
-
-
-    <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar </a>
-
-
-    *@
-@model IEnumerable<PFinal_v2.Models.Usuario>
-
-@{
-    ViewData["Title"] = "Index";
     SeedData.Initialize(ViewContext.HttpContext.RequestServices);
     var isAdmin = ViewBag.IsAdmin as bool? ?? false;
 }
@@ -172,7 +44,8 @@
                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
                 <td>@Html.DisplayFor(modelItem => item.Departamento.Nome)</td>
                 <td>@Html.DisplayFor(modelItem => item.DataContratacao)</td>
-                <td>@Html.DisplayFor(modelItem => item.LocalTrabalho)
+                <td>
+                    @Html.DisplayFor(modelItem => item.LocalTrabalho)
                 </td>
                 <td>@Html.DisplayFor(modelItem => item.IsAdmin)</td>
                 <td>

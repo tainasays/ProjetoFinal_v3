@@ -12,6 +12,6 @@
         public Usuario? Usuario { get; set; }
 
 
-        public string? MensagemErro { get; set;}
+        public string? MensagemErro { get; set; }
     }
 }

@@ -44,13 +44,12 @@ namespace PFinal_v2.Models
     public enum LocalTrabalhoLista
     {
         [Display(Name = "Recife - Brasil")]
-             RE,
+        RE,
 
         [Display(Name = "São Paulo - Brasil")]
-      
-            SP,
+        SP,
         [Display(Name = "Nova Lima - Brasil")]
-            NL
+        NL
     }
 
 

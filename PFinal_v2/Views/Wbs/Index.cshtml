@@ -13,14 +13,11 @@
 
 <h2 style="margin-bottom: 40px;">WBS cadastradas</h1>
 
-@* <p>
-    <a asp-action="Create">Create New</a>
-</p> *@
 
 <form asp-controller="Wbs" asp-action="Index">
     <p>
             <input type="text" name="SearchString" placeholder="Código ou descrição" class="custom-search-input" /> 
-            <input type="submit" value="Filter" class="custom-filter-button" />
+            <input type="submit" value="Filtrar" class="custom-filter-button" />
     </p>
 </form>
 
@@ -60,11 +57,14 @@
                                 </a>
                             </form>
                         </div>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
 
     <div class="modal" id="confirmModal">
         <div class="modal-dialog">
@@ -83,6 +83,8 @@
             </div>
         </div>
     </div>
+
+
     <script>
         function openConfirmationModal(wbsId) {
             $('#confirmModal').modal('show'); // Abre o modal de confirmação
@@ -99,6 +101,7 @@
             $('#confirmModal').modal('hide');
         }
     </script>
+
 
     <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar</a>
 

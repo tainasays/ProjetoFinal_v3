@@ -31,7 +31,7 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Nome</th>
-                    <th></th>
+                    <th scope="col">Funcionários</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,6 +43,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuantidadeFuncionarios)
+                        </td>
             <td>
                             <div class="icons-container">
                                 <a class="icon-edit" asp-action="Edit" asp-route-id="@item.DepartamentoId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;

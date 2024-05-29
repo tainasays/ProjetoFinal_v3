@@ -1,12 +1,11 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - PFinal_v2</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PFinal_v2.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -18,10 +17,10 @@
 
 </head>
 <body>
-    
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
+
                 <a class="navbar-brand" asp-area="" asp-controller="Conta" asp-action="Login">Avaccenture</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +32,6 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item text-black" href="@Url.Action("Index", "Dias")">Cadastrar horas</a></li>
-                        <li><a class="dropdown-item text-black" href="@Url.Action("Edit", "Usuarios")">Alterar senha em teste</a></li>
                             @if (User.IsInRole("Admin")) // Verifica se o usuário está no papel de administrador
                             {
                             <li><a class="dropdown-item text-black" href="@Url.Action("Index", "Admin")">Painel administrador</a></li>
@@ -55,7 +53,9 @@
         </main>
     </div>
 
+
     @* <footer class="border-top footer text-muted">
+
         <div class="container">
             &copy; 2024 - Avaccenture  <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> 
         </div>
