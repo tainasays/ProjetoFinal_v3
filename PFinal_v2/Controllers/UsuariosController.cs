@@ -60,8 +60,6 @@ namespace PFinal_v2.Controllers
             // Aplica o Include separadamente
             usuarios = usuarios.Include(u => u.Departamento);
 
-            usuarios = usuarios.Include(u => u.Departamento);
-
             var isAdmin = User.IsInRole("Admin");
 
             ViewBag.IsAdmin = isAdmin;
