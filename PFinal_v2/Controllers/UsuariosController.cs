@@ -52,7 +52,6 @@ namespace PFinal_v2.Controllers
 
             IQueryable<Usuario> usuarios = _context.Usuario; // Inicializa a consulta sem o Include
 
-            IQueryable<Usuario> usuarios = _context.Usuario;
 
             if (!string.IsNullOrEmpty(searchString))
             {
