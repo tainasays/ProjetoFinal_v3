@@ -1,4 +1,112 @@
-﻿@model IEnumerable<PFinal_v2.Models.Departamento>
+﻿@* @model IEnumerable<PFinal_v2.Models.Departamento>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    .icons-container {
+        display: flex;
+    }
+</style>
+
+
+<h2 style="margin-bottom: 40px;">Departamentos cadastrados</h1>
+
+
+@* <p>
+    <a asp-action="Create">Create New</a>
+</p> 
+
+<form asp-controller="Departamentos" asp-action="Index">
+        <p>
+            <input type="text" name="SearchString" placeholder="Nome" class="custom-search-input" />
+            <input type="submit" value="Filter" class="custom-filter-button" />
+        </p>
+    </form>
+
+    <table class="table">
+        <table class="table custom-table" style="margin-top: 40px;">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Funcionários</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartamentoId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuantidadeFuncionarios)
+                        </td>
+            <td>
+                            <div class="icons-container">
+                                <a class="icon-edit" asp-action="Edit" asp-route-id="@item.DepartamentoId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
+                                <a asp-action="Details" asp-route-id="@item.DepartamentoId"><i class="bi bi-search custom-white-icon"></i></a> |&nbsp;
+                                <form id="deleteForm_@item.DepartamentoId" asp-action="Delete" method="post">
+                                    <input type="hidden" name="id" value="@item.DepartamentoId" />
+                                    <a>
+                                        <i onclick="openConfirmationModal('@item.DepartamentoId'); return false;" class="bi bi-trash custom-white-icon"></i>
+                                    </a>
+                                </form>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="modal" id="confirmModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmação de Exclusão</h5>
+                        <button type="button" class="close" data-dismiss="modal" onclick="cancelChanges()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Deseja realmente excluir este Departamento?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelChanges()">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteButton">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            function openConfirmationModal(departamentoId) {
+                $('#confirmModal').modal('show'); // Abre o modal de confirmação
+                $('#confirmDeleteButton').click(function () {
+                    submitDeleteForm(departamentoId); // Chama a função para enviar o formulário de exclusão ao clicar em "Confirmar"
+                });
+            }
+
+            function submitDeleteForm(departamentoId) {
+                $('#deleteForm_' + departamentoId).submit(); // Envia o formulário de exclusão com o ID do departamento
+            }
+
+            function cancelChanges() {
+                $('#confirmModal').modal('hide');
+            }
+        </script>
+
+        <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar</a>
+
+ *@
+
+
+
+@model IEnumerable<PFinal_v2.Models.Departamento>
 
 @{
     ViewData["Title"] = "Index";

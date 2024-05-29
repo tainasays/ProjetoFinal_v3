@@ -52,7 +52,7 @@ namespace PFinal_v2.Controllers
 
             IQueryable<Usuario> usuarios = _context.Usuario; // Inicializa a consulta sem o Include
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 usuarios = usuarios.Where(s => s.Nome!.Contains(searchString));
             }
@@ -60,8 +60,13 @@ namespace PFinal_v2.Controllers
             // Aplica o Include separadamente
             usuarios = usuarios.Include(u => u.Departamento);
 
+            var isAdmin = User.IsInRole("Admin");
+
+            ViewBag.IsAdmin = isAdmin;
+
             return View(await usuarios.ToListAsync());
         }
+
 
 
         // GET: Usuarios/Details/5
@@ -203,6 +208,7 @@ namespace PFinal_v2.Controllers
         }
 
 
+
         [HttpGet]
         public async Task<IActionResult> Localizacao(int? id)
         {
@@ -261,6 +267,9 @@ namespace PFinal_v2.Controllers
             }
             return View(usuario);
         }
+
+
+
 
 
 

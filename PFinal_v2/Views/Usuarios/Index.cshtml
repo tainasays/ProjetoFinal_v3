@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Index";
-    SeedData.Initialize(ViewContext.HttpContext.RequestServices);
     var isAdmin = ViewBag.IsAdmin as bool? ?? false;
 }
 
@@ -10,7 +9,6 @@
     .icons-container {
         display: flex;
     }
-
     .custom-filter-button {
         background-color: #3F292B;
         color: #ffffff;
@@ -48,7 +46,15 @@
         padding: 5px; /* Espaçamento interno */
         border: 1px solid #f2f2f2; /* Cor da borda */
     }
+    .password-container {
+        display: flex;
+        align-items: center;
+    }
 
+    .toggle-password {
+        cursor: pointer;
+        margin-left: 10px;
+    }
 </style>
 
 <h2 style="margin-bottom: 40px;">Funcionários cadastrados</h2>
@@ -81,16 +87,14 @@
                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
                 <td>@Html.DisplayFor(modelItem => item.Departamento.Nome)</td>
                 <td>@Html.DisplayFor(modelItem => item.DataContratacao)</td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LocalTrabalho)
-                </td>
+                <td>@Html.DisplayFor(modelItem => item.LocalTrabalho)</td>
                 <td>@Html.DisplayFor(modelItem => item.IsAdmin)</td>
                 <td>
                     @if (isAdmin)
                     {
                         <div class="password-container">
                             <span class="password-text" style="display: none;">@item.Senha</span>
-                            <i class="bi bi-eye toggle-password" style="cursor: pointer;"></i>
+                            <i class="bi bi-eye toggle-password"></i>
                         </div>
                     }
                     else
