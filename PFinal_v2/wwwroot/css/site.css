@@ -1,20 +1,20 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 a {
@@ -36,8 +36,8 @@ body {
 .card-container {
     display: flex;
     justify-content: space-between;
-    list-style: none; 
-    padding: 0; 
+    list-style: none;
+    padding: 0;
 }
 
 .card {
@@ -49,9 +49,6 @@ body {
     background-color: linear-gradient(to bottom, #D2B48C, #BC8F8F);
     border-radius: 10px;
     color: black;
-    /*background-color: #f2f2f2 !important;
-    color: #999;
-    pointer-events: none;*/
 }
 
 
@@ -65,9 +62,9 @@ body {
     text-decoration: none;
 }
 
- .custom-filter-button:hover {
+    .custom-filter-button:hover {
         background-color: #798B71;
-}
+    }
 
 .custom-white-icon {
     color: #3F292B;
@@ -102,8 +99,25 @@ body {
     background-color: #f2f2f2 !important;
     text-decoration: none !important;
 }
+
+#tabela-horas {
+    text-align: center;
+}
+
+    #tabela-horas th,
+    #tabela-horas td {
+        padding: 4px;
+        word-wrap: break-word;
+        line-height: 2;
+    }
+
+#primeira-coluna {
+    text-align: right;
+    white-space: nowrap;
+}
+
 .tabela-horas-thead {
-background-color: white;
+    background-color: white;
 }
 
 .horario-trabalho, .horas-excedentes {

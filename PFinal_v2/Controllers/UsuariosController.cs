@@ -215,6 +215,7 @@ namespace PFinal_v2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Localizacao(int id, string localTrabalho)
         {
             var usuario = await _context.Usuario.FindAsync(id);
@@ -258,6 +259,7 @@ namespace PFinal_v2.Controllers
 
         // GET: Usuarios/RedefinirSenha/5
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> RedefinirSenha(int? id)
         {
             if (id == null)
@@ -279,9 +281,15 @@ namespace PFinal_v2.Controllers
             return View(viewModel);
         }
 
+
+
+
+
         // POST: Usuarios/RedefinirSenha
+
         [HttpPost("RedefinirSenha")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> RedefinirSenha(RedefinirSenhaViewModel viewModel)
         {
             if (ModelState.IsValid)
