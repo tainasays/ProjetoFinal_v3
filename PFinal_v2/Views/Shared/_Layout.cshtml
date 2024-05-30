@@ -2,6 +2,14 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
+<style>
+    
+    .bg-custom {
+    background-color: #3F292B;
+   }
+</style>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,17 +28,17 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-custom border-bottom box-shadow mb-3">
             <div class="container-fluid">
 
-                <a class="navbar-brand" asp-area="" asp-controller="Conta" asp-action="Login">Avaccenture</a>
+                <a class="navbar-brand" style="color:white"  asp-area="" asp-controller="Conta" asp-action="Login">Avaccenture</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                     <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-black" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-fill"></i>
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item text-black" href="@Url.Action("Index", "Dias")">Cadastrar Horas</a></li>
@@ -58,12 +66,13 @@
     </div>
 
 
-    @* <footer class="border-top footer text-muted">
+@*     <footer class="border-top footer text-muted">
 
         <div class="container">
             &copy; 2024 - Avaccenture  <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> 
         </div>
     </footer> *@
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

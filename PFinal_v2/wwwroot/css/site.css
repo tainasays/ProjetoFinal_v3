@@ -24,6 +24,7 @@ body {
     background: linear-gradient(to bottom, #D2B48C, #BC8F8F);
 }
 
+
 .card-container {
     display: flex;
     justify-content: space-between;
@@ -43,21 +44,6 @@ body {
     /*background-color: #f2f2f2 !important;
     color: #999;
     pointer-events: none;*/
-}
-
-
-.custom-filter-button {
-    background-color: #3F292B;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    text-decoration: none;
-}
-
- .custom-filter-button:hover {
-        background-color: #798B71;
 }
 
 .custom-white-icon {
