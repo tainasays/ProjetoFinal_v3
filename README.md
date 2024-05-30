@@ -69,7 +69,7 @@ Exibir a soma das horas registradas para cada dia.
 Seleção de WBS e preenchimento de horas trabalhadas para cada dia da quinzena.
 - Saída: 
 Confirmação de que as horas foram registradas com sucesso.
-Mensagens de alerta caso as horas registradas no dia for menor que as 8 horas estipuladas.
+Mensagens de alerta caso as horas registradas no dia sejam menores que as 8 horas estipuladas.
 
 <h4>4. Implementar navegação entre quinzenas</h4>
 
