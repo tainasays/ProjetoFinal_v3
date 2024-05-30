@@ -1,7 +1,24 @@
 
 @model PFinal_v2.Models.ViewModels.DiaFormViewModel
 
-<p>Olá, @User.Identity.Name!</p>
+<style>
+    .custom-filter-button {
+        background-color: #3F292B;
+        color: #ffffff;
+        border-radius: 5px;
+        padding: 6px 10px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .custom-filter-button:hover {
+            background-color: #525252; 
+            color: #ffffff;
+        }
+</style>
+
+<h5>Olá, @User.Identity.Name!</h5>
 
 @if (TempData["ErrorMessage"] != null)
 
@@ -21,7 +38,7 @@
 
         <div class="form-group">
 
-            <label>Mês</label>
+            @* <label>Mês</label> *@
 
             <input type="month" name="mes" value="@Model.Mes" class="form-control" />
 
@@ -33,7 +50,7 @@
 
         <div class="form-group">
 
-            <label>Quinzena</label>
+            @* <label>Quinzena</label> *@
 
             <select name="quinzena" class="form-control">
 
@@ -52,6 +69,7 @@
         <button type="submit" class="custom-filter-button">
             <i class="bi bi-search"></i>
         </button>
+       
     </div>
 </form>
 
@@ -360,11 +378,11 @@
 
 <!-- botões  -->
 
-<a class="btn btn-secondary btn-sm" asp-action="Create">Cadastrar</a>
+<a class="custom-filter-button" asp-action="Create"><i class="bi bi-plus-circle"></i></a>
 
-<a class="btn btn-secondary btn-sm edit-button">Editar</a>
+<a class="custom-filter-button edit-button"><i class="bi bi-pencil"></i></a>
 
-<a class="btn btn-danger btn-sm delete-button">Excluir</a>
+<a class="custom-filter-button bg-danger delete-button"><i class="bi bi-trash3"></i></a>
 
 <!-- Fim dos botões -->
 

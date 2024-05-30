@@ -92,6 +92,7 @@
             <th scope="col">Código</th>
             <th scope="col">Descrição</th>
             <th scope="col">Chargeability</th>
+            <th scope="col">Ações</th>
             <th></th>
         </tr>
     </thead>
@@ -112,7 +113,7 @@
             </td>
             <td>
                         <div class="icons-container">
-                            <a asp-action="Edit" asp-route-id="@item.WbsId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
+                            <a class="icon-edit" asp-action="Edit" asp-route-id="@item.WbsId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
                             <a asp-action="Details" asp-route-id="@item.WbsId"><i class="bi bi-search custom-white-icon"></i></a> |&nbsp;
                             <form id="deleteForm_@item.WbsId" asp-action="Delete" method="post">
                                 <input type="hidden" name="id" value="@item.WbsId" />
@@ -121,8 +122,8 @@
                                 </a>
                             </form>
                         </div>
-                    </td>
-                </tr>
+            </td>
+        </tr>
             }
         </tbody>
     </table>
