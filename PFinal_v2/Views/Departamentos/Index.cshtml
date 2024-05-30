@@ -57,9 +57,13 @@
         <div class="col-11">
             <form asp-controller="Departamentos" asp-action="Index">
                 <div class="form-group mt-3">
-                    <input type="text" name="SearchString" placeholder="Departamento" class="custom-search-input" />
+                    <input type="text" name="SearchString" id="searchString" placeholder="Nome" class="custom-search-input" />
                     <button type="submit" class="custom-filter-button">
                         <i class="bi bi-search"></i>
+                    </button>
+                    <button type="button" id="limparFiltro" class="custom-filter-button">
+                        <i class="bi bi-x-lg"></i>
+
                     </button>
                 </div>
             </form>
@@ -156,6 +160,18 @@
         function cancelChanges() {
             $('#confirmModal').modal('hide');
         }
+
+    // Seleciona o botão de limpar filtro
+    var limparFiltroBtn = document.getElementById('limparFiltro');
+
+    // Adiciona um evento de clique ao botão de limpar filtro
+    limparFiltroBtn.addEventListener('click', function () {
+        // Limpa o valor do campo de texto
+        document.getElementById('searchString').value = '';
+        // Redireciona para a mesma página sem parâmetros de filtro
+        window.location.href = '/Departamentos/Index';
+    });
+
     </script>
 
     <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar</a>
