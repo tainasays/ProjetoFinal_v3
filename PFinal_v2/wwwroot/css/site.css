@@ -17,6 +17,15 @@ html {
   min-height: 100%;
 }
 
+a {
+    text-decoration: none !important;
+}
+
+.disabled-link {
+    pointer-events: none;
+    cursor: not-allowed;
+    color: gray !important;
+}
 
 
 body {

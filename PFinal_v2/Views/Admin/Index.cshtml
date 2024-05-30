@@ -2,31 +2,23 @@
     ViewData["Title"] = "Painel do Administrador";
 }
 
-<style>
-    .text-custom {
-        color: #3F292B;
-    }
-</style>
-
-<h3 class="text-custom" style="margin-bottom: 20px;">Olá, @User.Identity.Name!</h3>
+<h3 style="margin-bottom: 40px;">Olá, @User.Identity.Name!</h3>
 
 
-<h5 class="text-custom" style="margin-bottom: 60px;">Painel do administrador</h5>
+<h5 style="margin-bottom: 40px;">Painel do Administrador</h5> 
 
 <nav>
     <ul class="card-container">
         <li class="card" style="width: 18rem; background-color: #3F292B; border-radius: 10px;">
             <div class="card-body" style="color: white;">
-                <h5 class="card-title" style="text-align: center; padding-bottom: 10px;">
-                    <span style="font-size: 2.0rem"<i class="bi bi-file-person"></i></span> Funcionário
-                </h5>
+                <h5 class="card-title" style="text-align: center; padding-bottom: 10px;"><i class="bi bi-person-workspace m-1"></i> Funcionário</h5>
                 <div class="dropdown" style="text-align: center;">
                     <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Ver detalhes
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="Usuarios" asp-action="Create">Cadastrar</a></li>
-                        <li><a class="dropdown-item" asp-controller="Usuarios" asp-action="Index">Listar</a></li>
+                        <li><a class="dropdown-item" asp-controller="Usuarios" asp-action="Create"><i class="bi bi-person-add m-1"></i> Cadastrar</a></li>
+                        <li><a class="dropdown-item" asp-controller="Usuarios" asp-action="Index"><i class="bi bi-person-lines-fill m-1"></i> Listar</a></li>
                     </ul>
                 </div>
             </div>
@@ -34,16 +26,14 @@
 
         <li class="card" style="width: 18rem; background-color: #3F292B;border-radius: 10px;">
             <div class="card-body" style="color: white;">
-                <h5 class="card-title" style="text-align: center; padding-bottom: 10px;">
-                    <span style="font-size: 2.0rem"<i class="bi bi-clock"></i></span> Wbs
-                </h5>
+                <h5 class="card-title" style="text-align: center; padding-bottom: 10px;"><i class="bi bi-list-stars m-1"></i> WBS</h5>
                 <div class="dropdown" style="text-align: center;">
                     <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Ver detalhes
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="Wbs" asp-action="Create">Cadastrar</a></li>
-                        <li><a class="dropdown-item" asp-controller="Wbs" asp-action="Index">Listar</a></li>
+                        <li><a class="dropdown-item" asp-controller="Wbs" asp-action="Create"><i class="bi bi-plus-circle m-1"></i> Cadastrar</a></li>
+                        <li><a class="dropdown-item" asp-controller="Wbs" asp-action="Index"><i class="bi bi-list-ul m-1"></i> Listar</a></li>
                     </ul>
                 </div>
             </div>
@@ -51,32 +41,28 @@
 
         <li class="card" style="width: 18rem; background-color: #3F292B; border-radius: 10px;">
             <div class="card-body" style="color: white;">
-                <h5 class="card-title" style="text-align: center; padding-bottom: 10px;">
-                    <span style="font-size: 2.0rem"<i class="bi bi-briefcase"></i></span> Departamento
-                </h5>
-                    <div class="dropdown" style="text-align: center;">
+                <h5 class="card-title" style="text-align: center; padding-bottom: 10px;"><i class="bi bi-building m-1"></i> Departamento</h5>
+                <div class="dropdown" style="text-align: center;">
                     <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Ver detalhes
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="Departamentos" asp-action="Create">Cadastrar</a></li>
-                        <li><a class="dropdown-item" asp-controller="Departamentos" asp-action="Index">Listar</a></li>
+                        <li><a class="dropdown-item" asp-controller="Departamentos" asp-action="Create"><i class="bi bi-plus-circle m-1"></i> Cadastrar</a></li>
+                        <li><a class="dropdown-item" asp-controller="Departamentos" asp-action="Index"><i class="bi bi-list-ul m-1"></i> Listar</a></li>
                     </ul>
                 </div>
             </div>
         </li>
         <li class="card" style="width: 18rem; background-color: #3F292B; border-radius: 10px;">
             <div class="card-body" style="color: white;">
-                <h5 class="card-title" style="text-align: center; padding-bottom: 10px;">
-                    <span style="font-size: 2.0rem"<i class="bi bi-file-earmark-text"></i></span> Relatório
-                </h5>
-                   <div class="dropdown" style="text-align: center;">
-                   <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <h5 class="card-title" style="text-align: center; padding-bottom: 10px;"><i class="bi bi-receipt-cutoff m-1"></i> Relatório</h5>
+                <div class="dropdown" style="text-align: center;">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Ver detalhes
                    </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="#" asp-action="#">Geral</a></li>
-                        <li><a class="dropdown-item" asp-controller="#" asp-action="#">Individual</a></li>
+                        <li><a class="dropdown-item" asp-controller="#" asp-action="#"><i class="bi bi-people m-1"></i> Geral</a></li>
+                        <li><a class="dropdown-item" asp-controller="#" asp-action="#"><i class="bi bi-person m-1"></i> Individual</a></li>
                     </ul>
                 </div>
             </div>

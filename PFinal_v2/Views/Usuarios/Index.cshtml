@@ -9,6 +9,7 @@
     .icons-container {
         display: flex;
     }
+
     .custom-filter-button {
         background-color: #3F292B;
         color: #ffffff;
@@ -34,7 +35,7 @@
 
         .custom-table thead th {
             background-color: #3F292B; /* Cor de fundo do cabeçalho */
-            color: #ffffff; /* Cor do texto do cabeçalho */ 
+            color: #ffffff; /* Cor do texto do cabeçalho */
         }
 
         .custom-table thead tr {
@@ -46,6 +47,7 @@
         padding: 5px; /* Espaçamento interno */
         border: 1px solid #f2f2f2; /* Cor da borda */
     }
+
     .password-container {
         display: flex;
         align-items: center;
@@ -57,14 +59,41 @@
     }
 </style>
 
-<h2 style="margin-bottom: 40px;">Funcionários cadastrados</h2>
+<h2 style="margin-bottom: 40px;">Funcionários cadastrados </h2>
 
-<form asp-controller="Usuarios" asp-action="Index">
-    <div class="form-group mt-3">
-        <input type="text" name="SearchString" placeholder="Nome" class="custom-search-input" />
-        <input type="submit" value="Filtrar" class="custom-filter-button" />
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-11">
+            <form asp-controller="Usuarios" asp-action="Index">
+                <div class="form-group mt-3">
+                    <input type="text" name="SearchString" id="searchString" placeholder="Nome" class="custom-search-input" />
+                    <button type="submit" class="custom-filter-button">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <button type="button" id="limparFiltro" class="custom-filter-button">
+                        <i class="bi bi-x-lg"></i>
+                       
+                    </button>
+                </div>
+               </form>
+        </div>
+
+        <div class="col-1 mt-3">
+            <p>
+                <a asp-action="Create">
+                    <button type="submit" class="custom-filter-button">
+                        <i class="bi bi-person-plus-fill"></i>
+                    </button>
+                </a>
+            </p>
+        </div>
+
+
     </div>
-</form>
+</div>
+
 
 <table class="table custom-table" style="margin-top: 40px;">
     <thead>
@@ -135,6 +164,7 @@
     </div>
 </div>
 
+
 <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar</a>
 
 @section Scripts {
@@ -171,5 +201,20 @@
         function cancelChanges() {
             $('#confirmModal').modal('hide');
         }
+
+      
+            // Seleciona o botão de limpar filtro
+            var limparFiltroBtn = document.getElementById('limparFiltro');
+
+        // Adiciona um evento de clique ao botão de limpar filtro
+        limparFiltroBtn.addEventListener('click', function () {
+            // Limpa o valor do campo de texto
+            document.getElementById('searchString').value = '';
+            // Redireciona para a mesma página sem parâmetros de filtro
+            window.location.href = '/Usuarios/Index';
+        });
+    
+    
+
     </script>
 }
