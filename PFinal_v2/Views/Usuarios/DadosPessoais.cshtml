@@ -1,4 +1,11 @@
 ﻿@model PFinal_v2.Models.Usuario
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+
+@{
+    var userClaims = User.Identity as ClaimsIdentity;
+    var userRole = userClaims?.FindFirst(ClaimTypes.Role)?.Value;
+}
 
 @{
     ViewData["Title"] = "Dados Pessoais";
@@ -41,38 +48,39 @@
 </style>
 
 <div class="container">
-    <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
-        <div class="col-md-4">
+    <div class="container d-flex align-items-md-center justify-content-center" style="min-height: 80vh;">
+        <div class="col-sm-5">
             <div class="card rounded-form">
                
-                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Dados Pessoais </strong></div>
-                <div class="card-body">
+                <div class="card-header m-2 custom-card-header text-left font-weight-bold" style="font-size: 24px;"><strong><i class="bi bi-person-vcard m-1"></i> Dados Pessoais </strong></div>
+                <div class="card-body m-3">
                     @if (Model != null)
                     {
                         <div class="text-center">
                             <div class="form-group row align-items-center">
-                                <label class="col-form-label fw-bold col-auto">Nome:</label>
+                                <label class="col-form-label fw-bold col-auto">Nome</label>
+                                
                                 <div class="col-auto">
                                     <p class="form-control-plaintext">@Html.DisplayFor(model => model.Nome)</p>
                                 </div>
                             </div>
 
                             <div class="form-group row align-items-center">
-                            <label class="col-form-label fw-bold col-auto">E-mail:</label>
+                            <label class="col-form-label fw-bold col-auto">E-mail</label>
                             <div class="col-auto">
                                 <p class="form-control-plaintext">@Html.DisplayFor(model => model.Email)</p>
                             </div>
                             </div>
 
                             <div class="form-group row align-items-center">
-                            <label class="col-form-label fw-bold col-auto">Departamento:</label>
+                            <label class="col-form-label fw-bold col-auto">Departamento</label>
                             <div class="col-auto">
                                 <p class="form-control-plaintext">@Html.DisplayFor(model => model.Departamento.Nome)</p>
                             </div>
                         </div>
 
                             <div class="form-group row align-items-center">
-                            <label class="col-form-label fw-bold col-auto">Local de trabalho:</label>
+                            <label class="col-form-label fw-bold col-auto">Local de trabalho</label>
                             <div class="col-auto">
                                     <p class="form-control-plaintext btn-white"><a href="/Usuarios/Localizacao/@(Model?.UsuarioId)">@Html.DisplayFor(model => model.LocalTrabalho)<i class="bi bi-caret-down"></i></a></p>
                             </div>
@@ -119,13 +127,26 @@
                     {
                         <p>Usuário não encontrado</p>
                     }
+                    <hr />
                     
-                    <div class="button-container">
-
-
-
-                      <a asp-action="Index" asp-controller="Dias" class="custom-filter-button">Voltar</a>
+                    
+                    <div class="button-container justify-content-lg-start">
+                        @if (userRole == "Admin")
+                        {
+                            <a asp-action="Index" asp-controller="Admin" class="custom-filter-button">Voltar</a>
+                        }
+                        else if (userRole == "Colaborador")
+                        {
+                            <a asp-action="Index" asp-controller="Dias" class="custom-filter-button">Voltar</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Login" asp-controller="Conta" class="custom-filter-button">Voltar</a>
+                        }
                     </div>
+
+
+
                 </div>
             </div>
         </div>

@@ -1,5 +1,12 @@
 ﻿@using System.Security.Claims;
 
+
+@{
+    // Verifica se o usuário está autenticado
+    var isAuthenticated = User.Identity.IsAuthenticated;
+    var isAdmin = User.HasClaim(c => c.Type == ClaimTypes.Role && c.Value == "Admin");
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,36 +27,40 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
 
-                <a class="navbar-brand" asp-area="" asp-controller="Conta" asp-action="Login">Avaccenture</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        @if (isAuthenticated)
+        {
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container-fluid">
+                    <a class="navbar-brand" asp-area="" asp-controller="Conta" asp-action="RedirectUser">Avaccenture</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-black" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-fill"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item text-black" href="@Url.Action("Index", "Dias")">Cadastrar Horas</a></li>
-                        <li><a class="dropdown-item text-black" href="@Url.Action("DadosPessoais", "Usuarios")">Dados Pessoais</a></li>
+                            <li><a class="dropdown-item text-black" href="@Url.Action("Index", "Dias")"><i class="bi bi-clock m-1"></i> Registrar horas</a></li>
+                            <li><a class="dropdown-item text-black" href="@Url.Action("DadosPessoais", "Usuarios")"><i class="bi bi-person m-1"></i> Dados pessoais</a></li>
 
-                            @if (User.IsInRole("Admin")) // Verifica se o usuário está no papel de administrador
+                            @if (isAdmin)
                             {
-                            <li><a class="dropdown-item text-black" href="@Url.Action("Index", "Admin")">Painel administrador</a></li>
+                                <li><a class="dropdown-item text-black" href="@Url.Action("Index", "Admin")"><i class="bi bi-person-fill-gear m-1"></i> Painel do Administrador</a></li>
                             }
-                            else
-                            {
-                            <li><a class="dropdown-item text-black" href="@Url.Action("Login", "Conta")">Painel administrador</a></li>
-                            }
-                        <li><a class="dropdown-item text-black" href="@Url.Action("Login", "Conta")">Logout</a></li>
+                            <hr />
+                            <li><a class="dropdown-item text-black" href="@Url.Action("Logout", "Conta")"><i class="bi bi-x m-1"></i> Sair</a></li>
                         </ul>
                     </div>
-            </div>
+                </div>
+            </nav>
+        }
 
-        </nav>
+        
+
+
+
     </header>
     <div class="container">
         <main role="main" class="pb-3">

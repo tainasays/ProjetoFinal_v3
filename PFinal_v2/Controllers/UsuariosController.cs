@@ -321,27 +321,6 @@ namespace PFinal_v2.Controllers
             return View(viewModel);
         }
 
-        //public async Task<IActionResult> DadosPessoais(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var usuario = await _context.Usuario
-        //        .Include(u => u.Departamento)
-        //        .FirstOrDefaultAsync(m => m.UsuarioId == id);
-
-        //    if (usuario == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-
-
-        //    return View(usuario);
-        //}
-
         public async Task<IActionResult> DadosPessoais()
         {
             string id = int.Parse(User.FindFirst("UsuarioId").Value).ToString();
