@@ -33,6 +33,7 @@ body {
     background: linear-gradient(to bottom, #D2B48C, #BC8F8F);
 }
 
+
 .card-container {
     display: flex;
     justify-content: space-between;
