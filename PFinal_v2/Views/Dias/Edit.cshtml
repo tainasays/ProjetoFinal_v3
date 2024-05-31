@@ -4,42 +4,59 @@
     ViewData["Title"] = "Lançamento";
 }
 
-<h1>Editar Registro</h1>
+<style>
+    .rounded-form {
+        border-radius: 20px; /* Define o raio de arredondamento dos cantos */
+        background-color: #f2f2f2; /* Define a cor de fundo do formulário */
+        padding: 20px; /* Adiciona espaçamento interno ao redor do formulário */
+    }
 
+    .rounded-button {
+        border-radius: 10px; /* Define o raio de arredondamento dos cantos */
+    }
 
-<hr />
-@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="DiaId" />
+    .custom-card-header {
+        background-color: #f2f2f2; /* Define a cor de fundo */
+    }
+</style>
+<div class="container">
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+        <div class="col-md-4">
+            <div class="card rounded-form">
+                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Editar</strong></div>
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="DiaId" />
 
-            <div class="form-group">
-                <label asp-for="WbsId" class="control-label"></label>
-                <select asp-for="WbsId" class="form-control" asp-items="ViewBag.WbsList">
-                    <option value="">Selecione o código</option>
-                </select>
-                <span asp-validation-for="WbsId" class="text-danger"></span>
-            </div>
+                        <div class="form-group">
+                            <label asp-for="WbsId" class="control-label"></label>
+                            <select asp-for="WbsId" class="form-control" asp-items="ViewBag.WbsList">
+                                <option value="">Selecione o código</option>
+                            </select>
+                            <span asp-validation-for="WbsId" class="text-danger"></span>
+                        </div>
 
-            <div class="form-group">
-                <label asp-for="DiaData" class="control-label"></label>
-                <input asp-for="DiaData" readonly class="form-control readonly" />
-                <span asp-validation-for="DiaData" class="text-danger"></span>
+                        <div class="form-group">
+                            <label asp-for="DiaData" class="control-label"></label>
+                            <input asp-for="DiaData" readonly class="form-control readonly" />
+                            <span asp-validation-for="DiaData" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Horas" class="control-label"></label>
+                            <input asp-for="Horas" class="form-control" />
+                            <span asp-validation-for="Horas" class="text-danger"></span>
+                        </div>
+                            <div class="form-group mt-3">
+                                <input type="submit" value="Salvar" class="custom-filter-button" />
+                                <a asp-action="Index" class="custom-filter-button">Voltar</a>
+                            </div>
+
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Horas" class="control-label"></label>
-                <input asp-for="Horas" class="form-control" />
-                <span asp-validation-for="Horas" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Salvar" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-info">Voltar</a>
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
 
 

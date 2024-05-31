@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -205,9 +206,6 @@ namespace PFinal_v2.Controllers
             // passa o objeto 'dia' pra view
             return View(dia);
 
-            // Passa o objeto `dia` para a view
-            return View(dia);
-
         }
 
         // POST: Dias/Edit/5
@@ -287,11 +285,15 @@ namespace PFinal_v2.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+            
+
         }
 
         private bool DiaExists(int id)
         {
             return _context.Dia.Any(e => e.DiaId == id);
         }
+
+       
     }
 }
