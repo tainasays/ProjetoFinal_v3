@@ -300,7 +300,7 @@ namespace PFinal_v2.Controllers
                     return NotFound();
                 }
 
-                usuario.Senha = viewModel.NovaSenha; // Certifique-se de criptografar a senha se necessário
+                usuario.Senha = viewModel.NovaSenha; // cripto?
 
                 try
                 {

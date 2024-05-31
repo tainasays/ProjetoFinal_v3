@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using PFinal_v2.Models; 
 
 
 public class ContaController : Controller
@@ -20,6 +16,11 @@ public class ContaController : Controller
     [HttpGet]
     public IActionResult Login()
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            return RedirectUser();
+        }
+
         return View();
     }
 
