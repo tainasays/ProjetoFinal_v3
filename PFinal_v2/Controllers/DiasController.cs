@@ -142,7 +142,7 @@ namespace PFinal_v2.Controllers
                 if (dia.DiaData.DayOfWeek == DayOfWeek.Saturday || dia.DiaData.DayOfWeek == DayOfWeek.Sunday)
                 {
                     // adiciona um erro ao ModelState
-                    ModelState.AddModelError(string.Empty, "Não é possível adicionar registros aos fins de semana.");
+                    ModelState.AddModelError("DiaData", "Não é possível adicionar registros aos fins de semana.");
 
                     // recarregar a lista Wbs
                     ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
@@ -164,7 +164,7 @@ namespace PFinal_v2.Controllers
 
                 if (dia.DiaData < inicioDaQuinzenaAnterior || dia.DiaData > fimDaProximaQuinzena)
                 {
-                    ModelState.AddModelError(string.Empty, "Não são permitidos registros no período desejado.");
+                    ModelState.AddModelError("DiaData", "Não são permitidos registros no período desejado.");
                     ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
                     return View(dia);
                 }

@@ -39,9 +39,7 @@
 
         <div class="form-group">
 
-            @* <label>Mês</label> *@
-
-            <input type="month" name="mes" value="@Model.Mes" class="form-control" />
+            <input type="month" name="mes" id="mes" value="@Model.Mes" class="form-control" />
 
         </div>
 
@@ -51,7 +49,6 @@
 
         <div class="form-group">
 
-            @* <label>Quinzena</label> *@
 
             <select name="quinzena" class="form-control">
 
@@ -302,7 +299,7 @@
 
             <div class="modal-header">
 
-                <h5 class="modal-title" id="alertModalLabel">Alerta</h5>
+                <h5 class="modal-title" id="alertModalLabel">Atenção</h5>
 
             </div>
 
@@ -411,7 +408,7 @@
 
         if (diasInsuficientes.length > 0) {
 
-            var alertText = 'Atenção: Total de horas registrado nos seguintes dias é menor que 8 horas:\n' + diasInsuficientes.join(', ');
+            var alertText = 'Aviso:  O total de horas registrado nos seguintes dias está abaixo das 8 horas diárias: ' + diasInsuficientes.join(', ');
 
             $('#alertText').text(alertText);
 
@@ -421,7 +418,9 @@
 
     });
 
-
+    // mês mínimo e máximo para navegar entre as quinzenas
+    document.getElementById('mes').min = '2024-01';
+    document.getElementById('mes').max = '2025-01'
 
 </script>
 

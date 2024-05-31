@@ -9,7 +9,7 @@
         display: flex;
     }
 
-     .custom-filter-button {
+    .custom-filter-button {
         background-color: #3F292B;
         color: #ffffff;
         border: 1px solid #3F292B;
@@ -63,7 +63,26 @@
                     </button>
                     <button type="button" id="limparFiltro" class="custom-filter-button">
                         <i class="bi bi-x-lg"></i>
+
                     </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-1 mt-3">
+            <p>
+                <a asp-action="Create">
+                    <button type="submit" class="custom-filter-button">
+                        <i class="bi bi-building-add"></i>
+                    </button>
+                </a>
+            </p>
+        </div>
+    </div>
+
+
+
+
 
     <table class="table">
         <table class="table custom-table" style="margin-top: 40px;">
@@ -76,17 +95,18 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model) {
-        <tr>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.DepartamentoId)
-            </td>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.QuantidadeFuncionarios)
-            </td>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.DepartamentoId)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.QuantidadeFuncionarios)
+                        </td>
                         <td class="text-center">
                             <div class="icons-container" style="justify-content: center;">
                                 <a class="icon-edit" asp-action="Edit" asp-route-id="@item.DepartamentoId"><i class="bi bi-pencil custom-white-icon"></i></a>  &nbsp;
@@ -120,60 +140,55 @@
                         <button type="button" class="btn btn-danger" id="confirmDeleteButton">Confirmar</button>
                     </div>
                 </div>
-            </form>
+
+            </div>
+
+
+
         </div>
 
-        <div class="col-1 mt-3">
-            <p>
-                <a asp-action="Create">
-                    <button type="submit" class="custom-filter-button">
-                        <i class="bi bi-building-fill-add"></i>
-                    </button>
-                </a>
-            </p>
-        </div>
+        <a href="@Url.Action("Index", "Admin")" class="custom-filter-button ml-2" style="margin-bottom: 40px;">Voltar</a>
 
-
-    </div>
+</div>
 </div>
 
 
 
 
-    <div class="modal" id="confirmModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirmação de Exclusão</h5>
-                    <button type="button" class="close" data-dismiss="modal" onclick="cancelChanges()">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p>Deseja realmente excluir este Departamento?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelChanges()">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Confirmar</button>
-                </div>
+<div class="modal" id="confirmModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmação de Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal" onclick="cancelChanges()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Deseja realmente excluir este Departamento?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelChanges()">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Confirmar</button>
             </div>
         </div>
     </div>
+</div>
 
 
-    <script>
-        function openConfirmationModal(departamentoId) {
-            $('#confirmModal').modal('show'); // Abre o modal de confirmação
-            $('#confirmDeleteButton').click(function () {
-                submitDeleteForm(departamentoId); // Chama a função para enviar o formulário de exclusão ao clicar em "Confirmar"
-            });
-        }
+<script>
+    function openConfirmationModal(departamentoId) {
+        $('#confirmModal').modal('show'); // Abre o modal de confirmação
+        $('#confirmDeleteButton').click(function () {
+            submitDeleteForm(departamentoId); // Chama a função para enviar o formulário de exclusão ao clicar em "Confirmar"
+        });
+    }
 
-        function submitDeleteForm(departamentoId) {
-            $('#deleteForm_' + departamentoId).submit(); // Envia o formulário de exclusão com o ID do departamento
-        }
+    function submitDeleteForm(departamentoId) {
+        $('#deleteForm_' + departamentoId).submit(); // Envia o formulário de exclusão com o ID do departamento
+    }
 
-        function cancelChanges() {
-            $('#confirmModal').modal('hide');
-        }
+    function cancelChanges() {
+        $('#confirmModal').modal('hide');
+    }
 
     // Seleciona o botão de limpar filtro
     var limparFiltroBtn = document.getElementById('limparFiltro');
@@ -186,7 +201,4 @@
         window.location.href = '/Departamentos/Index';
     });
 
-    </script>
-
-    <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar</a>
-
+</script>
