@@ -64,12 +64,6 @@
                     <button type="button" id="limparFiltro" class="custom-filter-button">
                         <i class="bi bi-x-lg"></i>
                     </button>
-<form asp-controller="Departamentos" asp-action="Index">
-        <p>
-            <input type="text" name="SearchString" placeholder="Nome" class="custom-search-input" />
-            <input type="submit" value="Filter" class="custom-filter-button" />
-        </p>
-    </form>
 
     <table class="table">
         <table class="table custom-table" style="margin-top: 40px;">
@@ -145,47 +139,6 @@
 
 
 
-<table class="table">
-    <table class="table custom-table" style="margin-top: 40px;">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Funcionários</th>
-                <th scope="col">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DepartamentoId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.QuantidadeFuncionarios)
-                    </td>
-                    <td>
-                        <div class="icons-container">
-                            <a class="icon-edit" asp-action="Edit" asp-route-id="@item.DepartamentoId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
-                            <a asp-action="Details" asp-route-id="@item.DepartamentoId"><i class="bi bi-search custom-white-icon"></i></a> |&nbsp;
-                            <form id="deleteForm_@item.DepartamentoId" asp-action="Delete" method="post">
-                                <input type="hidden" name="id" value="@item.DepartamentoId" />
-                                <a>
-                                    <i onclick="openConfirmationModal('@item.DepartamentoId'); return false;" class="bi bi-trash custom-white-icon"></i>
-                                </a>
-                            </form>
-                        </div>
-
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</table>
 
     <div class="modal" id="confirmModal">
         <div class="modal-dialog">

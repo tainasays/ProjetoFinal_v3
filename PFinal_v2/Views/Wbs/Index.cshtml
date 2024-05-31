@@ -111,12 +111,10 @@
             <td class="text-center">
                 @Html.DisplayFor(modelItem => item.IsChargeable)
             </td>
-            <td>
-                        <div class="icons-container">
-                            <a class="icon-edit" asp-action="Edit" asp-route-id="@item.WbsId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
+                    <td class="text-center">
                         <div class="icons-container" style="justify-content: center;">
-                            <a asp-action="Edit" asp-route-id="@item.WbsId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
-                            <a asp-action="Details" asp-route-id="@item.WbsId"><i class="bi bi-search custom-white-icon"></i></a> |&nbsp;
+                            <a asp-action="Edit" asp-route-id="@item.WbsId"><i class="bi bi-pencil custom-white-icon"></i></a> &nbsp;
+                            <a asp-action="Details" asp-route-id="@item.WbsId"><i class="bi bi-search custom-white-icon"></i></a> &nbsp;
                             <form id="deleteForm_@item.WbsId" asp-action="Delete" method="post">
                                 <input type="hidden" name="id" value="@item.WbsId" />
                                 <a>
