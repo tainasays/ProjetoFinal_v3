@@ -5,14 +5,14 @@
     ViewData["Title"] = "Local de Trabalho";
 }
 
-<h2>Editar Local de Trabalho</h2>
+<h2>Localização</h2>
 
-<form asp-action="Localizacao">
+<form asp-action="Localizacao" method="post" class="row mb-3">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="UsuarioId" />
 
-    <div class="row">
-        <div class="form-group col-md-6">
+    <div class="col-md-6">
+        <div class="form-group">
             <label asp-for="LocalTrabalho" class="control-label"></label>
             <select asp-for="LocalTrabalho" class="form-control">
                 <option value="">Selecione um local</option>
@@ -24,14 +24,14 @@
                 }
             </select>
         </div>
-        <div class="col-md-6">
-            <input type="submit" value="Salvar" class="btn btn-primary mt-4" />
-        </div>
+    </div>
+    <div class="col-md-6">
+        <button type="submit" class="btn btn-primary mt-4">Salvar</button>
     </div>
 </form>
 
 <div>
-    <a asp-action="Index" , asp-controller="Dias">Voltar</a>
+    <a asp-action="Index" asp-controller="Dias" class="btn btn-secondary">Voltar</a>
 </div>
 
 @section Scripts {

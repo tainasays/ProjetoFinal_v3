@@ -18,12 +18,39 @@
     .custom-card-header {
         background-color: #f2f2f2;
     }
+
+    .custom-filter-button {
+        background-color: #3F292B;
+        color: #ffffff;
+        border: 1px solid #3F292B;
+        border-radius: 10px;
+        padding: 5px 8px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .custom-filter-button:hover {
+            background-color: #6c6c6c; /* Altera a cor de fundo ao passar o mouse */
+            color: #ffffff;
+        }
+
+        .custom-filter-button:first-child {
+            margin-right: 10px;
+        }
+
+    .btn-group {
+        display: flex;
+        justify-content: center;
+    }
 </style>
+
+
 <div class="container">
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
         <div class="col-md-4">
             <div class="card rounded-form">
-                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Adicionar</strong></div>
+                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Cadastrar</strong></div>
                 <div class="card-body">
                     <form asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -32,6 +59,7 @@
                             <input asp-for="Codigo" class="form-control" style="background-color: #f2f2f2;" placeholder="Exemplo: WBS0912010 " />
                             <span asp-validation-for="Codigo" class="text-danger"></span>
                         </div>
+                        <br>
                         <div class="form-group">
                             <label asp-for="Descricao" class="control-label"></label>
                             <input asp-for="Descricao" class="form-control" style="background-color: #f2f2f2;" placeholder="Exemplo: Férias " />
@@ -58,7 +86,7 @@
                         <label style="position: relative;">
                             <input id="ChargeableCheckbox" class="form-check-input" asp-for="IsChargeable" type="checkbox" onclick="handleCheckboxClick();" /> @Html.DisplayNameFor(model => model.IsChargeable)
                         </label>
-
+                        <br>
                         <script>
                             function handleCheckboxClick() {
                                 var checkbox = document.getElementById("ChargeableCheckbox");
@@ -79,9 +107,8 @@
                                 $('#myModal').modal('hide');
                             }
                         </script>
-
-
-                        <div class="form-group mt-3">
+                        <br>
+                        <div class="form-group mt-3 btn-group">
                             <button type="submit" class="custom-filter-button">Adicionar</button>
                             <a href="@Url.Action("Index", "Admin")" class="custom-filter-button">Voltar</a>
                         </div>

@@ -2,13 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PFinal_v2.Data;
 using PFinal_v2.Models;
+using PFinal_v2.Models.ViewModels;
 
 
 namespace PFinal_v2.Controllers
@@ -22,27 +25,7 @@ namespace PFinal_v2.Controllers
             _context = context;
         }
 
-        // GET: Usuarios
-        //public async Task<IActionResult> Index(string searchString)
-        //{
-        //    if (_context.Usuario == null)
-        //    {
-        //        return Problem("Entidate sem Dados.. Null");
-        //    }
 
-        //    var usuarios = from u in _context.Usuario select u;
-
-        //    if (!String.IsNullOrEmpty(searchString))
-        //    {
-        //        usuarios = usuarios.Where(s => s.Nome!.Contains(searchString));
-
-        //    }
-
-        //    return View(await usuarios.ToListAsync());
-        //}
-
-
-        // ---------- adicionei dps:
         public async Task<IActionResult> Index(string searchString)
         {
             if (_context.Usuario == null)
@@ -52,7 +35,7 @@ namespace PFinal_v2.Controllers
 
             IQueryable<Usuario> usuarios = _context.Usuario; // Inicializa a consulta sem o Include
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 usuarios = usuarios.Where(s => s.Nome!.Contains(searchString));
             }
@@ -60,8 +43,13 @@ namespace PFinal_v2.Controllers
             // Aplica o Include separadamente
             usuarios = usuarios.Include(u => u.Departamento);
 
+            var isAdmin = User.IsInRole("Admin");
+
+            ViewBag.IsAdmin = isAdmin;
+
             return View(await usuarios.ToListAsync());
         }
+
 
 
         // GET: Usuarios/Details/5
@@ -73,11 +61,15 @@ namespace PFinal_v2.Controllers
             }
 
             var usuario = await _context.Usuario
+                .Include(u => u.Departamento)
                 .FirstOrDefaultAsync(m => m.UsuarioId == id);
+
             if (usuario == null)
             {
                 return NotFound();
             }
+
+
 
             return View(usuario);
         }
@@ -203,6 +195,7 @@ namespace PFinal_v2.Controllers
         }
 
 
+
         [HttpGet]
         public async Task<IActionResult> Localizacao(int? id)
         {
@@ -222,6 +215,7 @@ namespace PFinal_v2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Localizacao(int id, string localTrabalho)
         {
             var usuario = await _context.Usuario.FindAsync(id);
@@ -263,8 +257,99 @@ namespace PFinal_v2.Controllers
         }
 
 
+        // GET: Usuarios/RedefinirSenha/5
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> RedefinirSenha(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var usuario = await _context.Usuario.FindAsync(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new RedefinirSenhaViewModel
+            {
+                UsuarioId = usuario.UsuarioId
+            };
+
+            return View(viewModel);
+        }
 
 
 
+
+
+        // POST: Usuarios/RedefinirSenha
+
+        [HttpPost("RedefinirSenha")]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> RedefinirSenha(RedefinirSenhaViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var usuario = await _context.Usuario.FindAsync(viewModel.UsuarioId);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                usuario.Senha = viewModel.NovaSenha; // Certifique-se de criptografar a senha se necessário
+
+                try
+                {
+                    _context.Update(usuario);
+                    await _context.SaveChangesAsync();
+
+                    // Logout do usuário atual
+                    await HttpContext.SignOutAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UsuarioExists(usuario.UsuarioId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                // Redirecionar para a página de login após o logout
+                return RedirectToAction("Login", "Conta");
+            }
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> DadosPessoais()
+        {
+            string id = int.Parse(User.FindFirst("UsuarioId").Value).ToString();
+
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            // Procurar o usuário pelo ID passado como parâmetro
+            var usuario = await _context.Usuario
+                .Include(u => u.Departamento)
+                .FirstOrDefaultAsync(m => m.UsuarioId.ToString() == id);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            // Retornar a view com os dados do usuário
+            return View(usuario);
+        }
     }
 }

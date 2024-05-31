@@ -8,46 +8,113 @@
     .icons-container {
         display: flex;
     }
+
+    .custom-filter-button {
+        background-color: #3F292B;
+        color: #ffffff;
+        border: 1px solid #3F292B;
+        border-radius: 5px;
+        padding: 5px 8px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .custom-filter-button:hover {
+            background-color: #525252; /* Altera a cor de fundo ao passar o mouse */
+            color: #ffffff;
+        }
+
+    .custom-table {
+        border-radius: 5px; /* Cantos mais arredondados */
+        overflow: hidden;
+        background-color: #f2f2f2; /* Cor de fundo da tabela */
+        border-bottom: 2px solid #3F292B;
+    }
+
+        .custom-table thead th {
+            background-color: #3F292B; /* Cor de fundo do cabeçalho */
+            color: #ffffff; /* Cor do texto do cabeçalho */
+        }
+
+        .custom-table thead tr {
+            border-bottom: 2px solid #3F292B; /* Cor da borda inferior */
+        }
+
+    .custom-search-input {
+        border-radius: 5px; /* Cantos arredondados */
+        padding: 5px; /* Espaçamento interno */
+        border: 1px solid #f2f2f2; /* Cor da borda */
+    }
+
 </style>
 
 
 <h2 style="margin-bottom: 40px;">WBS cadastradas</h1>
 
+    <div class="container">
+        <div class="row">
 
-<form asp-controller="Wbs" asp-action="Index">
-    <p>
-            <input type="text" name="SearchString" placeholder="Código ou descrição" class="custom-search-input" /> 
-            <input type="submit" value="Filtrar" class="custom-filter-button" />
-    </p>
-</form>
+            <div class="col-11">
+                <form asp-controller="Wbs" asp-action="Index">
+                    <div class="form-group mt-3">
+                        <input type="text" name="SearchString" id="searchString" placeholder="Código ou descrição" class="custom-search-input" />
+                        <button type="submit" class="custom-filter-button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                        <button type="button" id="limparFiltro" class="custom-filter-button">
+                            <i class="bi bi-x-lg"></i>
+
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+
+            <div class="col-1 mt-3">
+                <p>
+                    <a asp-action="Create">
+                        <button type="submit" class="custom-filter-button">
+                            <i class="i bi-plus"></i>
+                        </button>
+                    </a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
 
     <table class="table custom-table" style="margin-top: 40px;">
     <thead>
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Código</th>
-            <th scope="col">Descrição</th>
-            <th scope="col">Chargeability</th>
+            <th scope="col" class="text-center">ID</th>
+            <th scope="col" class="text-center">Código</th>
+            <th scope="col" class="text-center">Descrição</th>
+            <th scope="col" class="text-center">Chargeability</th>
+            <th scope="col" class="text-center">Ações</th>
             <th></th>
         </tr>
     </thead>
     <tbody> 
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.WbsId)
             </td>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.Codigo)
             </td>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.Descricao)
             </td>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.IsChargeable)
             </td>
             <td>
                         <div class="icons-container">
+                            <a class="icon-edit" asp-action="Edit" asp-route-id="@item.WbsId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
+                        <div class="icons-container" style="justify-content: center;">
                             <a asp-action="Edit" asp-route-id="@item.WbsId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
                             <a asp-action="Details" asp-route-id="@item.WbsId"><i class="bi bi-search custom-white-icon"></i></a> |&nbsp;
                             <form id="deleteForm_@item.WbsId" asp-action="Delete" method="post">
@@ -57,8 +124,8 @@
                                 </a>
                             </form>
                         </div>
-                    </td>
-                </tr>
+            </td>
+        </tr>
             }
         </tbody>
     </table>
@@ -99,7 +166,19 @@
 
         function cancelChanges() {
             $('#confirmModal').modal('hide');
-        }
+            }
+
+        // Seleciona o botão de limpar filtro
+        var limparFiltroBtn = document.getElementById('limparFiltro');
+
+        // Adiciona um evento de clique ao botão de limpar filtro
+        limparFiltroBtn.addEventListener('click', function () {
+            // Limpa o valor do campo de texto
+            document.getElementById('searchString').value = '';
+            // Redireciona para a mesma página sem parâmetros de filtro
+            window.location.href = '/Wbs/Index';
+        });
+
     </script>
 
 

@@ -12,9 +12,10 @@ namespace PFinal_v2.Models
         public string? Codigo { get; set; }
 
         [Display(Name = "Descrição")]
+        [Required(ErrorMessage = "O campo Descrição é obrigatório")]
         public string? Descricao { get; set; }
 
-        [Display(Name = "Is chargeability? ")]
+        [Display(Name = "Chargeability? ")]
         public bool IsChargeable { get; set; }
         public string CodigoDescricao => $"{Codigo} - {Descricao}";
     }

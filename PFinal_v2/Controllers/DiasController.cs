@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
 using PFinal_v2.Data;
 using PFinal_v2.Models;
 using PFinal_v2.Models.ViewModels;
@@ -82,7 +84,9 @@ namespace PFinal_v2.Controllers
             // cria a data atual, usada no Index
             var dataAtual = DateTime.Today;
 
-            // instancia a classe DiaFormViewModel pra passar os dados necessários pra View
+            var usuario = _context.Usuario.Where(u => u.UsuarioId == usuarioId).FirstOrDefault();
+
+            // Passa os dados para a View
             var viewModel = new DiaFormViewModel
             {
                 UsuarioId = usuarioId,
@@ -90,7 +94,9 @@ namespace PFinal_v2.Controllers
                 DataAtual = dataAtual,
                 ListaWbs = wbsComHoras,
                 Quinzena = quinzena,
-                Mes = mes
+                Mes = mes,
+                Usuario = usuario,
+                
             };
 
 
@@ -206,6 +212,11 @@ namespace PFinal_v2.Controllers
             // passa o objeto 'dia' pra view
             return View(dia);
 
+<<<<<<< HEAD
+=======
+         
+
+>>>>>>> 2eac8345810eaa61c9894afb079cbcbead4f2349
         }
 
         // POST: Dias/Edit/5
@@ -294,6 +305,11 @@ namespace PFinal_v2.Controllers
             return _context.Dia.Any(e => e.DiaId == id);
         }
 
+<<<<<<< HEAD
        
+=======
+
+
+>>>>>>> 2eac8345810eaa61c9894afb079cbcbead4f2349
     }
 }

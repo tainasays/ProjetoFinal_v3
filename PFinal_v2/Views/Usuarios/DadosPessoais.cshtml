@@ -1,0 +1,155 @@
+﻿@model PFinal_v2.Models.Usuario
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+
+@{
+    var userClaims = User.Identity as ClaimsIdentity;
+    var userRole = userClaims?.FindFirst(ClaimTypes.Role)?.Value;
+}
+
+@{
+    ViewData["Title"] = "Dados Pessoais";
+}
+
+<style>
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px; /* Adicione um espaçamento superior entre os botões e o conteúdo acima, se necessário */
+    }
+
+    .custom-filter-button {
+        margin: 0 10px; /* Adicione margem entre os botões */
+    }
+    .rounded-form {
+        border-radius: 20px; /* Define o raio de arredondamento dos cantos */
+        background-color: #f2f2f2; /* Define a cor de fundo do formulário */
+        padding:20px; /* Adiciona espaçamento interno ao redor do formulário */
+       
+        
+    }
+
+    .rounded-button {
+        border-radius: 10px; /* Define o raio de arredondamento dos cantos */
+    }
+
+    .custom-card-header {
+        background-color: #f2f2f2; /* Define a cor de fundo */
+    }
+
+    .table.custom-table td {
+        word-wrap: break-word;
+    }
+
+    .centered-table {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+<div class="container">
+    <div class="container d-flex align-items-md-center justify-content-center" style="min-height: 80vh;">
+        <div class="col-sm-5">
+            <div class="card rounded-form">
+               
+                <div class="card-header m-2 custom-card-header text-left font-weight-bold" style="font-size: 24px;"><strong><i class="bi bi-person-vcard m-1"></i> Dados Pessoais </strong></div>
+                <div class="card-body m-3">
+                    @if (Model != null)
+                    {
+                        <div class="text-center">
+                            <div class="form-group row align-items-center">
+                                <label class="col-form-label fw-bold col-auto">Nome</label>
+                                
+                                <div class="col-auto">
+                                    <p class="form-control-plaintext">@Html.DisplayFor(model => model.Nome)</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group row align-items-center">
+                            <label class="col-form-label fw-bold col-auto">E-mail</label>
+                            <div class="col-auto">
+                                <p class="form-control-plaintext">@Html.DisplayFor(model => model.Email)</p>
+                            </div>
+                            </div>
+
+                            <div class="form-group row align-items-center">
+                            <label class="col-form-label fw-bold col-auto">Departamento</label>
+                            <div class="col-auto">
+                                <p class="form-control-plaintext">@Html.DisplayFor(model => model.Departamento.Nome)</p>
+                            </div>
+                        </div>
+
+                            <div class="form-group row align-items-center">
+                            <label class="col-form-label fw-bold col-auto">Local de trabalho</label>
+                            <div class="col-auto">
+                                    <p class="form-control-plaintext btn-white"><a href="/Usuarios/Localizacao/@(Model?.UsuarioId)">@Html.DisplayFor(model => model.LocalTrabalho)<i class="bi bi-caret-down"></i></a></p>
+                            </div>
+                             </div>
+
+
+
+                            <div class="form-group row align-items-center">
+                            <label class="col-form-label fw-bold col-auto">Funcionário há </label>
+                            <div class="col-auto">                                                   
+
+                                    <p class="form-control-plaintext">
+                                    @{
+                                        DateTime dataContratacao = Model?.DataContratacao ?? DateTime.MinValue;
+                                        DateTime dataAtual = DateTime.Now;
+                                        TimeSpan tempoContratacao = dataAtual - dataContratacao;
+                                        if (tempoContratacao.TotalDays >= 365) 
+                                        {
+                                            int anos = (int)(tempoContratacao.TotalDays / 365);
+                                            <text>@anos anos</text>
+                                        }
+                                        else if (tempoContratacao.TotalDays >= 30)
+                                        {
+                                            int meses = (int)(tempoContratacao.TotalDays / 30);
+                                            <text>@meses meses</text>
+                                        }
+                                        else
+                                        {
+                                            <text>@tempoContratacao.Days dias</text>
+                                        }
+
+                                    }
+                                </p>
+                            </div>
+                             </div>
+
+                            <div class="col-auto mt-3">
+                                <p class="form-control-plaintext"> <a href="/Usuarios/RedefinirSenha/@(Model?.UsuarioId)" class="custom-filter-button">Redefinir senha</a></p>
+                            </div>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <p>Usuário não encontrado</p>
+                    }
+                    <hr />
+                    
+                    
+                    <div class="button-container justify-content-lg-start">
+                        @if (userRole == "Admin")
+                        {
+                            <a asp-action="Index" asp-controller="Admin" class="custom-filter-button">Voltar</a>
+                        }
+                        else if (userRole == "Colaborador")
+                        {
+                            <a asp-action="Index" asp-controller="Dias" class="custom-filter-button">Voltar</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Login" asp-controller="Conta" class="custom-filter-button">Voltar</a>
+                        }
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

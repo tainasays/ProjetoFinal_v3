@@ -37,12 +37,41 @@
         padding-left: 8px;
         cursor: pointer; /* Altera o cursor ao passar sobre o select */
     }
-</style>
+    
+  
+    .custom-filter-button {
+        background-color: #3F292B; 
+        color: #ffffff; 
+        border: 1px solid #3F292B; 
+        border-radius: 10px; 
+        padding: 5px 8px; 
+        text-decoration: none; 
+        display: inline-block; 
+        transition: background-color 0.3s, color 0.3s; 
+    }
+
+        .custom-filter-button:hover {
+            background-color: #6c6c6c; /* Altera a cor de fundo ao passar o mouse */
+            color: #ffffff; 
+        }
+
+        .custom-filter-button:first-child {
+            margin-right: 10px; 
+        }
+
+    .btn-group {
+        display: flex;
+        justify-content: center;
+    }
+       
+ </style>
+
+
 <div class="container">
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
         <div class="col-md-4">
             <div class="card rounded-form">
-                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Novo</strong></div>
+                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Cadastrar</strong></div>
                 <div class="card-body">
                     <form asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -51,11 +80,13 @@
                             <input asp-for="Nome" class="form-control" style="background-color: #f2f2f2;" placeholder="Exemplo: Ana Maria" />
                             <span asp-validation-for="Nome" class="text-danger"></span>
                         </div>
+                        <br>
                         <div class="form-group">
                             <label asp-for="Email" class="control-label"></label>
                             <input asp-for="Email" class="form-control" style="background-color: #f2f2f2;" placeholder="anamaria@exemplo.com" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
+                        <br>
                         <div class="form-groucustom-select-wrapper">
                             <label asp-for="DepartamentoId" class="control-label"></label>
                             <div class="input-group">
@@ -64,10 +95,10 @@
                             </div>
                             <span asp-validation-for="DepartamentoId" class="text-danger"></span>
                         </div>
-
+                        <br>
                         <div class="form-group">
                             <label asp-for="LocalTrabalho" class="control-label"></label>
-                            <select asp-for="LocalTrabalho" class="form-control">
+                            <select asp-for="LocalTrabalho" class="form-control custom-select" style="background-color: #f2f2f2;">
                                 <option value="">Selecione um local</option>
                                 @foreach (var value in Enum.GetValues(typeof(LocalTrabalhoLista)))
                                 {
@@ -76,8 +107,9 @@
                                     <option value="@value">@displayName</option>
                                 }
                             </select>
+                            <span asp-validation-for="LocalTrabalho" class="text-danger"></span>
                         </div>
-
+                        <br>
                         <div class="form-group">
                             <label asp-for="DataContratacao" class="control-label"></label>
                             <input asp-for="DataContratacao" class="form-control" style="background-color: #f2f2f2;" />
@@ -104,7 +136,7 @@
                         <label style="position: relative;">
                             <input id="adminCheckbox" class="form-check-input" asp-for="IsAdmin" type="checkbox" onclick="handleCheckboxClick();" /> @Html.DisplayNameFor(model => model.IsAdmin)
                         </label>
-
+                        <br>
                         <script>
                             function handleCheckboxClick() {
                                 var checkbox = document.getElementById("adminCheckbox");
@@ -125,12 +157,13 @@
                                 $('#myModal').modal('hide');
                             }
                         </script>
-
+                        <br>
                         <div class="form-group">
                             <label asp-for="Senha" class="control-label"></label>
-                            <input asp-for="Senha" class="form-control" style="background-color: #f2f2f2;" placeholder="Senh@123" />
+                            <input asp-for="Senha" type="password" class="form-control" style="background-color: #f2f2f2;" placeholder="Senh@123" />
                             <span asp-validation-for="Senha" class="text-danger"></span>
                         </div>
+                        <br>
                         <div class="form-group mt-3">
                             <button type="submit" class="custom-filter-button">Adicionar</button>
                             <a href="@Url.Action("Index", "Admin")" class="custom-filter-button">Voltar</a>

@@ -1,6 +1,28 @@
+<<<<<<< HEAD
 ﻿@model PFinal_v2.Models.ViewModels.DiaFormViewModel
+=======
 
-<p>Olá, @User.Identity.Name!</p>
+@model PFinal_v2.Models.ViewModels.DiaFormViewModel
+>>>>>>> 2eac8345810eaa61c9894afb079cbcbead4f2349
+
+<style>
+    .custom-filter-button {
+        background-color: #3F292B;
+        color: #ffffff;
+        border-radius: 5px;
+        padding: 6px 10px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .custom-filter-button:hover {
+            background-color: #525252; 
+            color: #ffffff;
+        }
+</style>
+
+<h5>Olá, @User.Identity.Name!</h5>
 
 @if (TempData["ErrorMessage"] != null)
 
@@ -20,7 +42,7 @@
 
         <div class="form-group">
 
-            <label>Mês</label>
+            @* <label>Mês</label> *@
 
             <input type="month" name="mes" value="@Model.Mes" class="form-control" />
 
@@ -32,7 +54,7 @@
 
         <div class="form-group">
 
-            <label>Quinzena</label>
+            @* <label>Quinzena</label> *@
 
             <select name="quinzena" class="form-control">
 
@@ -48,20 +70,21 @@
 
     <div class="col-2">
 
-        <button type="submit" class="btn btn-primary btn-block">Filtrar</button>
-
+        <button type="submit" class="custom-filter-button">
+            <i class="bi bi-search"></i>
+        </button>
+       
     </div>
-
 </form>
 
 
-<table class="table table-bordered">
+<table class="table table-bordered" id="tabela-horas">
 
     <thead class="tabela-horas-thead">
 
         <tr>
 
-            <th>Código de Custo</th>
+            <th id="primeira-coluna">Código de Custo</th>
 
             @{
 
@@ -100,6 +123,12 @@
 
             }
 
+
+            <th>Total</th>
+        </tr>
+    </thead>
+
+
         </tr>
 
     </thead>
@@ -108,236 +137,167 @@
 
         <tr>
 
-            <td class="local-trabalho">Local de Trabalho</td>
+            <td class="local-trabalho" id="primeira-coluna">Local de Trabalho</td>
 
             @{
-
                 for (var dia = startDay; dia <= endDay; dia++)
-
                 {
-
                     <td class="local-trabalho">
-
                         @if (Model.Usuario != null && Model.Usuario.LocalTrabalho.HasValue)
-
                         {
-
                             <a href="@Url.Action("Localizacao", "Usuarios", new { id = Model.Usuario.UsuarioId })">
-
                                 @Model.Usuario.LocalTrabalho.ToString()
-
                                 <i class="bi bi-caret-down-fill"></i>
-
                             </a>
-
                         }
-
                         else
-
                         {
-
                             @:&nbsp; <!-- célula vazia -->
                         }
-
                     </td>
-
                 }
-
             }
 
+            <td class="total-horas-local"></td> <!-- célula vazia da linha de 'Local' e da coluna de 'Total' -->
         </tr>
 
 
         @foreach (var wbs in Model.ListaWbs)
-
         {
-
             <tr>
-
-                <td>@wbs.Descricao @wbs.Codigo</td>
-
-                @foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
-
-                {
-
-                    var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
-
-                    if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
-
+                <td id="primeira-coluna">@wbs.Descricao @wbs.Codigo</td>
+                @{
+                    double totalHorasWbs = 0;  // Inicializa a soma para cada WBS
+                    foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
                     {
-
-                        <td class="celula-dia weekend" data-dia-id="">
-                        </td>
-
+                        var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
+                        if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            <td class="celula-dia weekend" data-dia-id=""></td>
+                        }
+                        else
+                        {
+                            var lancamentoDoDia = Model.Lancamentos.FirstOrDefault(l => l.DiaData.Date == data && l.WbsId == wbs.WbsId);
+                            <td data-dia-id="@((lancamentoDoDia != null) ? lancamentoDoDia.DiaId : "")" contenteditable="true" class="celula-dia">
+                                @if (lancamentoDoDia != null && lancamentoDoDia.Horas > 0)
+                                {
+                                    totalHorasWbs += lancamentoDoDia.Horas;  // Soma as horas
+                                    @lancamentoDoDia.Horas.ToString("0.0")
+                                }
+                            </td>
+                        }
                     }
-
-                    else
-
-                    {
-
-                        var lancamentoDoDia = Model.Lancamentos.FirstOrDefault(l => l.DiaData.Date == data && l.WbsId == wbs.WbsId);
-
-                        <td data-dia-id="@((lancamentoDoDia != null) ? lancamentoDoDia.DiaId : "")" contenteditable="true" class="celula-dia">
-
-                            @if (lancamentoDoDia != null && lancamentoDoDia.Horas > 0)
-
-                            {
-
-                                @lancamentoDoDia.Horas.ToString("0.0")
-
-                            }
-
-                        </td>
-
-                    }
-
                 }
-
+                <td class="total-horas-wbs">
+                    @if (totalHorasWbs > 0)  // Exibe a soma se houver lançamentos
+                    {
+                        @totalHorasWbs.ToString("0.0")
+                    }
+                </td>
             </tr>
-
         }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 2eac8345810eaa61c9894afb079cbcbead4f2349
         <tr>
-
-            <td class="total-horas">Horas totais</td>
-
+            <td class="total-horas" id="primeira-coluna">Horas totais</td>
             @{
-
+                double totalHorasQuinzena = 0;
                 foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
-
                 {
-
                     var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
-
                     if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
-
                     {
-
-                        <td class="celula-dia weekend" data-dia-id="">
-                        </td>
-
+                        <td class="celula-dia weekend" data-dia-id=""></td>
                     }
-
                     else
-
                     {
-
-
                         var lancamentosDoDia = Model.Lancamentos.Where(l => l.DiaData.Date == data);
-
                         var totalHoras = lancamentosDoDia.Sum(l => l.Horas);
-
+                        totalHorasQuinzena += totalHoras;
                         <td class="total-horas" data-date="@data.ToString("dd/MM")">
-
                             @if (totalHoras > 0)
-
                             {
-
                                 @totalHoras.ToString("0.0")
-
                             }
-
                         </td>
-
                     }
-
                 }
-
             }
-
+            <td class="total-horas-quinzena">
+            @if (totalHorasQuinzena > 0)
+            {
+                    @totalHorasQuinzena.ToString("0.0")
+            }
+            </td> 
         </tr>
-
     </tbody>
 
     <tfoot>
-
         <tr>
-
-            <td class="horario-trabalho">Horário de trabalho</td>
-
+            <td class="horario-trabalho" id="primeira-coluna">Horário de trabalho</td>
             @{
-
+                double totalHorarioTrabalho = 0;
                 foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
-
                 {
-
                     var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
-
                     if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
-
                     {
-
-                        <td class="celula-dia weekend" data-dia-id="" style="background-color: gray;">
-                        </td>
-
+                        <td class="celula-dia weekend" data-dia-id="" style="background-color: gray;"></td>
                     }
-
                     else
-
                     {
-
+                        totalHorarioTrabalho += 8;
                         <td class="horario-trabalho">8,0</td>
-
                     }
-
                 }
-
             }
-
+            <td class="total-horario-trabalho">@totalHorarioTrabalho.ToString("0.0")</td> <!-- Nova célula de soma -->
         </tr>
 
 
         <tr>
-
-            <td class="horas-excedentes">Horas excedentes</td>
-
+            <td class="horas-excedentes" id="primeira-coluna">Horas excedentes</td>
             @{
-
+                double totalHorasExcedentesQuinzena = 0;
                 foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
-
                 {
-
                     var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
-
                     if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
-
                     {
-
-                        <td class="celula-dia weekend" data-dia-id="" style="background-color: gray;">
-                        </td>
-
+                        <td class="celula-dia weekend" data-dia-id="" style="background-color: gray;"></td>
                     }
-
                     else
-
                     {
-
                         var lancamentosDoDia = Model.Lancamentos.Where(l => l.DiaData.Date == data);
-
                         var totalHoras = lancamentosDoDia.Sum(l => l.Horas);
-
                         var horasExcedentes = totalHoras > 8 ? totalHoras - 8 : 0;
-
+                        totalHorasExcedentesQuinzena += horasExcedentes;
                         <td class="horas-excedentes" data-date="@data.ToString("dd/MM")">
-
                             @if (horasExcedentes > 0)
-
                             {
-
                                 @horasExcedentes.ToString("0.0")
-
                             }
-
                         </td>
-
                     }
-
                 }
-
             }
-
+            <td class="total-horas-excedentes-quinzena">
+                @if (totalHorasExcedentesQuinzena > 0)
+                {
+                    @totalHorasExcedentesQuinzena.ToString("0.0")
+                }
+             </td>
+                
+                
         </tr>
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 2eac8345810eaa61c9894afb079cbcbead4f2349
     </tfoot>
 
 
@@ -371,11 +331,11 @@
 
 <!-- botões  -->
 
-<a class="btn btn-outline-success btn-sm" asp-action="Create">Cadastrar Registro</a>
+<a class="custom-filter-button" asp-action="Create"><i class="bi bi-plus-circle"></i></a>
 
-<a class="btn btn-outline-warning btn-sm edit-button">Editar Registro</a>
+<a class="custom-filter-button edit-button"><i class="bi bi-pencil"></i></a>
 
-<a class="btn btn-outline-danger btn-sm delete-button">Excluir Registro</a>
+<a class="custom-filter-button bg-danger delete-button"><i class="bi bi-trash3"></i></a>
 
 <!-- Fim dos botões -->
 
@@ -472,5 +432,9 @@
 
     });
 
+<<<<<<< HEAD
 
 </script>
+=======
+</script>
+>>>>>>> 2eac8345810eaa61c9894afb079cbcbead4f2349

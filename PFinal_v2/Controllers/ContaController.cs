@@ -60,4 +60,24 @@ public class ContaController : Controller
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Login");
     }
+
+
+    public IActionResult RedirectUser()
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            if (User.HasClaim(c => c.Type == ClaimTypes.Role && c.Value == "Admin"))
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Dias");
+            }
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
 }

@@ -15,11 +15,12 @@ namespace PFinal_v2.Models
         [Required(ErrorMessage = "O campo E-mail é obrigatório")]
         public string? Email { get; set; }
 
-        [Display(Name = "Departamento ID")]
-        [Required(ErrorMessage = "O campo Departamento ID é obrigatório")]
+        [Display(Name = "Departamento")]
+        [Required(ErrorMessage = "O campo Departamento é obrigatório")]
         public int DepartamentoId { get; set; }
 
-        [Display(Name = "Data Contratação")]
+        [Display(Name = "Data de Contratação")]
+        [Required(ErrorMessage = "O campo Data de Contratação é obrigatório")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.Date)]
         public DateTime DataContratacao { get; set; }
@@ -31,12 +32,11 @@ namespace PFinal_v2.Models
         public string? Senha { get; set; }
 
         [Display(Name = "Local de Trabalho")]
+        [Required(ErrorMessage = "O campo Local de Trabalho é obrigatório")]
         public LocalTrabalhoLista? LocalTrabalho { get; set; }
 
         public ICollection<Dia>? Dias { get; set; }
 
-
-        // teste resolução de erro 2o
         public Departamento? Departamento { get; set; }
 
     }
@@ -54,3 +54,4 @@ namespace PFinal_v2.Models
 
 
 }
+

@@ -8,16 +8,62 @@
     .icons-container {
         display: flex;
     }
+
+     .custom-filter-button {
+        background-color: #3F292B;
+        color: #ffffff;
+        border: 1px solid #3F292B;
+        border-radius: 5px;
+        padding: 5px 8px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .custom-filter-button:hover {
+            background-color: #525252; /* Altera a cor de fundo ao passar o mouse */
+            color: #ffffff;
+        }
+
+    .custom-table {
+        border-radius: 5px; /* Cantos mais arredondados */
+        overflow: hidden;
+        background-color: #f2f2f2; /* Cor de fundo da tabela */
+        border-bottom: 2px solid #3F292B;
+    }
+
+        .custom-table thead th {
+            background-color: #3F292B; /* Cor de fundo do cabeçalho */
+            color: #ffffff; /* Cor do texto do cabeçalho */
+        }
+
+        .custom-table thead tr {
+            border-bottom: 2px solid #3F292B; /* Cor da borda inferior */
+        }
+
+    .custom-search-input {
+        border-radius: 5px; /* Cantos arredondados */
+        padding: 5px; /* Espaçamento interno */
+        border: 1px solid #f2f2f2; /* Cor da borda */
+    }
 </style>
 
 
-<h2 style="margin-bottom: 40px;">Departamentos cadastrados</h1>
+<h2 style="margin-bottom: 40px;">Departamentos cadastrados</h2>
 
+<div class="container">
+    <div class="row">
 
-@* <p>
-    <a asp-action="Create">Create New</a>
-</p> *@
-
+        <div class="col-11">
+            <form asp-controller="Departamentos" asp-action="Index">
+                <div class="form-group mt-3">
+                    <input type="text" name="SearchString" id="searchString" placeholder="Nome" class="custom-search-input" />
+                    <button type="submit" class="custom-filter-button">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <button type="button" id="limparFiltro" class="custom-filter-button">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
 <form asp-controller="Departamentos" asp-action="Index">
         <p>
             <input type="text" name="SearchString" placeholder="Nome" class="custom-search-input" />
@@ -29,27 +75,28 @@
         <table class="table custom-table" style="margin-top: 40px;">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Funcionários</th>
+                    <th scope="col" class="text-center">ID</th>
+                    <th scope="col" class="text-center">Nome</th>
+                    <th scope="col" class="text-center">Funcionários</th>
+                    <th scope="col" class="text-center">Ações</th>
                 </tr>
             </thead>
             <tbody>
             @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.DepartamentoId)
             </td>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.QuantidadeFuncionarios)
-                        </td>
-            <td>
-                            <div class="icons-container">
-                                <a class="icon-edit" asp-action="Edit" asp-route-id="@item.DepartamentoId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
-                                <a asp-action="Details" asp-route-id="@item.DepartamentoId"><i class="bi bi-search custom-white-icon"></i></a> |&nbsp;
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.QuantidadeFuncionarios)
+            </td>
+                        <td class="text-center">
+                            <div class="icons-container" style="justify-content: center;">
+                                <a class="icon-edit" asp-action="Edit" asp-route-id="@item.DepartamentoId"><i class="bi bi-pencil custom-white-icon"></i></a>  &nbsp;
+                                <a asp-action="Details" asp-route-id="@item.DepartamentoId"><i class="bi bi-search custom-white-icon"></i></a>  &nbsp;
                                 <form id="deleteForm_@item.DepartamentoId" asp-action="Delete" method="post">
                                     <input type="hidden" name="id" value="@item.DepartamentoId" />
                                     <a>
@@ -79,26 +126,114 @@
                         <button type="button" class="btn btn-danger" id="confirmDeleteButton">Confirmar</button>
                     </div>
                 </div>
-            </div>
+            </form>
+        </div>
+
+        <div class="col-1 mt-3">
+            <p>
+                <a asp-action="Create">
+                    <button type="submit" class="custom-filter-button">
+                        <i class="bi bi-building-fill-add"></i>
+                    </button>
+                </a>
+            </p>
         </div>
 
 
-        <script>
-            function openConfirmationModal(departamentoId) {
-                $('#confirmModal').modal('show'); // Abre o modal de confirmação
-                $('#confirmDeleteButton').click(function () {
-                    submitDeleteForm(departamentoId); // Chama a função para enviar o formulário de exclusão ao clicar em "Confirmar"
-                });
-            }
+    </div>
+</div>
 
-            function submitDeleteForm(departamentoId) {
-                $('#deleteForm_' + departamentoId).submit(); // Envia o formulário de exclusão com o ID do departamento
-            }
 
-            function cancelChanges() {
-                $('#confirmModal').modal('hide');
-            }
-        </script>
 
-        <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar</a>
+<table class="table">
+    <table class="table custom-table" style="margin-top: 40px;">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Funcionários</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DepartamentoId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuantidadeFuncionarios)
+                    </td>
+                    <td>
+                        <div class="icons-container">
+                            <a class="icon-edit" asp-action="Edit" asp-route-id="@item.DepartamentoId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
+                            <a asp-action="Details" asp-route-id="@item.DepartamentoId"><i class="bi bi-search custom-white-icon"></i></a> |&nbsp;
+                            <form id="deleteForm_@item.DepartamentoId" asp-action="Delete" method="post">
+                                <input type="hidden" name="id" value="@item.DepartamentoId" />
+                                <a>
+                                    <i onclick="openConfirmationModal('@item.DepartamentoId'); return false;" class="bi bi-trash custom-white-icon"></i>
+                                </a>
+                            </form>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</table>
+
+    <div class="modal" id="confirmModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmação de Exclusão</h5>
+                    <button type="button" class="close" data-dismiss="modal" onclick="cancelChanges()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Deseja realmente excluir este Departamento?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelChanges()">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function openConfirmationModal(departamentoId) {
+            $('#confirmModal').modal('show'); // Abre o modal de confirmação
+            $('#confirmDeleteButton').click(function () {
+                submitDeleteForm(departamentoId); // Chama a função para enviar o formulário de exclusão ao clicar em "Confirmar"
+            });
+        }
+
+        function submitDeleteForm(departamentoId) {
+            $('#deleteForm_' + departamentoId).submit(); // Envia o formulário de exclusão com o ID do departamento
+        }
+
+        function cancelChanges() {
+            $('#confirmModal').modal('hide');
+        }
+
+    // Seleciona o botão de limpar filtro
+    var limparFiltroBtn = document.getElementById('limparFiltro');
+
+    // Adiciona um evento de clique ao botão de limpar filtro
+    limparFiltroBtn.addEventListener('click', function () {
+        // Limpa o valor do campo de texto
+        document.getElementById('searchString').value = '';
+        // Redireciona para a mesma página sem parâmetros de filtro
+        window.location.href = '/Departamentos/Index';
+    });
+
+    </script>
+
+    <a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar</a>
 

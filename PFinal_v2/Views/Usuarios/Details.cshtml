@@ -27,7 +27,34 @@
         margin-left: auto;
         margin-right: auto;
     }
+
+    .custom-filter-button {
+        background-color: #3F292B;
+        color: #ffffff;
+        border: 1px solid #3F292B;
+        border-radius: 10px;
+        padding: 5px 8px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .custom-filter-button:hover {
+            background-color: #6c6c6c; /* Altera a cor de fundo ao passar o mouse */
+            color: #ffffff;
+        }
+
+        .custom-filter-button:first-child {
+            margin-right: 10px;
+        }
+
+    .btn-group {
+        display: flex;
+        justify-content: center;
+    }
 </style>
+
+
 <div class="container">
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
         <div class="col-md-4">
@@ -41,30 +68,71 @@
                                 <label>Nome:</label>
                                 <p>@Html.DisplayFor(model => model.Nome)</p>
                             </div>
+                            <br>
                             <div class="form-group">
                                 <label>Email:</label>
                                 <p>@Html.DisplayFor(model => model.Email)</p>
                             </div>
+                            <br>
                             <div class="form-group">
                                 <label>Departamento:</label>
-                                <p>@Html.DisplayFor(model => model.DepartamentoId)</p>
+                                <p>@Html.DisplayFor(model => model.Departamento.Nome)</p>
                             </div>
+                            <div class="form-group">
+                                <label>Local de Trabalho:</label>
+                                <p>@Html.DisplayFor(model => model.LocalTrabalho)</p>
+                            </div>
+                            <br>
                             <div class="form-group">
                                 <label>Data de Contratação:</label>
                                 <p>@Html.DisplayFor(model => model.DataContratacao)</p>
                             </div>
+                            <br>
                             <div class="form-group">
                                 <label>É administrador:</label>
                                 <p>@Html.DisplayFor(model => model.IsAdmin)</p>
                             </div>
+
+
+                            <div class="form-group">
+                                <label>Funcionário há: </label>
+                            
+                            <p>
+                                @{
+                                    DateTime dataContratacao = Model?.DataContratacao ?? DateTime.MinValue;
+                                    DateTime dataAtual = DateTime.Now;
+                                    TimeSpan tempoContratacao = dataAtual - dataContratacao;
+                                        if (tempoContratacao.TotalDays >= 365) // Verifica se é mais de um ano
+                                        {
+                                            int anos = (int)(tempoContratacao.TotalDays / 365);
+                                            <text>@anos anos</text>
+                                        }
+                                        else if (tempoContratacao.TotalDays >= 30) // Verifica se é mais de um mês
+                                        {
+                                            int meses = (int)(tempoContratacao.TotalDays / 30);
+                                            <text>@meses meses</text>
+                                        }
+                                        else
+                                        {
+                                            <text>@tempoContratacao.Days dias</text>
+                                        }
+                                    
+                                }
+                            </p>
+                            </div>
+
+
+                            <br>
                         </div>
                     }
                     else
                     {
                         <p>Usuário não encontrado</p>
                     }
-                    <a asp-action="Edit" asp-route-id="@Model?.UsuarioId" class="custom-filter-button">Editar</a>
-                    <a asp-action="Index" class="custom-filter-button">Voltar</a>
+                    <div class="form-group mt-3 btn-group">
+                        <a asp-action="Edit" asp-route-id="@Model?.UsuarioId" class="custom-filter-button">Editar</a>
+                        <a asp-action="Index" class="custom-filter-button">Voltar</a>
+                    </div>
                 </div>
             </div>
         </div>
