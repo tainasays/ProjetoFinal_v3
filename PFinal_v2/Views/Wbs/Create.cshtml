@@ -59,6 +59,7 @@
                             <input asp-for="Codigo" class="form-control" style="background-color: #f2f2f2;" placeholder="Exemplo: WBS0912010 " />
                             <span asp-validation-for="Codigo" class="text-danger"></span>
                         </div>
+                        <br>
                         <div class="form-group">
                             <label asp-for="Descricao" class="control-label"></label>
                             <input asp-for="Descricao" class="form-control" style="background-color: #f2f2f2;" placeholder="Exemplo: Férias " />
@@ -85,7 +86,7 @@
                         <label style="position: relative;">
                             <input id="ChargeableCheckbox" class="form-check-input" asp-for="IsChargeable" type="checkbox" onclick="handleCheckboxClick();" /> @Html.DisplayNameFor(model => model.IsChargeable)
                         </label>
-
+                        <br>
                         <script>
                             function handleCheckboxClick() {
                                 var checkbox = document.getElementById("ChargeableCheckbox");
@@ -106,8 +107,7 @@
                                 $('#myModal').modal('hide');
                             }
                         </script>
-
-
+                        <br>
                         <div class="form-group mt-3 btn-group">
                             <button type="submit" class="custom-filter-button">Adicionar</button>
                             <a href="@Url.Action("Index", "Admin")" class="custom-filter-button">Voltar</a>

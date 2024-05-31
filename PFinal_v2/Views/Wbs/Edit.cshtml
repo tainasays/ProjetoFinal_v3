@@ -62,6 +62,7 @@
                                 <span asp-validation-for="Codigo" class="text-danger"></span>
                             </div>
                         </div>
+                        </br>
                         <div class="form-row">
                             <div class="form-group col">
                                 <label asp-for="Descricao" class="control-label"></label>
@@ -90,7 +91,7 @@
                         <label style="position: relative;">
                             <input id="ChargeableCheckbox" class="form-check-input" asp-for="IsChargeable" type="checkbox" onclick="handleCheckboxClick();" /> @Html.DisplayNameFor(model => model.IsChargeable)
                         </label>
-
+                        </br>
                         <script>
                             function handleCheckboxClick() {
                                 var checkbox = document.getElementById("ChargeableCheckbox");
@@ -111,7 +112,7 @@
                                 $('#myModal').modal('hide');
                             }
                         </script>
-
+                        </br>
                         <div class="form-group mt-3 btn-group">
                             <input type="submit" value="Salvar" class="custom-filter-button"</a>
                             <a asp-action="Index" class="custom-filter-button">Voltar</a>

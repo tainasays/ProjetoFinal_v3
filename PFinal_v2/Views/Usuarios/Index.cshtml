@@ -98,27 +98,29 @@
 <table class="table custom-table" style="margin-top: 40px;">
     <thead>
         <tr>
-            <th scope="col">Nome</th>
-            <th scope="col">E-mail</th>
-            <th scope="col">Departamento</th>
-            <th scope="col">Data de contratação</th>
-            <th scope="col">Local de Trabalho</th>
-            <th scope="col">Administrador</th>
-            <th scope="col">Senha</th>
-            <th scope="col">Ações</th>
+            <th scope="col" class=" text-center">Nome</th>
+            <th scope="col" class="text-center">E-mail</th>
+            <th scope="col" class="text-center">Departamento</th>
+            <th scope="col" class="text-center">Data de contratação</th>
+            <th scope="col" class="text-center">Local de Trabalho</th>
+            <th scope="col" class="text-center">Administrador</th>
+            <th scope="col" class="text-center">Senha</th>
+            <th scope="col" class="text-center">Ações</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
-                <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                <td>@Html.DisplayFor(modelItem => item.Departamento.Nome)</td>
-                <td>@Html.DisplayFor(modelItem => item.DataContratacao)</td>
-                <td>@Html.DisplayFor(modelItem => item.LocalTrabalho)</td>
-                <td>@Html.DisplayFor(modelItem => item.IsAdmin)</td>
-                <td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.Nome)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.Email)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.Departamento.Nome)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.DataContratacao)</td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.LocalTrabalho)
+                </td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.IsAdmin)</td>
+                <td class="text-center">
                     @if (isAdmin)
                     {
                         <div class="password-container">
@@ -131,8 +133,8 @@
                         <span>******</span>
                     }
                 </td>
-                <td>
-                    <div class="icons-container">
+                <td class="text-center">
+                    <div class="icons-container" style="justify-content: center;">
                         <a asp-action="Edit" asp-route-id="@item.UsuarioId"><i class="bi bi-pencil custom-white-icon"></i></a> &nbsp;
                         <a asp-action="Details" asp-route-id="@item.UsuarioId"><i class="bi bi-search custom-white-icon"></i></a> &nbsp;
                         <form id="deleteForm_@item.UsuarioId" asp-action="Delete" method="post" style="display:inline;">

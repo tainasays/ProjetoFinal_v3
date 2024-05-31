@@ -88,32 +88,37 @@
     <table class="table custom-table" style="margin-top: 40px;">
     <thead>
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Código</th>
-            <th scope="col">Descrição</th>
-            <th scope="col">Chargeability</th>
-            <th scope="col">Ações</th>
+            <th scope="col" class="text-center">ID</th>
+            <th scope="col" class="text-center">Código</th>
+            <th scope="col" class="text-center">Descrição</th>
+            <th scope="col" class="text-center">Chargeability</th>
+            <th scope="col" class="text-center">Ações</th>
             <th></th>
         </tr>
     </thead>
     <tbody> 
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.WbsId)
             </td>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.Codigo)
             </td>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.Descricao)
             </td>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.IsChargeable)
             </td>
             <td>
+<<<<<<< Updated upstream
                         <div class="icons-container">
                             <a class="icon-edit" asp-action="Edit" asp-route-id="@item.WbsId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
+=======
+                        <div class="icons-container" style="justify-content: center;">
+                            <a asp-action="Edit" asp-route-id="@item.WbsId"><i class="bi bi-pencil custom-white-icon"></i></a> |&nbsp;
+>>>>>>> Stashed changes
                             <a asp-action="Details" asp-route-id="@item.WbsId"><i class="bi bi-search custom-white-icon"></i></a> |&nbsp;
                             <form id="deleteForm_@item.WbsId" asp-action="Delete" method="post">
                                 <input type="hidden" name="id" value="@item.WbsId" />

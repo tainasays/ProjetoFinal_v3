@@ -82,20 +82,23 @@
                                 <input asp-for="Nome" class="form-control" />
                                 <span asp-validation-for="Nome" class="text-danger"></span>
                             </div>
+                            <br>
                             <div class="form-group">
                                 <label asp-for="Email" class="control-label"></label>
                                 <input asp-for="Email" class="form-control" />
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
+                            <br>
                             <div class="form-groucustom-select-wrapper">
                                 <label asp-for="DepartamentoId" class="control-label"></label>
                                 <select asp-for="DepartamentoId" class="form-control custom-select" asp-items="ViewBag.DepartamentoList">
                                     <option value="">Selecione o departamento</option>
                                 </select>
                             </div>
+                            <br>
                             <div class="form-group">
                                 <label asp-for="LocalTrabalho" class="control-label"></label>
-                                <select asp-for="LocalTrabalho" class="form-control">
+                                <select asp-for="LocalTrabalho" class="form-control custom-select">
                                     <option value="">Selecione um local</option>
                                     @foreach (var value in Enum.GetValues(typeof(LocalTrabalhoLista)))
                                     {
@@ -104,8 +107,9 @@
                                         <option value="@value">@displayName</option>
                                     }
                                 </select>
+                                <span asp-validation-for="LocalTrabalho" class="text-danger"></span>
                             </div>
-
+                            <br>
                             <div class="form-group">
                                 <label asp-for="DataContratacao" class="control-label"></label>
                                 <input asp-for="DataContratacao" class="form-control" />
@@ -121,6 +125,7 @@
                                         <div class="modal-body">
                                             <p id="modalMessage"></p>
                                         </div>
+
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancelChanges()">Cancelar</button>
                                             <button type="button" class="btn btn-primary" onclick="saveChanges()">Confirmar</button>
@@ -153,12 +158,13 @@
                                     $('#myModal').modal('hide');
                                 }
                             </script>
-
-
+                            <br>
+                            <br>
                             <div class="form-group">
                                 <label asp-for="Senha" class="control-label"></label>
                                 <input asp-for="Senha" type="password" class="form-control" />
                                 <span asp-validation-for="Senha" class="text-danger"></span>
+                                <br>
                                 <div class="form-group mt-3 btn-group">
                                     <input type="submit" value="Salvar" class="custom-filter-button" />
                                     <a asp-action="Index" class="custom-filter-button">Voltar</a>
