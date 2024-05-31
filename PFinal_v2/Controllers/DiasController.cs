@@ -212,11 +212,7 @@ namespace PFinal_v2.Controllers
             // passa o objeto 'dia' pra view
             return View(dia);
 
-<<<<<<< HEAD
-=======
-         
 
->>>>>>> 2eac8345810eaa61c9894afb079cbcbead4f2349
         }
 
         // POST: Dias/Edit/5
@@ -305,11 +301,6 @@ namespace PFinal_v2.Controllers
             return _context.Dia.Any(e => e.DiaId == id);
         }
 
-<<<<<<< HEAD
-       
-=======
 
-
->>>>>>> 2eac8345810eaa61c9894afb079cbcbead4f2349
     }
 }

@@ -33,6 +33,7 @@ namespace PFinal_v2.Models
                         Email = "maria.silva@email.com",
                         DepartamentoId = 2,
                         DataContratacao = new DateTime(2024, 02, 01),
+                        LocalTrabalho = 0,
                         IsAdmin = false,
                         Senha = "Senh@123"
                     },
@@ -42,6 +43,7 @@ namespace PFinal_v2.Models
                         Email = "joao@email.com",
                         DepartamentoId = 3,
                         DataContratacao = new DateTime(2024, 03, 01),
+                        LocalTrabalho = 0,
                         IsAdmin = false,
                         Senha = "Senh@123"
                     },
@@ -51,6 +53,7 @@ namespace PFinal_v2.Models
                         Email = "jferreira@email.com",
                         DepartamentoId = 3,
                         DataContratacao = new DateTime(2024, 04, 01),
+                        LocalTrabalho = 0,
                         IsAdmin = false,
                         Senha = "Senh@123"
                     }
