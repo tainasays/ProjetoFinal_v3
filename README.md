@@ -15,6 +15,11 @@ Tiemi Imayoshi
 
 Projeto desenvolvido durando o treinamento da Impacta.
 
+📌 Acesso:
+Login de usuário do tipo Administrador: ana@email.com, senha: Senh@123
+Login de usuário do tipo Colaborador: joao@email.com, senha: Senh@123
+
+
 <h2>⚙️ Requisitos:</h3>
 
 - Criar um sistema que registre as horas trabalhadas e o tipo de atividade desenvolvida durante estas horas.
@@ -25,7 +30,7 @@ Projeto desenvolvido durando o treinamento da Impacta.
 <h3>➡️ Histórias:</h3>
  <h4>1. Criar tela de login e acesso</h4>
  
-- Pré-Requisitos:
+- Pré-requisitos:
 Ter uma base de dados de usuários cadastrados.
 Framework ou biblioteca para implementação de autenticação.
 
@@ -94,4 +99,4 @@ O relatório deve ser interativo, permitindo a filtragem dos dados por período 
 
 Deve haver opções de visualização gráfica (ex.: gráfico de barras...) para facilitar a compreensão dos dados e possibilitar a identificação das WBS com maior frequência de horas. 
 
-<h4>🪛 Desenvolvido com .ASP NET Core MVC.</h4>
+<h4>🪛 Desenvolvido com ASP.NET Core MVC.</h4>
