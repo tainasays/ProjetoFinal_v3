@@ -15,7 +15,14 @@ namespace PFinal_v2.Models
         public DateTime DiaData { get; set; }
         public double Horas { get; set; }
 
+        // Propriedade de navegação para Usuario (se aplicável)
         public Usuario? Usuario { get; set; }
+
+        // Propriedade de navegação para Wbs
+        public Wbs? Wbs { get; set; }
+
+        
+        
 
 
     }

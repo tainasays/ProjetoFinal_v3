@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
 using PFinal_v2.Data;
 using PFinal_v2.Models;
@@ -46,6 +49,13 @@ namespace PFinal_v2.Controllers
             {
                 // retorna erro se a data não puder ser analisada
                 return BadRequest("Data inválida");
+            }
+
+            // se 'quinzena' não é fornecido, calcula a quinzena atual com base na data atual
+            if (quinzena == 0)
+            {
+                int diaHoje = DateTime.Now.Day;
+                quinzena = diaHoje <= 15 ? 1 : 2;
             }
 
             // define primeira e segunda quinzena
@@ -96,7 +106,7 @@ namespace PFinal_v2.Controllers
                 Quinzena = quinzena,
                 Mes = mes,
                 Usuario = usuario,
-                
+
             };
 
 
@@ -138,17 +148,6 @@ namespace PFinal_v2.Controllers
         {
             if (ModelState.IsValid)
             {
-                // vê se a data é fim de semana
-                if (dia.DiaData.DayOfWeek == DayOfWeek.Saturday || dia.DiaData.DayOfWeek == DayOfWeek.Sunday)
-                {
-                    // adiciona um erro ao ModelState
-                    ModelState.AddModelError("DiaData", "Não é possível adicionar registros aos fins de semana.");
-
-                    // recarregar a lista Wbs
-                    ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
-                    return View(dia);
-                }
-
                 // Verifica se as horas estão dentro de um intervalo válido
                 if (dia.Horas <= 0 || dia.Horas > 24)
                 {
@@ -164,16 +163,15 @@ namespace PFinal_v2.Controllers
 
                 if (dia.DiaData < inicioDaQuinzenaAnterior || dia.DiaData > fimDaProximaQuinzena)
                 {
-                    ModelState.AddModelError("DiaData", "Não são permitidos registros no período desejado.");
+                    ModelState.AddModelError("DiaData", "Não são permitidos lançamentos no período desejado.");
                     ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
                     return View(dia);
                 }
 
                 // Verifica se já existe um registro com o mesmo DiaId e WbsId
                 if (_context.Dia.Any(d => d.DiaData.Date == dia.DiaData.Date && d.WbsId == dia.WbsId))
-
                 {
-                    ModelState.AddModelError(string.Empty, "Este código de custo já está cadastrado neste registro. Alterações devem ser feitas em 'Editar'.");
+                    ModelState.AddModelError("WbsId", "Este código de custo já está cadastrado neste registro. Alterações devem ser feitas em 'Editar'.");
                     ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
                     return View(dia);
                 }
@@ -186,9 +184,11 @@ namespace PFinal_v2.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            // Se o ModelState não for válido, recarrega a lista Wbs e retorna a View
             ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
             return View(dia);
         }
+
 
         // GET: Dias/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -282,7 +282,7 @@ namespace PFinal_v2.Controllers
         // POST: Dias/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var dia = await _context.Dia.FindAsync(id);
             if (dia != null)
@@ -292,13 +292,163 @@ namespace PFinal_v2.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-            
 
         }
 
         private bool DiaExists(int id)
         {
             return _context.Dia.Any(e => e.DiaId == id);
+        }
+
+
+
+        public async Task<IActionResult> Relatorio(int? usuarioId, string mes, int? quinzena)
+        {
+            // Verifica se o usuário está logado
+            if (!User.Identity.IsAuthenticated)
+            {
+                // Redireciona para a página de login se o usuário não estiver autenticado
+                return RedirectToAction("Login", "Conta");
+            }
+
+            // Se nenhum usuário for selecionado, usa o usuário logado
+            int usuarioIdLogado = int.Parse(User.FindFirst("UsuarioId").Value);
+
+            int usuarioSelecionadoId = usuarioId ?? usuarioIdLogado;
+
+            // Carrega todos os usuários para o dropdown
+            var usuarios = await _context.Usuario.ToListAsync();
+
+            // Verifica se o mês é nulo ou vazio e atribui o valor atual, se necessário
+            if (string.IsNullOrEmpty(mes))
+            {
+                mes = DateTime.Now.ToString("yyyy-MM");
+            }
+
+            // Consulta para buscar as WBS com as horas totais trabalhadas
+            var relatorioQuery = _context.Dia
+                .Include(d => d.Wbs)  // Inclua a propriedade de navegação Wbs
+                .Where(d => d.UsuarioId == usuarioSelecionadoId)
+                .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não", d.DiaData })
+                .Select(g => new RelatorioViewModel
+                {
+                    WbsId = g.Key.WbsId,
+                    Codigo = g.Key.Codigo,
+                    Descricao = g.Key.Descricao,
+                    Tipo = g.Key.Tipo,
+                    DiaData = g.Key.DiaData,
+                    HorasTotais = g.Sum(d => d.Horas)
+                });
+
+            // Converte a string do mês para um DateTime
+            DateTime mesDateTime;
+            if (!DateTime.TryParseExact(mes, "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out mesDateTime))
+            {
+                // Se a conversão falhar, você pode tratar isso aqui
+                // Por exemplo, lançando uma exceção ou atribuindo um valor padrão
+                throw new ArgumentException("Formato de mês inválido");
+            }
+
+            // Aplicar filtro de mês, se selecionado
+            var startDate = new DateTime(mesDateTime.Year, mesDateTime.Month, 1);
+            var endDate = startDate.AddMonths(1).AddDays(-1);
+
+            // Se uma quinzena também estiver selecionada, ajusta as datas conforme necessário
+            if (quinzena.HasValue)
+            {
+                if (quinzena == 1)
+                {
+                    endDate = startDate.AddDays(14);
+                }
+                else
+                {
+                    startDate = startDate.AddDays(15);
+                    endDate = startDate.AddMonths(1).AddDays(-1);
+                }
+            }
+
+            relatorioQuery = relatorioQuery.Where(d => d.DiaData >= startDate && d.DiaData <= endDate);
+
+            var relatorio = await relatorioQuery
+                .OrderByDescending(w => w.HorasTotais)
+                .ToListAsync();
+
+            var viewModel = new RelatorioFiltroViewModel
+            {
+                Relatorio = relatorio,
+                Usuarios = usuarios,
+                UsuarioSelecionadoId = usuarioSelecionadoId,
+                Mes = mes,
+                Quinzena = quinzena
+            };
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> RelatorioTotal(string mes, int? quinzena)
+        {
+            // Verifica se o mês é nulo ou vazio e atribui o valor atual, se necessário
+            if (string.IsNullOrEmpty(mes))
+            {
+                mes = DateTime.Now.ToString("yyyy-MM");
+            }
+
+            // Lógica para obter os dados totais de todos os usuários em WBS
+            var relatorioQuery = _context.Dia
+                .Include(d => d.Wbs)
+                .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não", d.DiaData })
+                .Select(g => new RelatorioViewModel
+                {
+                    WbsId = g.Key.WbsId,
+                    Codigo = g.Key.Codigo,
+                    Descricao = g.Key.Descricao,
+                    Tipo = g.Key.Tipo,
+                    DiaData = g.Key.DiaData,
+                    HorasTotais = g.Sum(d => d.Horas)
+                });
+
+            // Converte a string do mês para um DateTime
+            DateTime mesDateTime;
+            if (!DateTime.TryParseExact(mes, "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out mesDateTime))
+            {
+                // Se a conversão falhar, você pode tratar isso aqui
+                // Por exemplo, lançando uma exceção ou atribuindo um valor padrão
+                throw new ArgumentException("Formato de mês inválido");
+            }
+
+            // Lógica para filtrar por período (mês e quinzena), se aplicável
+            var startDate = new DateTime(mesDateTime.Year, mesDateTime.Month, 1);
+            var endDate = startDate.AddMonths(1).AddDays(-1);
+
+            if (quinzena.HasValue)
+            {
+                if (quinzena == 1)
+                {
+                    endDate = startDate.AddDays(14);
+                }
+                else
+                {
+                    startDate = startDate.AddDays(15);
+                    endDate = startDate.AddMonths(1).AddDays(-1);
+                }
+            }
+
+            relatorioQuery = relatorioQuery.Where(d => d.DiaData >= startDate && d.DiaData <= endDate);
+
+            var relatorio = await relatorioQuery
+                .OrderByDescending(w => w.HorasTotais)
+                .ToListAsync();
+
+            // Passa os dados para a view
+            var viewModel = new RelatorioFiltroViewModel
+            {
+                Relatorio = relatorio,
+                Mes = mes,
+                Quinzena = quinzena
+            };
+
+            // Retorna a view
+            return View(viewModel);
         }
 
 

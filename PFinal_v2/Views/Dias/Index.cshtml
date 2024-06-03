@@ -1,23 +1,5 @@
-
-
 @model PFinal_v2.Models.ViewModels.DiaFormViewModel
 
-<style>
-    .custom-filter-button {
-        background-color: #3F292B;
-        color: #ffffff;
-        border-radius: 5px;
-        padding: 6px 10px;
-        text-decoration: none;
-        display: inline-block;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-        .custom-filter-button:hover {
-            background-color: #525252; 
-            color: #ffffff;
-        }
-</style>
 
 <h5>Olá, @User.Identity.Name!</h5>
 
@@ -52,9 +34,9 @@
 
             <select name="quinzena" class="form-control">
 
-                <option value="1" selected="@(Model.Quinzena == 1)">1ª Quinzena</option>
+                <option value="1" selected="@(Model.Quinzena == 1)">1ª</option>
 
-                <option value="2" selected="@(Model.Quinzena == 2)">2ª Quinzena</option>
+                <option value="2" selected="@(Model.Quinzena == 2)">2ª</option>
 
             </select>
 
@@ -67,7 +49,7 @@
         <button type="submit" class="custom-filter-button">
             <i class="bi bi-search"></i>
         </button>
-       
+
     </div>
 </form>
 
@@ -123,7 +105,7 @@
     </thead>
 
 
-        </tr>
+    </tr>
 
     </thead>
 
@@ -165,14 +147,18 @@
                     foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
                     {
                         var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
+                        var lancamentoDoDia = Model.Lancamentos.FirstOrDefault(l => l.DiaData.Date == data && l.WbsId == wbs.WbsId);
                         if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
                         {
-                            <td class="celula-dia weekend" data-dia-id=""></td>
+                            // Se for sábado ou domingo e houver lançamento, exibe as horas, caso contrário, exibe vazio
+                            <td class="@(lancamentoDoDia != null ? "celula-dia celula-dia-clicavel" : "celula-dia weekend")" data-dia-id="@((lancamentoDoDia != null) ? lancamentoDoDia.DiaId : "")">
+                                @(lancamentoDoDia != null ? lancamentoDoDia.Horas.ToString("0.0") : "")
+                            </td>
                         }
                         else
                         {
-                            var lancamentoDoDia = Model.Lancamentos.FirstOrDefault(l => l.DiaData.Date == data && l.WbsId == wbs.WbsId);
-                            <td data-dia-id="@((lancamentoDoDia != null) ? lancamentoDoDia.DiaId : "")" contenteditable="true" class="celula-dia">
+                            // Se não for sábado ou domingo, exibe as horas normais e soma ao total
+                            <td data-dia-id="@((lancamentoDoDia != null) ? lancamentoDoDia.DiaId : "")" contenteditable="false" class="celula-dia">
                                 @if (lancamentoDoDia != null && lancamentoDoDia.Horas > 0)
                                 {
                                     totalHorasWbs += lancamentoDoDia.Horas;  // Soma as horas
@@ -190,6 +176,8 @@
                 </td>
             </tr>
         }
+
+
 
         <tr>
             <td class="total-horas" id="primeira-coluna">Horas totais</td>
@@ -217,11 +205,11 @@
                 }
             }
             <td class="total-horas-quinzena">
-            @if (totalHorasQuinzena > 0)
-            {
+                @if (totalHorasQuinzena > 0)
+                {
                     @totalHorasQuinzena.ToString("0.0")
-            }
-            </td> 
+                }
+            </td>
         </tr>
     </tbody>
 
@@ -235,7 +223,7 @@
                     var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
                     if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
                     {
-                        <td class="celula-dia weekend" data-dia-id="" style="background-color: gray;"></td>
+                        <td class="celula-dia weekend" data-dia-id=""></td>
                     }
                     else
                     {
@@ -255,34 +243,58 @@
                 foreach (var dia in Enumerable.Range(startDay, endDay - startDay + 1))
                 {
                     var data = new DateTime(DateTime.Parse(Model.Mes).Year, DateTime.Parse(Model.Mes).Month, dia);
+                    var lancamentosDoDia = Model.Lancamentos.Where(l => l.DiaData.Date == data);
+                    var totalHoras = lancamentosDoDia.Sum(l => l.Horas);
+                    double horasExcedentes = 0;
+
+                    // Se o dia for sábado ou domingo, todas as horas são consideradas excedentes
                     if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
                     {
-                        <td class="celula-dia weekend" data-dia-id="" style="background-color: gray;"></td>
+                        horasExcedentes = totalHoras;
+                        totalHorasExcedentesQuinzena += horasExcedentes;
+                        if (horasExcedentes > 0)
+                        {
+                            <td class="celula-dia weekend" data-date="@data.ToString("dd/MM")">
+                                @horasExcedentes.ToString("0.0")
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="celula-dia weekend" data-date="@data.ToString("dd/MM")"></td>
+                        }
                     }
                     else
                     {
-                        var lancamentosDoDia = Model.Lancamentos.Where(l => l.DiaData.Date == data);
-                        var totalHoras = lancamentosDoDia.Sum(l => l.Horas);
-                        var horasExcedentes = totalHoras > 8 ? totalHoras - 8 : 0;
+                        // Caso contrário, calcula as horas excedentes como o máximo entre 0 e o total de horas menos 8
+                        horasExcedentes = Math.Max(0, totalHoras - 8);
                         totalHorasExcedentesQuinzena += horasExcedentes;
-                        <td class="horas-excedentes" data-date="@data.ToString("dd/MM")">
-                            @if (horasExcedentes > 0)
-                            {
+
+                        if (horasExcedentes > 0)
+                        {
+                            <td class="horas-excedentes" data-date="@data.ToString("dd/MM")">
                                 @horasExcedentes.ToString("0.0")
-                            }
-                        </td>
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="horas-excedentes" data-date="@data.ToString("dd/MM")"></td>
+                        }
                     }
                 }
             }
-            <td class="total-horas-excedentes-quinzena">
-                @if (totalHorasExcedentesQuinzena > 0)
-                {
+
+            @if (totalHorasExcedentesQuinzena > 0)
+            {
+                <td class="total-horas-excedentes-quinzena">
                     @totalHorasExcedentesQuinzena.ToString("0.0")
-                }
-             </td>
-                
-                
+                </td>
+            }
+            else
+            {
+                <td class="total-horas-excedentes-quinzena"></td>
+            }
         </tr>
+
 
     </tfoot>
 
@@ -315,15 +327,21 @@
 
 </div>
 
+
+
+
 <!-- botões  -->
 
 <a class="custom-filter-button" asp-action="Create"><i class="bi bi-plus-circle"></i></a>
-
 <a class="custom-filter-button edit-button"><i class="bi bi-pencil"></i></a>
-
 <a class="custom-filter-button bg-danger delete-button"><i class="bi bi-trash3"></i></a>
 
 <!-- Fim dos botões -->
+
+
+
+
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -339,13 +357,23 @@
 
         // Quando uma célula da tabela é clicada...
 
-        $('.celula-dia').click(function () {
+        $('.celula-dia, .celula-dia-clicavel').click(function () {
 
             // Obtenha o ID do dia da célula e armazene na variável global
 
             diaIdAtivo = $(this).data('dia-id');
 
         });
+
+        // Quando uma célula é clicada
+        $('.celula-dia').click(function () {
+            // Remove a classe de todas as células
+            $('.celula-dia').removeClass('selecionada');
+            // Adiciona a classe apenas à célula clicada
+            $(this).addClass('selecionada');
+        });
+
+
 
         // Quando o botão de edição é clicado...
 
@@ -370,6 +398,9 @@
             window.location.href = '/Dias/Delete/' + diaIdAtivo;
 
         });
+
+
+
 
         // Adiciona a classe "weekend" às células de fim de semana
 
@@ -416,11 +447,14 @@
 
         }
 
+
+
     });
 
     // mês mínimo e máximo para navegar entre as quinzenas
     document.getElementById('mes').min = '2024-01';
     document.getElementById('mes').max = '2025-01'
+
 
 </script>
 

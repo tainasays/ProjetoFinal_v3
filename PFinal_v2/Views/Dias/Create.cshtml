@@ -1,23 +1,22 @@
 ﻿@model PFinal_v2.Models.Dia
 
 @{
-    ViewData["Title"] = "Lançamento";
+    ViewData["Title"] = "Lançar Horas";
 }
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-<div class="container">
-    <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
-        <div class="col-md-4">
-            <div class="card rounded-form">
-                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Cadastrar Registro</strong></div>
+    <div class="container">
+        <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+            <div class="col-md-4">
+                <div class="card rounded-form">
+                    <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Lançar Horas</strong></div>
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                <div class="card-body">
-                    <form asp-action="Create">
+                    <div class="card-body">
                         <div class="form-group">
                             <label asp-for="WbsId" class="control-label"></label>
                             <select asp-for="WbsId" class="form-control" asp-items="ViewBag.WbsList">
@@ -40,19 +39,76 @@
                             <button type="submit" class="custom-filter-button">Adicionar</button>
                             <a href="@Url.Action("Index", "Dias")" class="custom-filter-button">Voltar</a>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
 }
-
+<!-- Modal -->
+<div class="modal" id="weekendModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Aviso</h5>
+                <button type="button" class="close" data-dismiss="modal" id="closeButton" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>O dia selecionado é um fim de semana. Deseja mesmo continuar?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancelButton" class="custom-filter-button" data-dismiss="modal">Cancelar</button>
+                <button type="button" id="confirmButton" class="custom-filter-button">Continuar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+
+        $(document).ready(function () {
+            $('#DiaData').change(function () {
+                var selectedDate = new Date($('#DiaData').val());
+                if (selectedDate.getDay() == 6 || selectedDate.getDay() == 5) {
+                    openConfirmationModal(); // chama função que abre o Modal
+                }
+            });
+
+            $('#confirmButton').click(function () {
+                // Fechar o modal
+                $('#weekendModal').modal('hide');
+                $('form').submit();
+            });
+
+
+            $('#cancelButton').click(function () {
+                // Fechar o modal
+                $('#weekendModal').modal('hide');
+
+                // Reiniciar o input de data escolhido
+                $('#DiaData').val('');
+            });
+
+            $('#closeButton').click(function () {
+                // Fechar o modal
+                $('#weekendModal').modal('hide');
+            });
+        });
+
+        function openConfirmationModal() {
+            $('#weekendModal').modal('show'); // Abre o modal de confirmação
+        }
+
+
+    </script>
+
 }
+

@@ -18,5 +18,8 @@ namespace PFinal_v2.Models
         [Display(Name = "Chargeability? ")]
         public bool IsChargeable { get; set; }
         public string CodigoDescricao => $"{Codigo} - {Descricao}";
+
+        // Lista de Dias associados
+        public ICollection<Dia>? Dias { get; set; }
     }
 }

@@ -89,16 +89,33 @@ body {
 
 .celula-dia {
     background-color: white !important;
+    cursor: pointer;
 }
 
 .table td {
     background-color: white;
 }
 
+.celula-dia-clicavel {
+    cursor: pointer;
+    user-select: text; /* Permite a seleção de texto */
+    background-color: #f2f2f2 !important; /* Define a cor de fundo para cinza */
+}
+
 .celula-dia.weekend {
     background-color: #f2f2f2 !important; /* Define a cor de fundo para cinza */
     pointer-events: none; /* Desativa eventos de mouse, tornando as células não clicáveis */
 }
+
+.celula-dia:hover,
+.celula-dia-clicavel:focus {
+    border: 2px solid black;
+}
+
+.selecionada {
+    background-color: lightsteelblue !important;
+}
+
 
 .local-trabalho {
     background-color: #f2f2f2 !important;
@@ -129,6 +146,7 @@ body {
     text-align: right;
     white-space: nowrap;
 }
+
 
 .tabela-horas-thead {
     background-color: white;
