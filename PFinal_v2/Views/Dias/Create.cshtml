@@ -24,17 +24,19 @@
                             </select>
                             <span asp-validation-for="WbsId" class="text-danger"></span>
                         </div>
-
+                        <br>
                         <div class="form-group">
                             <label asp-for="DiaData" class="control-label"></label>
                             <input asp-for="DiaData" class="form-control" />
                             <span asp-validation-for="DiaData" class="text-danger"></span>
                         </div>
+                        <br>
                         <div class="form-group">
                             <label asp-for="Horas" class="control-label"></label>
                             <input asp-for="Horas" class="form-control" />
                             <span asp-validation-for="Horas" class="text-danger"></span>
                         </div>
+                        <br>
                         <div class="form-group mt-3">
                             <button type="submit" class="custom-filter-button">Adicionar</button>
                             <a href="@Url.Action("Index", "Dias")" class="custom-filter-button">Voltar</a>

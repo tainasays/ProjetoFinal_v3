@@ -30,7 +30,7 @@ a {
 
 body {
     margin-bottom: 60px;
-    background: linear-gradient(to bottom, #D2B48C, #BC8F8F);
+    background: linear-gradient(to bottom, #B89E77, #F5F5DC);
 }
 
 
@@ -66,7 +66,7 @@ body {
 }
 
 
-.custom-filter-button {
+/*.custom-filter-button {
     background-color: #3F292B;
     color: white;
     padding: 5px 10px;
@@ -74,11 +74,52 @@ body {
     border-radius: 3px;
     cursor: pointer;
     text-decoration: none;
+}*/
+
+.custom-filter-button {
+    background-color: #A76C38;
+    color: #ffffff;
+    border: 1px solid #A76C38;
+    border-radius: 5px;
+    padding: 5px 8px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-    .custom-filter-button:hover {
-        background-color: #798B71;
-    }
+
+.custom-filter-button:hover {
+        background-color: #525252; /* Altera a cor de fundo ao passar o mouse */
+        color: #ffffff;
+}
+
+.custom-filter-button {
+    background-color: #A76C38;
+    color: #ffffff;
+    border: 1px solid #A76C38;
+    border-radius: 10px;
+    padding: 5px 8px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-table thead th {
+    background-color: #A76C38; /* Cor de fundo do cabeçalho */
+    color: #ffffff; /* Cor do texto do cabeçalho */
+}
+
+.custom-table thead tr {
+    border-bottom: 2px solid #A76C38; /* Cor da borda inferior */
+}
+
+
+.custom-search-input {
+    border-radius: 5px; /* Cantos arredondados */
+    padding: 5px; /* Espaçamento interno */
+    border: 1px solid #f2f2f2; /* Cor da borda */
+}
+
 
 .custom-white-icon {
     color: #3F292B;
@@ -121,10 +162,10 @@ body {
     background-color: #f2f2f2 !important;
 }
 
-    .local-trabalho a {
+.local-trabalho a {
         text-decoration: none;
         color: inherit;
-    }
+}
 
 .total-horas {
     background-color: #f2f2f2 !important;
@@ -154,4 +195,29 @@ body {
 
 .horario-trabalho, .horas-excedentes {
     background-color: #F0FFFF !important;
+}
+
+/*create, edit, details*/
+
+.rounded-form {
+    border-radius: 20px; /* Define o raio de arredondamento dos cantos */
+    background-color: #f2f2f2; /* Define a cor de fundo do formulário */
+    padding: 20px; /* Adiciona espaçamento interno ao redor do formulário */
+}
+
+.rounded-button {
+    border-radius: 10px;
+}
+
+.custom-card-header {
+    background-color: #f2f2f2;
+}
+
+.custom-filter-button:first-child {
+    margin-right: 10px;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: center;
 }
