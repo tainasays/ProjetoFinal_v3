@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -61,12 +62,14 @@ namespace PFinal_v2.Controllers
             return View(wbs);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Wbs/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Wbs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -83,6 +86,7 @@ namespace PFinal_v2.Controllers
             return View(wbs);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Wbs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -99,6 +103,7 @@ namespace PFinal_v2.Controllers
             return View(wbs);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Wbs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -134,6 +139,7 @@ namespace PFinal_v2.Controllers
             return View(wbs);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Wbs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -152,6 +158,7 @@ namespace PFinal_v2.Controllers
             return View(wbs);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Wbs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
