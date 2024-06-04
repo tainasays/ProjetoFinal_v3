@@ -7,45 +7,42 @@
 <h1>Relatório de WBS (Geral)</h1>
 
 
-
-
 @using (Html.BeginForm("RelatorioTotal", "Dias", FormMethod.Get))
 {
     <div class="container">
         <div class="row">
 
-    <div class="col-5 form-group mt-4">
-       
-        <input type="month" name="mes" id="mes" class="form-control" value="@Model.Mes" />
-    </div>
-    <div class="col-5 form-group mt-4">
-        
-        <select name="quinzena" id="quinzena" class="form-control">
-           
-            <option value="1" selected="@((Model.Quinzena == 1) ? "selected" : null)">1ª</option>
-            <option value="2" selected="@((Model.Quinzena == 2) ? "selected" : null)">2ª</option>
+            <div class="col-5 form-group mt-4">
 
-        </select>
-    </div>
-    <div class="col-2 mt-4">
-        <button type = "submit" class="custom-filter-button">
-<i class="bi bi-search"></i>
-        </button>
-    </div>
+                <input type="month" name="mes" id="mes" class="form-control" value="@Model.Mes" />
+            </div>
+            <div class="col-5 form-group mt-4">
 
-    </div>
+                <select name="quinzena" id="quinzena" class="form-control">
+
+                    <option value="1" selected="@((Model.Quinzena == 1) ? "selected" : null)">1ª</option>
+                    <option value="2" selected="@((Model.Quinzena == 2) ? "selected" : null)">2ª</option>
+
+                </select>
+            </div>
+            <div class="col-2 mt-4">
+                <button type="submit" class="custom-filter-button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+
+        </div>
     </div>
 }
 
 @if (Model.Relatorio != null && Model.Relatorio.Any())
 {
-    <table class="table">
+    <table class="table table-sm">
         <thead>
             <tr>
                 <th>Código</th>
                 <th>Descrição</th>
                 <th>Chargeability</th>
-                <th>Data</th>
                 <th>Horas Totais</th>
             </tr>
         </thead>
@@ -56,7 +53,6 @@
                     <td>@item.Codigo</td>
                     <td>@item.Descricao</td>
                     <td>@item.Tipo</td>
-                    <td>@(item.DiaData.HasValue ? item.DiaData.Value.ToShortDateString() : "")</td>
                     <td>@item.HorasTotais</td>
                 </tr>
             }
@@ -68,6 +64,6 @@ else
     <p>Nenhum resultado encontrado.</p>
 }
 <div class="form-group mt-3">
-   
+
     <a href="@Url.Action("Index", "Admin")" class="custom-filter-button">Voltar</a>
 </div>

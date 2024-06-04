@@ -4,27 +4,17 @@
     ViewData["Title"] = "Excluir Registro";
 }
 
-<style>
-.button-container {
-        display: flex;
-        align-items: center; /* Alinha verticalmente no centro */
-}
 
-.delete-form {
-        margin-right: 10px; /* Adiciona espaço entre o botão Excluir e o link Voltar */
-}
-
-</style>
 
 <div class="container">
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
         <div class="col-md-4">
             <div class="card rounded-form">
-                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Deletar</strong></div>
+                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Excluir</strong></div>
                 <div class="card-body">
                     @if (Model != null)
                     {
-                        <table class="table custom-table" style="margin-top: 40px;">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
@@ -46,7 +36,7 @@
                     }
                     else
                     {
-                        <p>Dia não encontrado.</p>
+                        <p>~Lançamento não encontrado.</p>
                     }
                     <td>
                         <div class="button-container">

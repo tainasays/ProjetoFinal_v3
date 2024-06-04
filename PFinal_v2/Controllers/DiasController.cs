@@ -393,21 +393,6 @@ namespace PFinal_v2.Controllers
                 mes = DateTime.Now.ToString("yyyy-MM");
             }
 
-            // Lógica para obter os dados totais de todos os usuários em WBS
-            var relatorioQuery = _context.Dia
-                .Include(d => d.Wbs)
-                .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não", d.DiaData })
-                .Select(g => new RelatorioViewModel
-                {
-                    WbsId = g.Key.WbsId,
-                    Codigo = g.Key.Codigo,
-                    Descricao = g.Key.Descricao,
-                    Tipo = g.Key.Tipo,
-                    DiaData = g.Key.DiaData,
-                    HorasTotais = g.Sum(d => d.Horas)
-                });
-
-            // Converte a string do mês para um DateTime
             DateTime mesDateTime;
             if (!DateTime.TryParseExact(mes, "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out mesDateTime))
             {
@@ -416,9 +401,40 @@ namespace PFinal_v2.Controllers
                 throw new ArgumentException("Formato de mês inválido");
             }
 
-            // Lógica para filtrar por período (mês e quinzena), se aplicável
             var startDate = new DateTime(mesDateTime.Year, mesDateTime.Month, 1);
             var endDate = startDate.AddMonths(1).AddDays(-1);
+
+            // Se uma quinzena também estiver selecionada, ajusta as datas conforme necessário
+            if (quinzena.HasValue)
+            {
+                if (quinzena == 1)
+                {
+                    endDate = startDate.AddDays(14);
+                }
+                else
+                {
+                    startDate = startDate.AddDays(15);
+                    endDate = startDate.AddMonths(1).AddDays(-1);
+                }
+            }
+
+
+            var relatorioQuery = _context.Dia
+                .Include(d => d.Wbs)
+                .Where(d => d.DiaData >= startDate && d.DiaData <= endDate)
+                .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
+                .Select(g => new RelatorioViewModel
+                {
+                    WbsId = g.Key.WbsId,
+                    Codigo = g.Key.Codigo,
+                    Descricao = g.Key.Descricao,
+                    Tipo = g.Key.Tipo,
+                    HorasTotais = g.Sum(d => d.Horas)
+                });
+
+            var relatorio = await relatorioQuery
+                .OrderByDescending(w => w.HorasTotais)
+                .ToListAsync();
 
             if (quinzena.HasValue)
             {
@@ -433,12 +449,6 @@ namespace PFinal_v2.Controllers
                 }
             }
 
-            relatorioQuery = relatorioQuery.Where(d => d.DiaData >= startDate && d.DiaData <= endDate);
-
-            var relatorio = await relatorioQuery
-                .OrderByDescending(w => w.HorasTotais)
-                .ToListAsync();
-
             // Passa os dados para a view
             var viewModel = new RelatorioFiltroViewModel
             {
@@ -450,7 +460,6 @@ namespace PFinal_v2.Controllers
             // Retorna a view
             return View(viewModel);
         }
-
 
     }
 }

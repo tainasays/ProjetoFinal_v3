@@ -87,6 +87,14 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+.button-container {
+    display: flex;
+    align-items: center; /* Alinha verticalmente no centro */
+}
+
+.delete-form {
+    margin-right: 10px; /* Adiciona espaço entre o botão Excluir e o link Voltar */
+}
 
 .custom-filter-button:hover {
         background-color: #525252; /* Altera a cor de fundo ao passar o mouse */
@@ -102,6 +110,7 @@ body {
     text-decoration: none;
     display: inline-block;
     transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
 }
 
 .custom-table thead th {
@@ -131,6 +140,7 @@ body {
 .celula-dia {
     background-color: white !important;
     cursor: pointer;
+    padding: 4px;
 }
 
 .table td {
@@ -154,7 +164,7 @@ body {
 }
 
 .selecionada {
-    background-color: lightsteelblue !important;
+    background-color: gray !important;
 }
 
 
