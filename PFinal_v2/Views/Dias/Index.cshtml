@@ -1,5 +1,8 @@
 @model PFinal_v2.Models.ViewModels.DiaFormViewModel
 
+@{
+    ViewData["Title"] = "Lançamento de Horas";
+}
 
 <h5>Olá, @User.Identity.Name!</h5>
 
@@ -121,7 +124,7 @@
                     <td class="local-trabalho">
                         @if (Model.Usuario != null && Model.Usuario.LocalTrabalho.HasValue)
                         {
-                            <a href="@Url.Action("Localizacao", "Usuarios", new { id = Model.Usuario.UsuarioId })">
+                            <a href="@Url.Action("Localizacao", "Usuarios")">
                                 @Model.Usuario.LocalTrabalho.ToString()
                                 <i class="bi bi-caret-down-fill"></i>
                             </a>
@@ -134,7 +137,7 @@
                 }
             }
 
-            <td class="total-horas-local"></td> <!-- célula vazia da linha de 'Local' e da coluna de 'Total' -->
+            <td class="total-horas-local"></td> <!-- célula vazia da LINHA de 'Local' e da COLUNA de 'Total' -->
         </tr>
 
 
@@ -150,7 +153,7 @@
                         var lancamentoDoDia = Model.Lancamentos.FirstOrDefault(l => l.DiaData.Date == data && l.WbsId == wbs.WbsId);
                         if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
                         {
-                            // Se for sábado ou domingo e houver lançamento, exibe as horas, caso contrário, exibe vazio
+                            // Se for sábado ou domingo e houver lançamento, exibe as horas, caso contrário, exibe VAZIO!!
                             <td class="@(lancamentoDoDia != null ? "celula-dia celula-dia-clicavel" : "celula-dia weekend")" data-dia-id="@((lancamentoDoDia != null) ? lancamentoDoDia.DiaId : "")">
                                 @(lancamentoDoDia != null ? lancamentoDoDia.Horas.ToString("0.0") : "")
                             </td>
@@ -161,7 +164,7 @@
                             <td data-dia-id="@((lancamentoDoDia != null) ? lancamentoDoDia.DiaId : "")" contenteditable="false" class="celula-dia">
                                 @if (lancamentoDoDia != null && lancamentoDoDia.Horas > 0)
                                 {
-                                    totalHorasWbs += lancamentoDoDia.Horas;  // Soma as horas
+                                    totalHorasWbs += lancamentoDoDia.Horas;
                                     @lancamentoDoDia.Horas.ToString("0.0")
                                 }
                                 else
@@ -173,7 +176,7 @@
                     }
                 }
                 <td class="total-horas-wbs">
-                    @if (totalHorasWbs > 0)  // Exibe a soma se houver lançamentos
+                    @if (totalHorasWbs > 0)  // Exibe a soma SE houver lançamentos!!!
                     {
                         @totalHorasWbs.ToString("0.0")
                     }
@@ -240,7 +243,7 @@
                     }
                 }
             }
-            <td class="total-horario-trabalho">@totalHorarioTrabalho.ToString("0.0")</td> <!-- Nova célula de soma -->
+            <td class="total-horario-trabalho">@totalHorarioTrabalho.ToString("0.0")</td> <!-- célula de soma nova -->
         </tr>
 
 
@@ -273,7 +276,7 @@
                     }
                     else
                     {
-                        // Caso contrário, calcula as horas excedentes como o máximo entre 0 e o total de horas menos 8
+                        // ELSE = calcula as horas excedentes como o máximo entre 0 e o total de horas menos 8
                         horasExcedentes = Math.Max(0, totalHoras - 8);
                         totalHorasExcedentesQuinzena += horasExcedentes;
 
@@ -336,44 +339,34 @@
 </div>
 
 
-
-
-<!-- botões  -->
+<!-- Início dos botões  -->
 
 <a class="custom-filter-button" asp-action="Create"><i class="bi bi-plus-circle"></i></a>
 <a class="custom-filter-button edit-button"><i class="bi bi-pencil"></i></a>
 <a class="custom-filter-button bg-danger delete-button"><i class="bi bi-trash3"></i></a>
 
 <!-- Fim dos botões -->
-
-
-
-
+<!--------------------------- SCRIPTS ----------------------------------->
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 
 <script>
 
-    var diaIdAtivo;  // variável global pea armazenar o ID do dia da célula ativa
+    var diaIdAtivo;  // variável global - armazena o ID do dia da célula ativa
 
     $(document).ready(function () {
 
-        // Quando uma célula da tabela é clicada...
 
         $('.celula-dia, .celula-dia-clicavel').click(function () {
-
-            // Obtenha o ID do dia da célula e armazene na variável global
 
             diaIdAtivo = $(this).data('dia-id');
 
         });
 
-        // Quando uma célula é clicada
+
         $('.celula-dia').click(function () {
             // Remove a classe de todas as células
             $('.celula-dia').removeClass('selecionada');
@@ -382,32 +375,25 @@
         });
 
 
-
-        // Quando o botão de edição é clicado...
+        // Botão de Edit:
 
         $('.edit-button').click(function (e) {
 
-            e.preventDefault();  // Impede o comportamento padrão do clique no link
-
-            // Redireciona para a URL desejada
+            e.preventDefault();
 
             window.location.href = '/Dias/Edit/' + diaIdAtivo;
 
         });
 
-        // Quando o botão de exclusão é clicado...
+        // Botão de Excluir:
 
         $('.delete-button').click(function (e) {
 
-            e.preventDefault();  // Impede o comportamento padrão do clique no link
-
-            // Redireciona para a URL desejada
+            e.preventDefault();
 
             window.location.href = '/Dias/Delete/' + diaIdAtivo;
 
         });
-
-
 
 
         // Adiciona a classe "weekend" às células de fim de semana
@@ -419,7 +405,6 @@
             if (dataClicada.getDay() === 0 || dataClicada.getDay() === 6) {
 
                 // Se for um fim de semana, adiciona a classe "weekend" à célula
-
                 $(this).addClass('weekend');
 
             }
@@ -427,20 +412,17 @@
         });
 
 
-        // Caixa de alerta
+        // Modal de alerta
 
         var diasInsuficientes = [];
 
         $('.total-horas').each(function () {
 
             var totalHoras = parseFloat($(this).text());
-
             var data = $(this).data('date');
 
             if (totalHoras < 8) {
-
                 diasInsuficientes.push(data);
-
             }
 
         });
@@ -450,7 +432,6 @@
             var alertText = 'Aviso:  O total de horas registrado nos seguintes dias está abaixo das 8 horas diárias: ' + diasInsuficientes.join(', ');
 
             $('#alertText').text(alertText);
-
             $('#alertModal').modal('show');
 
         }

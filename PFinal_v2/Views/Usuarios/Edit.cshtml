@@ -2,19 +2,19 @@
 @using System.ComponentModel.DataAnnotations;
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Funcionário";
     SeedData.Initialize(ViewContext.HttpContext.RequestServices);
 }
 
 <style>
 
 
-.custom-select-wrapper {
+    .custom-select-wrapper {
         position: relative;
         display: inline-block;
     }
 
-.custom-select {
+    .custom-select {
         width: 100%; /* Definir a largura do select para 100% */
         appearance: none;
         -webkit-appearance: none;
@@ -125,7 +125,7 @@
                             <br>
                             <div class="form-group">
                                 <label asp-for="Senha" class="control-label"></label>
-                                <input asp-for="Senha" type="password" class="form-control" />
+                                <input asp-for="Senha" class="form-control" />
                                 <span asp-validation-for="Senha" class="text-danger"></span>
                                 <br>
                                 <div class="form-group mt-3 btn-group">

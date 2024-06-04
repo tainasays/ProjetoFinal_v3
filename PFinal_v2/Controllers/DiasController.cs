@@ -17,6 +17,7 @@ using PFinal_v2.Models.ViewModels;
 
 namespace PFinal_v2.Controllers
 {
+    [Authorize(Roles = "Admin, Colaborador")]
     public class DiasController : Controller
     {
         private readonly PFinal_v2Context _context;
@@ -27,15 +28,14 @@ namespace PFinal_v2.Controllers
         }
 
         // GET: Dias
+        [Authorize(Roles = "Admin, Colaborador")]
         public async Task<IActionResult> Index(string mes, int quinzena)
         {
             if (!User.HasClaim(c => c.Type == "UsuarioId"))
             {
-                // Redireciona pra página de login caso não haja usuário logado
                 return RedirectToAction("Login", "Conta");
             }
 
-            // Apanha o UsuarioId logado
             int usuarioId = int.Parse(User.FindFirst("UsuarioId").Value);
 
             // se 'mes' é null, a variável recebe mês atual no formato escrito abaixo
@@ -51,7 +51,7 @@ namespace PFinal_v2.Controllers
                 return BadRequest("Data inválida");
             }
 
-            // se 'quinzena' não é fornecido, calcula a quinzena atual com base na data atual
+            // se 'quinzena' não é fornecida, calcula a quinzena atual com base na data atual
             if (quinzena == 0)
             {
                 int diaHoje = DateTime.Now.Day;
@@ -80,23 +80,19 @@ namespace PFinal_v2.Controllers
             // carrega as wbs
             var wbsCadastrados = await _context.Wbs.ToListAsync();
 
-            // filtra as wbs que possuem horas registradas
             var wbsComHoras = wbsCadastrados
                 .Where(w => diasDoUsuario.Any(d => d.WbsId == w.WbsId && d.Horas > 0))
                 .ToList();
 
-            // se as wbs com horas registradas forem menores que 4, adicionar uma nova linha
             while (wbsComHoras.Count < 4)
             {
                 wbsComHoras.Add(new Wbs());
             }
 
-            // cria a data atual, usada no Index
             var dataAtual = DateTime.Today;
 
             var usuario = _context.Usuario.Where(u => u.UsuarioId == usuarioId).FirstOrDefault();
 
-            // Passa os dados para a View
             var viewModel = new DiaFormViewModel
             {
                 UsuarioId = usuarioId,
@@ -114,7 +110,9 @@ namespace PFinal_v2.Controllers
             return View(viewModel);
         }
 
+
         // GET: Dias/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -133,6 +131,7 @@ namespace PFinal_v2.Controllers
         }
 
         // GET: Dias/Create
+        [Authorize(Roles = "Admin, Colaborador")]
         public IActionResult Create()
         {
             ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
@@ -144,6 +143,7 @@ namespace PFinal_v2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Colaborador")]
         public async Task<IActionResult> Create([Bind("DiaId,WbsId,DiaData,Horas")] Dia dia)
         {
             if (ModelState.IsValid)
@@ -176,7 +176,7 @@ namespace PFinal_v2.Controllers
                     return View(dia);
                 }
 
-                // atribui o UsuarioId ao ID do usuário logado
+
                 dia.UsuarioId = int.Parse(User.FindFirst("UsuarioId").Value);
 
                 _context.Add(dia);
@@ -184,13 +184,13 @@ namespace PFinal_v2.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Se o ModelState não for válido, recarrega a lista Wbs e retorna a View
             ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
             return View(dia);
         }
 
 
         // GET: Dias/Edit/5
+        [Authorize(Roles = "Admin, Colaborador")]
         public async Task<IActionResult> Edit(int? id)
         {
 
@@ -206,10 +206,9 @@ namespace PFinal_v2.Controllers
                 return NotFound();
             }
 
-            // configura ViewBag
             ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
 
-            // passa o objeto 'dia' pra view
+
             return View(dia);
 
 
@@ -220,6 +219,7 @@ namespace PFinal_v2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Colaborador")]
         public async Task<IActionResult> Edit(int id, [Bind("DiaId,WbsId,DiaData,Horas")] Dia dia)
         {
             if (id != dia.DiaId)
@@ -261,6 +261,7 @@ namespace PFinal_v2.Controllers
 
 
         // GET: Dias/Delete/5
+        [Authorize(Roles = "Admin, Colaborador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -282,6 +283,7 @@ namespace PFinal_v2.Controllers
         // POST: Dias/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Colaborador")]
         public async Task<IActionResult> Delete(int id)
         {
             var dia = await _context.Dia.FindAsync(id);
@@ -295,39 +297,39 @@ namespace PFinal_v2.Controllers
 
         }
 
+        [Authorize(Roles = "Admin, Colaborador")]
         private bool DiaExists(int id)
         {
             return _context.Dia.Any(e => e.DiaId == id);
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Relatorio(int? usuarioId, string mes, int? quinzena)
         {
-            // Verifica se o usuário está logado
+
             if (!User.Identity.IsAuthenticated)
             {
-                // Redireciona para a página de login se o usuário não estiver autenticado
+
                 return RedirectToAction("Login", "Conta");
             }
 
-            // Se nenhum usuário for selecionado, usa o usuário logado
+
             int usuarioIdLogado = int.Parse(User.FindFirst("UsuarioId").Value);
 
             int usuarioSelecionadoId = usuarioId ?? usuarioIdLogado;
 
-            // Carrega todos os usuários para o dropdown
+
             var usuarios = await _context.Usuario.ToListAsync();
 
-            // Verifica se o mês é nulo ou vazio e atribui o valor atual, se necessário
             if (string.IsNullOrEmpty(mes))
             {
                 mes = DateTime.Now.ToString("yyyy-MM");
             }
 
-            // Consulta para buscar as WBS com as horas totais trabalhadas
+
             var relatorioQuery = _context.Dia
-                .Include(d => d.Wbs)  // Inclua a propriedade de navegação Wbs
+                .Include(d => d.Wbs)
                 .Where(d => d.UsuarioId == usuarioSelecionadoId)
                 .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não", d.DiaData })
                 .Select(g => new RelatorioViewModel
@@ -340,20 +342,19 @@ namespace PFinal_v2.Controllers
                     HorasTotais = g.Sum(d => d.Horas)
                 });
 
-            // Converte a string do mês para um DateTime
+
             DateTime mesDateTime;
             if (!DateTime.TryParseExact(mes, "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out mesDateTime))
             {
-                // Se a conversão falhar, você pode tratar isso aqui
-                // Por exemplo, lançando uma exceção ou atribuindo um valor padrão
+
                 throw new ArgumentException("Formato de mês inválido");
             }
 
-            // Aplicar filtro de mês, se selecionado
+
             var startDate = new DateTime(mesDateTime.Year, mesDateTime.Month, 1);
             var endDate = startDate.AddMonths(1).AddDays(-1);
 
-            // Se uma quinzena também estiver selecionada, ajusta as datas conforme necessário
+
             if (quinzena.HasValue)
             {
                 if (quinzena == 1)
@@ -385,9 +386,11 @@ namespace PFinal_v2.Controllers
             return View(viewModel);
         }
 
+
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RelatorioTotal(string mes, int? quinzena)
         {
-            // Verifica se o mês é nulo ou vazio e atribui o valor atual, se necessário
+
             if (string.IsNullOrEmpty(mes))
             {
                 mes = DateTime.Now.ToString("yyyy-MM");
@@ -396,15 +399,14 @@ namespace PFinal_v2.Controllers
             DateTime mesDateTime;
             if (!DateTime.TryParseExact(mes, "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out mesDateTime))
             {
-                // Se a conversão falhar, você pode tratar isso aqui
-                // Por exemplo, lançando uma exceção ou atribuindo um valor padrão
+
                 throw new ArgumentException("Formato de mês inválido");
             }
 
             var startDate = new DateTime(mesDateTime.Year, mesDateTime.Month, 1);
             var endDate = startDate.AddMonths(1).AddDays(-1);
 
-            // Se uma quinzena também estiver selecionada, ajusta as datas conforme necessário
+
             if (quinzena.HasValue)
             {
                 if (quinzena == 1)
@@ -449,7 +451,6 @@ namespace PFinal_v2.Controllers
                 }
             }
 
-            // Passa os dados para a view
             var viewModel = new RelatorioFiltroViewModel
             {
                 Relatorio = relatorio,
@@ -457,7 +458,6 @@ namespace PFinal_v2.Controllers
                 Quinzena = quinzena
             };
 
-            // Retorna a view
             return View(viewModel);
         }
 

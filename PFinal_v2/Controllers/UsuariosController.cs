@@ -1,10 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,10 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using PFinal_v2.Data;
 using PFinal_v2.Models;
 using PFinal_v2.Models.ViewModels;
+using System.Security.Claims;
 
 
 namespace PFinal_v2.Controllers
 {
+    [Authorize(Roles = "Admin, Colaborador")]
     public class UsuariosController : Controller
     {
         private readonly PFinal_v2Context _context;
@@ -26,6 +22,7 @@ namespace PFinal_v2.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(string searchString)
         {
             if (_context.Usuario == null)
@@ -53,6 +50,7 @@ namespace PFinal_v2.Controllers
 
 
         // GET: Usuarios/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -70,11 +68,11 @@ namespace PFinal_v2.Controllers
             }
 
 
-
             return View(usuario);
         }
 
         // GET: Usuarios/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewBag.DepartamentoList = new SelectList(_context.Departamento, "DepartamentoId", "Nome");
@@ -87,6 +85,7 @@ namespace PFinal_v2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("UsuarioId,Nome,Email,DepartamentoId,DataContratacao,IsAdmin,Senha,LocalTrabalho")] Usuario usuario)
         {
             if (ModelState.IsValid)
@@ -103,6 +102,7 @@ namespace PFinal_v2.Controllers
 
 
         // GET: Usuarios/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -125,6 +125,7 @@ namespace PFinal_v2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,Nome,Email,DepartamentoId,DataContratacao,IsAdmin,Senha,LocalTrabalho")] Usuario usuario)
         {
             if (id != usuario.UsuarioId)
@@ -157,6 +158,7 @@ namespace PFinal_v2.Controllers
         }
 
         // GET: Usuarios/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -177,7 +179,8 @@ namespace PFinal_v2.Controllers
         // POST: Usuarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
         {
             var usuario = await _context.Usuario.FindAsync(id);
             if (usuario != null)
@@ -197,28 +200,52 @@ namespace PFinal_v2.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Localizacao(int? id)
+        [Authorize(Roles = "Admin, Colaborador")]
+        public async Task<IActionResult> Localizacao()
         {
-            if (id == null)
+            var userIdClaim = User.FindFirst("UsuarioId")?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim))
             {
                 return NotFound();
             }
 
-            var usuario = await _context.Usuario.FindAsync(id);
+            if (!int.TryParse(userIdClaim, out int userId))
+            {
+                return RedirectToAction("AccessDenied", "Conta");
+            }
+
+            var usuario = await _context.Usuario.FindAsync(userId);
             if (usuario == null)
             {
                 return NotFound();
             }
 
+
             return View(usuario);
         }
 
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> Localizacao(int id, string localTrabalho)
+        [Authorize(Roles = "Admin, Colaborador")]
+        public async Task<IActionResult> Localizacao(string localTrabalho)
         {
-            var usuario = await _context.Usuario.FindAsync(id);
+            var userIdClaim = User.FindFirst("UsuarioId")?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                return NotFound();
+            }
+
+            if (!int.TryParse(userIdClaim, out int userId))
+            {
+                return NotFound();
+            }
+
+
+            var usuario = await _context.Usuario.FindAsync(userId);
             if (usuario == null)
             {
                 return NotFound();
@@ -231,43 +258,52 @@ namespace PFinal_v2.Controllers
             else
             {
                 ModelState.AddModelError(nameof(usuario.LocalTrabalho), "Local de trabalho inválido.");
+                Console.WriteLine($"Local de trabalho inválido: {localTrabalho}");
             }
+
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(usuario);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UsuarioExists(usuario.UsuarioId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index", "Dias");
+
+
+                _context.Update(usuario);
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"Usuário com ID {userId} atualizado com sucesso.");
             }
-            return View(usuario);
-        }
 
-
-        // GET: Usuarios/RedefinirSenha/5
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> RedefinirSenha(int? id)
-        {
-            if (id == null)
+            else
             {
                 return NotFound();
             }
 
-            var usuario = await _context.Usuario.FindAsync(id);
+
+
+            return View(usuario);
+        }
+
+
+
+
+        [HttpGet]
+        [Authorize(Roles = "Admin, Colaborador")]
+        public async Task<IActionResult> RedefinirSenha()
+        {
+
+            var userIdClaim = User.FindFirst("UsuarioId")?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                return NotFound();
+            }
+
+            if (!int.TryParse(userIdClaim, out int userId))
+            {
+                return RedirectToAction("AccessDenied", "Conta");
+            }
+
+
+            var usuario = await _context.Usuario.FindAsync(userId);
+
             if (usuario == null)
             {
                 return NotFound();
@@ -283,13 +319,10 @@ namespace PFinal_v2.Controllers
 
 
 
-
-
         // POST: Usuarios/RedefinirSenha
-
         [HttpPost("RedefinirSenha")]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        [Authorize(Roles = "Admin, Colaborador")]
         public async Task<IActionResult> RedefinirSenha(RedefinirSenhaViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -329,6 +362,9 @@ namespace PFinal_v2.Controllers
             return View(viewModel);
         }
 
+
+
+        [Authorize(Roles = "Admin, Colaborador")]
         public async Task<IActionResult> DadosPessoais()
         {
             string id = int.Parse(User.FindFirst("UsuarioId").Value).ToString();
@@ -338,17 +374,17 @@ namespace PFinal_v2.Controllers
                 return NotFound();
             }
 
-            // Procurar o usuário pelo ID passado como parâmetro
+
             var usuario = await _context.Usuario
                 .Include(u => u.Departamento)
                 .FirstOrDefaultAsync(m => m.UsuarioId.ToString() == id);
+
 
             if (usuario == null)
             {
                 return NotFound();
             }
 
-            // Retornar a view com os dados do usuário
             return View(usuario);
         }
     }

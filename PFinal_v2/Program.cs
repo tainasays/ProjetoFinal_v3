@@ -32,6 +32,7 @@ namespace PFinal_v2
             {
                 options.AddPolicy("AdminPolicy", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
                 options.AddPolicy("ColaboradorPolicy", policy => policy.RequireClaim(ClaimTypes.Role, "Colaborador"));
+
             });
 
             // Injeção de dependência para o serviço LoginService

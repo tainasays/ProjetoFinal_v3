@@ -81,4 +81,10 @@ public class ContaController : Controller
             return RedirectToAction("Login");
         }
     }
+
+
+    public IActionResult AccessDenied()
+    {
+        return View();
+    }
 }

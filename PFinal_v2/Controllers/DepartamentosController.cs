@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using PFinal_v2.Models;
 
 namespace PFinal_v2.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class DepartamentosController : Controller
     {
         private readonly PFinal_v2Context _context;
