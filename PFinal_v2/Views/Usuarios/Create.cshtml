@@ -5,7 +5,6 @@
 }
 
 <style>
-
 .custom-select-wrapper {
         position: relative;
         display: inline-block;
@@ -23,8 +22,7 @@
         padding-right: 32px;
         padding-left: 8px;
         cursor: pointer; /* Altera o cursor ao passar sobre o select */
-}
-       
+}    
  </style>
 
 
@@ -125,7 +123,7 @@
                             <span asp-validation-for="Senha" class="text-danger"></span>
                         </div>
                         <br>
-                        <div class="form-group mt-3">
+                        <div class="form-group mt-3 button-container">
                             <button type="submit" class="custom-filter-button">Adicionar</button>
                             <a href="@Url.Action("Index", "Admin")" class="custom-filter-button">Voltar</a>
                         </div>

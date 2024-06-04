@@ -8,7 +8,7 @@
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
         <div class="col-md-4">
             <div class="card rounded-form">
-                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Cadastrar</strong></div>
+                <div class="card-header custom-card-header text-center font-weight-bold"  style="font-size: 24px;"><strong>Cadastrar</strong></div>
                 <div class="card-body">
                     <form asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -18,7 +18,7 @@
                             <span asp-validation-for="Nome" class="text-danger"></span>
                         </div>
                         <br>
-                        <div class="form-group mt-3">
+                        <div class="form-group mt-3 button-container">
                             <button type="submit" class="custom-filter-button">Adicionar</button>
                             <a href="@Url.Action("Index", "Admin")" class="custom-filter-button">Voltar</a>
                         </div>

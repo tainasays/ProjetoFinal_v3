@@ -4,6 +4,11 @@
     ViewData["Title"] = "Excluir Registro";
 }
 
+<style>
+
+.delete-form {
+        margin-right: 10px; /* Adiciona espaço entre o botão Excluir e o link Voltar */
+}
 
 
 <div class="container">
@@ -42,7 +47,7 @@
                         <div class="button-container">
                             <form asp-action="Delete" class="delete-form">
                                 <input type="hidden" asp-for="DiaId" />
-                                <button type="submit" class="btn btn-danger">Excluir</button>
+                                <button type="submit" class="custom-filter-button">Excluir</button>
                             </form>
                             <a asp-action="Index" class="custom-filter-button">Voltar</a>
                         </div>
