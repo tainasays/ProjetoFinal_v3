@@ -13,14 +13,26 @@
 }
 </style>
 
+@if (TempData["SuccessMessage"] != null)
+
+{
+
+    <div class="alert alert-success" role="alert">
+
+        @TempData["SuccessMessage"]
+
+    </div>
+
+}
 
 <h2 style="margin-bottom: 40px;">Departamentos cadastrados</h2>
+
 
 <div class="container">
     <div class="row">
 
         <div class="col-11">
-            <form asp-controller="Departamentos" asp-action="Index">
+            <form asp-controller="Usuarios" asp-action="Index">
                 <div class="form-group mt-3">
                     <input type="text" name="SearchString" id="searchString" placeholder="Nome" class="custom-search-input" />
                     <button type="submit" class="custom-filter-button">
@@ -103,36 +115,28 @@
                 </div>
 
             </div>
-
-
-
         </div>
+
+        <div class="modal" id="confirmModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmação de Exclusão</h5>
+                        <button type="button" class="close" data-dismiss="modal" onclick="cancelChanges()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Deseja realmente excluir este usuário?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelChanges()">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteButton">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <a href="@Url.Action("Index", "Admin")" class="custom-filter-button ml-2" style="margin-bottom: 40px;">Voltar</a>
-
-</div>
-</div>
-
-
-
-
-<div class="modal" id="confirmModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirmação de Exclusão</h5>
-                <button type="button" class="close" data-dismiss="modal" onclick="cancelChanges()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>Deseja realmente excluir este Departamento?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelChanges()">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Confirmar</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <script>
@@ -162,4 +166,9 @@
         window.location.href = '/Departamentos/Index';
     });
 
-</script>
+            $(document).ready(function () {
+                $('#successModal').modal('show');
+            });
+
+
+        </script>

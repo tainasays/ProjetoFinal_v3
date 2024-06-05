@@ -78,6 +78,10 @@ namespace PFinal_v2.Controllers
             {
                 _context.Add(departamento);
                 await _context.SaveChangesAsync();
+
+                //tempdata mensagem
+                TempData["SuccessMessage"] = "Cadastro realizado com sucesso.";
+
                 return RedirectToAction(nameof(Index));
             }
             return View(departamento);

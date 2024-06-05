@@ -97,8 +97,8 @@ body {
 }
 
 .custom-filter-button:hover {
-        background-color: #525252; /* Altera a cor de fundo ao passar o mouse */
-        color: #ffffff;
+    background-color: #B89E77; /* Altera a cor de fundo ao passar o mouse */
+    color: #ffffff;
 }
 
 .custom-filter-button {
@@ -164,7 +164,7 @@ body {
 }
 
 .selecionada {
-    background-color: gray !important;
+    background-color: #a39696 !important;
 }
 
 
