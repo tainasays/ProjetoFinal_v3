@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using ClosedXML.Excel;
+﻿using ClosedXML.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Win32;
 using PFinal_v2.Data;
 using PFinal_v2.Models;
 using PFinal_v2.Models.ViewModels;
+using System.Globalization;
 
 namespace PFinal_v2.Controllers
 {
@@ -147,6 +139,8 @@ namespace PFinal_v2.Controllers
         [Authorize(Roles = "Admin, Colaborador")]
         public async Task<IActionResult> Create([Bind("DiaId,WbsId,DiaData,Horas")] Dia dia)
         {
+            var userIdClaim = User.FindFirst("UsuarioId")?.Value;
+
             if (ModelState.IsValid)
             {
                 // Verifica se as horas estão dentro de um intervalo válido
@@ -159,8 +153,18 @@ namespace PFinal_v2.Controllers
 
                 // Verifica se a data escolhida está dentro do intervalo permitido
                 var hoje = DateTime.Today;
-                var inicioDaQuinzenaAnterior = hoje.AddDays(-(hoje.Day < 15 ? 15 : hoje.Day - 15));
-                var fimDaProximaQuinzena = hoje.AddDays(hoje.Day < 15 ? 15 - hoje.Day : DateTime.DaysInMonth(hoje.Year, hoje.Month) - hoje.Day + 15);
+                DateTime inicioDaQuinzenaAnterior;
+                DateTime fimDaProximaQuinzena;
+                if (hoje.Day <= 15)
+                {
+                    inicioDaQuinzenaAnterior = new DateTime(hoje.Year, hoje.Month - 1, 16);
+                    fimDaProximaQuinzena = new DateTime(hoje.Year, hoje.Month, DateTime.DaysInMonth(hoje.Year, hoje.Month));
+                }
+                else
+                {
+                    inicioDaQuinzenaAnterior = new DateTime(hoje.Year, hoje.Month, 1);
+                    fimDaProximaQuinzena = new DateTime(hoje.Year, hoje.Month + 1, 15);
+                }
 
                 if (dia.DiaData < inicioDaQuinzenaAnterior || dia.DiaData > fimDaProximaQuinzena)
                 {
@@ -169,8 +173,19 @@ namespace PFinal_v2.Controllers
                     return View(dia);
                 }
 
-                // Verifica se já existe um registro com o mesmo DiaId e WbsId
-                if (_context.Dia.Any(d => d.DiaData.Date == dia.DiaData.Date && d.WbsId == dia.WbsId))
+                double totalHorasLancadasNoMesmoDia = _context.Dia
+                    .Where(d => d.DiaData == dia.DiaData && d.Usuario.UsuarioId.ToString() == userIdClaim)
+                    .Select(d => d.Horas).ToList()
+                    .Sum();
+
+                if (dia.Horas + totalHorasLancadasNoMesmoDia > 24)
+                {
+                    ModelState.AddModelError("Horas", "Não é permitido lançar mais que 24 horas em um mesmo dia.");
+                    ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
+                    return View(dia);
+                }
+
+                if (_context.Dia.Any(d => d.DiaData.Date == dia.DiaData.Date && d.WbsId == dia.WbsId && d.Usuario.UsuarioId.ToString() == userIdClaim))
                 {
                     ModelState.AddModelError("WbsId", "Este código de custo já está cadastrado neste registro. Alterações devem ser feitas em 'Editar'.");
                     ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
@@ -194,6 +209,7 @@ namespace PFinal_v2.Controllers
         [Authorize(Roles = "Admin, Colaborador")]
         public async Task<IActionResult> Edit(int? id)
         {
+            var userIdClaim = User.FindFirst("UsuarioId")?.Value;
 
             if (id == null)
             {
@@ -201,18 +217,14 @@ namespace PFinal_v2.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var dia = await _context.Dia.FindAsync(id);
-            if (dia == null)
+            var dia = _context.Dia.Where(d => d.DiaId == id && d.Usuario.UsuarioId.ToString() == userIdClaim).ToList();
+            if (dia.Any() == false)
             {
                 return NotFound();
             }
 
             ViewBag.WbsList = new SelectList(_context.Wbs, "WbsId", "CodigoDescricao");
-
-
             return View(dia);
-
-
         }
 
         // POST: Dias/Edit/5

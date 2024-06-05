@@ -1,3 +1,5 @@
+
+
 html {
     font-size: 14px;
 }
@@ -65,6 +67,12 @@ body {
     color: black;
 }
 
+.title-ava{
+    font-family: 'Hammersmith One', sans serif;
+}
+* {
+    font-family: 'Sono', monospace;
+}
 
 /*.custom-filter-button {
     background-color: #3F292B;
@@ -188,9 +196,10 @@ body {
 
     #tabela-horas th,
     #tabela-horas td {
-        padding: 4px;
+        padding: 3px;
         word-wrap: break-word;
         line-height: 2;
+        font-family: 'Segoe UI' !important;
     }
 
 #primeira-coluna {

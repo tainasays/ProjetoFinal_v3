@@ -14,8 +14,6 @@ public class ColaboradorController : Controller
 
     {
 
-        // Lógica para a página do Collaborator 
-
         return View();
 
     }

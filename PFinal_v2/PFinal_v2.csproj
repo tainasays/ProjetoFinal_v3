@@ -8,18 +8,24 @@
 
   <ItemGroup>
     <Compile Remove="Models\ViewModels\NovaPasta\**" />
+    <Compile Remove="Views\Colaborador\**" />
     <Content Remove="Models\ViewModels\NovaPasta\**" />
+    <Content Remove="Views\Colaborador\**" />
     <EmbeddedResource Remove="Models\ViewModels\NovaPasta\**" />
+    <EmbeddedResource Remove="Views\Colaborador\**" />
     <None Remove="Models\ViewModels\NovaPasta\**" />
+    <None Remove="Views\Colaborador\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\ColaboradorController.cs" />
     <Compile Remove="Migrations\20240529124614_ComNovaFuncionalidadeDep.cs" />
     <Compile Remove="Migrations\20240529124614_ComNovaFuncionalidadeDep.Designer.cs" />
     <Compile Remove="Migrations\PFinal_v2ContextModelSnapshot.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Conta\NotFound.cshtml" />
     <Content Remove="Views\Dias\Local.cshtml" />
     <Content Remove="Views\Wbs\Search.cshtml" />
     <Content Remove="wwwroot\css\Styles.css" />

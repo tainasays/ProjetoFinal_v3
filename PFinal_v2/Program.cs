@@ -75,6 +75,9 @@ namespace PFinal_v2
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // Middleware para tratar status codes (404, 500....) acrescentado 05/06/2024 para rodar nova page de erro
+            app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Conta}/{action=Login}/{id?}");

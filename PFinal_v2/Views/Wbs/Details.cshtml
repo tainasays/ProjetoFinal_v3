@@ -6,22 +6,23 @@
 
 <style>
 
-.table.custom-table td {
+  
+    .table.custom-table td {
         word-wrap: break-word;
-}
-   
+    }
+
 </style>
 
 
-<div class="container">
+<div class="container-fluid">
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
-        <div class="col-md-4">
+        <div class="col-lg-5.6">
             <div class="card rounded-form">
-                <div class="card-header custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Detalhes</strong></div>
-                <div class="card-body">
-                        @if (Model != null)
-                        {
-                        <table class="table custom-table centered-table" style="margin-top: 40px">
+                <div class="card-header m-2 custom-card-header text-center font-weight-bold" style="font-size: 24px;"><strong>Detalhes</strong></div>
+                <div class="card-body m-3">
+                    @if (Model != null)
+                    {
+                        <table class="table custom-table ">
                             <thead>
                                 <tr>
                                     <th scope="col">Código</th>
@@ -37,11 +38,11 @@
                                 </tr>
                             </tbody>
                         </table>
-                        }
-                        else
-                        {
+                    }
+                    else
+                    {
                         <p>Wbs não encontrada.</p>
-                        }
+                    }
                     <div class="form-group mt-3 btn-group">
                         <a asp-action="Edit" asp-route-id="@Model?.WbsId" class="custom-filter-button">Editar</a>
                         <a asp-action="Index" class="custom-filter-button">Voltar</a>
