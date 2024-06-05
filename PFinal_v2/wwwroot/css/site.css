@@ -252,3 +252,8 @@ body {
     align-items: center; /* Alinha verticalmente no centro */
     justify-content: center;
 }
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #B89E77;
+    color: #ffffff;
+}
