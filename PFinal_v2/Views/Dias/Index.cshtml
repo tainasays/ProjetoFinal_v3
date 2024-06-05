@@ -4,7 +4,15 @@
     ViewData["Title"] = "Lançamento de Horas";
 }
 
-<h5>Olá, @User.Identity.Name!</h5>
+<h3 style="margin-bottom: 40px;">Olá, @User.Identity.Name!</h3>
+
+<style>
+    .dropdown-menu .dropdown-item:hover {
+        background-color: #B89E77; 
+        color: #ffffff; 
+    }
+
+</style>
 
 @if (TempData["ErrorMessage"] != null)
 
@@ -13,6 +21,18 @@
     <div class="alert alert-danger">
 
         @TempData["ErrorMessage"]
+
+    </div>
+
+}
+
+@if (TempData["SuccessMessage"] != null)
+
+{
+
+    <div class="alert alert-success" role="alert">
+
+        @TempData["SuccessMessage"]
 
     </div>
 
@@ -57,7 +77,7 @@
 </form>
 
 
-<table class="table table-bordered" id="tabela-horas">
+<table class="table table-bordered" style="margin-top: 40px;" id="tabela-horas">
 
     <thead class="tabela-horas-thead">
 
@@ -443,6 +463,11 @@
     // mês mínimo e máximo para navegar entre as quinzenas
     document.getElementById('mes').min = '2024-01';
     document.getElementById('mes').max = '2025-01'
+
+    $(document).ready(function () {
+        $('#successModal').modal('show');
+    });
+
 
 
 </script>

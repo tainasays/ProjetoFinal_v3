@@ -94,7 +94,12 @@ namespace PFinal_v2.Controllers
             {
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
+
+                //tempdata mensagem
+                TempData["SuccessMessage"] = "Cadastro realizado com sucesso.";
+
                 return RedirectToAction(nameof(Index));
+
             }
 
             ViewBag.DepartamentoList = new SelectList(_context.Departamento, "DepartamentoId", "Nome");
@@ -269,6 +274,25 @@ namespace PFinal_v2.Controllers
 
             if (ModelState.IsValid)
             {
+                try
+                {
+                    _context.Update(usuario);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UsuarioExists(usuario.UsuarioId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                TempData["SuccessMessage"] = "Alteração realizada com sucesso.";
+                return RedirectToAction("Index", "Dias");
 
 
                 _context.Update(usuario);

@@ -19,12 +19,24 @@
 </style>
 
 
-<h2 style="margin-bottom: 40px;">WBS cadastradas</h1>
+@* <h2 style="margin-bottom: 40px;">WBS cadastradas</h2> *@
+
+@if (TempData["SuccessMessage"] != null)
+
+{
+
+    <div class="alert alert-success" role="alert">
+
+        @TempData["SuccessMessage"]
+
+    </div>
+
+}
 
     <div class="container">
-        <div class="row">
-
-            <div class="col-11">
+       <div class="row"> 
+        <h2 >WBS cadastradas</h2>
+            <div class="col-8">
                 <form asp-controller="Wbs" asp-action="Index">
                     <div class="form-group mt-3">
                         <input type="text" name="SearchString" id="searchString" placeholder="Código ou descrição" class="custom-search-input" />
@@ -38,20 +50,20 @@
                     </div>
                 </form>
             </div>
-            
 
-            <div class="col-1 mt-3">
-                <p>
-                    <a asp-action="Create">
-                        <button type="submit" class="custom-filter-button">
-                            <i class="i bi-plus"></i>
-                        </button>
-                    </a>
-                </p>
-            </div>
 
+        <div class="col-4">
+            <p>
+                <a asp-action="Create">
+                    <button type="submit" class="custom-filter-button">
+                        <i class="i bi-plus"></i>
+                    </button>
+                </a>
+            </p>
         </div>
     </div>
+       
+   
 
 
     <table class="table custom-table" style="margin-top: 40px;">
@@ -118,6 +130,23 @@
         </div>
     </div>
 
+    <div class="modal" id="confirmModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmação de Exclusão</h5>
+                    <button type="button" class="close" data-dismiss="modal" onclick="cancelChanges()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Deseja realmente excluir este usuário?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelChanges()">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         function openConfirmationModal(wbsId) {
@@ -144,6 +173,10 @@
             document.getElementById('searchString').value = '';
             // Redireciona para a mesma página sem parâmetros de filtro
             window.location.href = '/Wbs/Index';
+        });
+
+        $(document).ready(function () {
+            $('#successModal').modal('show');
         });
 
     </script>

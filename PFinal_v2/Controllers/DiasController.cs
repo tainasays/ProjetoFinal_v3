@@ -182,6 +182,8 @@ namespace PFinal_v2.Controllers
 
                 _context.Add(dia);
                 await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Cadastro realizado com sucesso.";
                 return RedirectToAction(nameof(Index));
             }
 
