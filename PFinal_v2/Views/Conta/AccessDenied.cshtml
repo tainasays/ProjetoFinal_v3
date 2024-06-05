@@ -4,29 +4,39 @@
 
 
 
-<div class="container text-right mt-4">
-    <div class="row align-items-center mt-4">
+<div class="container text-right mt-5">
+    <div class="row align-items-center mt-5">
 
         @* Coluna 1 *@
-        <div class="col-md-6 bg-warning bg-opacity-50 rounded p-3 mt-5 ml-3">
-            <div class="text-right pl-4">
-                <h1 class="display-5 pl-2">403 <br /> Você não tem permissão para acessar essa página.</h1>
-                <a class="nav-link text-white" asp-controller="Dias" asp-action="Index">
-                    <button type="button" class="custom-filter-button mt-4 mb-2">Voltar
-                </a></button>
+        <div class="col-md-2 bg-danger">
+
+        </div>
+
+
+        @* Coluna 2 *@
+        <div class="col-md-6 bg-opacity-50 rounded p-3 mt-5">
+            <div class="text-right pl-8">
+                <h1 class="display-5 pl-2 text-white">403 <br /> Você não tem permissão para acessar essa página.</h1>
             </div>
+                    <button class="custom-filter-button mt-4 mb-2">
+                    <a class="text-white" asp-controller="Dias" asp-action="Index">
+                        Voltar
+                </a></button>
         </div>
 
 
 
-        @*Coluna 2*@
-        <div class="col-md-6 bg-opacity-75 mt-5">
+        @*Coluna 3*@
+        <div class="col-md-2 bg-opacity-75 mt-5">
 
-            <svg xmlns="http://www.w3.org/2000/svg" width="298" height="298" fill="currentColor" class="bi bi-x-lg" viewBox="0 -4 5 23">
-                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
-
-            </svg>
+            
         </div>
+
+        @* Coluna 4 *@
+        <div class="col-md-2 bg-danger">
+        </div>
+
+
 
     </div>
 </div>
