@@ -19,8 +19,6 @@
 </style>
 
 
-@* <h2 style="margin-bottom: 40px;">WBS cadastradas</h2> *@
-
 @if (TempData["SuccessMessage"] != null)
 
 {
@@ -33,26 +31,27 @@
 
 }
 
-    <div class="container">
-       <div class="row"> 
-        <h2 >WBS cadastradas</h2>
-            <div class="col-8">
-                <form asp-controller="Wbs" asp-action="Index">
-                    <div class="form-group mt-3">
-                        <input type="text" name="SearchString" id="searchString" placeholder="Código ou descrição" class="custom-search-input" />
-                        <button type="submit" class="custom-filter-button">
-                            <i class="bi bi-search"></i>
-                        </button>
-                        <button type="button" id="limparFiltro" class="custom-filter-button">
-                            <i class="bi bi-x-lg"></i>
+<h2 style="margin-bottom: 40px;">WBS cadastradas </h2>
 
-                        </button>
-                    </div>
-                </form>
-            </div>
+<div class="container">
+    <div class="row">
 
+        <div class="col-11">
+            <form asp-controller="Usuarios" asp-action="Index">
+                <div class="form-group mt-3">
+                    <input type="text" name="SearchString" id="searchString" placeholder="Nome" class="custom-search-input" />
+                    <button type="submit" class="custom-filter-button">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <button type="button" id="limparFiltro" class="custom-filter-button">
+                        <i class="bi bi-x-lg"></i>
 
-        <div class="col-4">
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-1 mt-3 d-flex justify-content-end">
             <p>
                 <a asp-action="Create">
                     <button type="submit" class="custom-filter-button">
@@ -62,9 +61,6 @@
             </p>
         </div>
     </div>
-       
-   
-
 
     <table class="table custom-table" style="margin-top: 40px;">
     <thead>

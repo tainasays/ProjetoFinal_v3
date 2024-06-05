@@ -25,11 +25,14 @@
 
 }
 
+<h2 style="margin-bottom: 40px;">Departamentos cadastrados</h2>
+
+
 <div class="container">
     <div class="row">
-        <h2>Departamentos cadastrados</h2>
-        <div class="col-8">
-            <form asp-controller="Departamentos" asp-action="Index">
+
+        <div class="col-11">
+            <form asp-controller="Usuarios" asp-action="Index">
                 <div class="form-group mt-3">
                     <input type="text" name="SearchString" id="searchString" placeholder="Nome" class="custom-search-input" />
                     <button type="submit" class="custom-filter-button">
@@ -43,7 +46,7 @@
             </form>
         </div>
 
-        <div class="col-4">
+        <div class="col-1 mt-3 d-flex justify-content-end">
             <p>
                 <a asp-action="Create">
                     <button type="submit" class="custom-filter-button">
@@ -53,7 +56,6 @@
             </p>
         </div>
     </div>
-
 
     <table class="table">
         <table class="table custom-table" style="margin-top: 40px;">
