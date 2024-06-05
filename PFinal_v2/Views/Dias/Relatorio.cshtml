@@ -7,7 +7,7 @@
 <h2>@ViewData["Title"]</h2>
 <form method="get" asp-action="Relatorio" class="row align-items-end mb-3">
 
-    <div class="col-4">
+    <div class="col-3">
         <div class="form-group">
             <label for="usuarioSelecionadoId">Selecione o colaborador:</label>
             <select id="usuarioSelecionadoId" name="usuarioId" class="form-control" onchange="this.form.submit()">
@@ -21,13 +21,13 @@
         </div>
     </div>
 
-    <div class="col-4">
+    <div class="col-3">
         <div class="form-group">
             <input type="month" name="mes" id="mes" value="@Model.Mes" class="form-control" />
         </div>
     </div>
 
-    <div class="col-3">
+    <div class="col-2">
         <div class="form-group">
             <select name="quinzena" class="form-control">
                 <option value="1" selected="@(Model.Quinzena == 1)">1ª</option>
@@ -35,11 +35,23 @@
             </select>
         </div>
     </div>
-
+    <!--
     <div class="col-1 mb-0.5">
         <button type="submit" class="custom-filter-button">
             <i class="bi bi-search"></i>
         </button>
+    </div>
+    -->
+    <div class="col-4">
+        <div class="form-group">
+            <input type="text" name="SearchString" id="searchString" placeholder="Descricao" class="custom-search-input" value="@Model.SearchString" />
+            <button type="submit" class="custom-filter-button">
+                <i class="bi bi-search"></i>
+            </button>
+            <button type="button" id="limparFiltro" class="custom-filter-button">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
     </div>
 </form>
 

@@ -306,20 +306,15 @@ namespace PFinal_v2.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Relatorio(int? usuarioId, string mes, int? quinzena)
+        public async Task<IActionResult> Relatorio(int? usuarioId, string mes, int? quinzena, string searchString)
         {
-
             if (!User.Identity.IsAuthenticated)
             {
-
                 return RedirectToAction("Login", "Conta");
             }
 
-
             int usuarioIdLogado = int.Parse(User.FindFirst("UsuarioId").Value);
-
             int usuarioSelecionadoId = usuarioId ?? usuarioIdLogado;
-
 
             var usuarios = await _context.Usuario.ToListAsync();
 
@@ -328,34 +323,14 @@ namespace PFinal_v2.Controllers
                 mes = DateTime.Now.ToString("yyyy-MM");
             }
 
-
-            var relatorioQuery = _context.Dia
-                .Include(d => d.Wbs)
-                .Where(d => d.UsuarioId == usuarioSelecionadoId)
-                .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não", d.DiaData })
-                .Select(g => new RelatorioViewModel
-                {
-                    WbsId = g.Key.WbsId,
-                    Codigo = g.Key.Codigo,
-                    Descricao = g.Key.Descricao,
-                    Tipo = g.Key.Tipo,
-                    DiaData = g.Key.DiaData,
-                    HorasTotais = g.Sum(d => d.Horas)
-                });
-
-
-            DateTime mesDateTime;
-            if (!DateTime.TryParseExact(mes, "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out mesDateTime))
+            if (!DateTime.TryParseExact(mes + "-01", "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startDate))
             {
-
                 throw new ArgumentException("Formato de mês inválido");
             }
 
+            DateTime endDate = startDate.AddMonths(1).AddDays(-1);
 
-            var startDate = new DateTime(mesDateTime.Year, mesDateTime.Month, 1);
-            var endDate = startDate.AddMonths(1).AddDays(-1);
-
-
+            // Ajusta as datas conforme a quinzena, se fornecida
             if (quinzena.HasValue)
             {
                 if (quinzena == 1)
@@ -365,13 +340,30 @@ namespace PFinal_v2.Controllers
                 else
                 {
                     startDate = startDate.AddDays(15);
-                    endDate = startDate.AddMonths(1).AddDays(-1);
                 }
             }
 
-            relatorioQuery = relatorioQuery.Where(d => d.DiaData >= startDate && d.DiaData <= endDate);
+            // Consulta inicial para buscar as WBS com as horas totais trabalhadas
+            var relatorioQuery = _context.Dia
+                .Include(d => d.Wbs)
+                .Where(d => d.UsuarioId == usuarioSelecionadoId && d.DiaData >= startDate && d.DiaData <= endDate);
+
+            // Aplica o filtro de descrição, se fornecido
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                relatorioQuery = relatorioQuery.Where(d => d.Wbs.Descricao.Contains(searchString));
+            }
 
             var relatorio = await relatorioQuery
+                .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
+                .Select(g => new RelatorioViewModel
+                {
+                    WbsId = g.Key.WbsId,
+                    Codigo = g.Key.Codigo,
+                    Descricao = g.Key.Descricao,
+                    Tipo = g.Key.Tipo,
+                    HorasTotais = g.Sum(d => d.Horas)
+                })
                 .OrderByDescending(w => w.HorasTotais)
                 .ToListAsync();
 
@@ -381,11 +373,13 @@ namespace PFinal_v2.Controllers
                 Usuarios = usuarios,
                 UsuarioSelecionadoId = usuarioSelecionadoId,
                 Mes = mes,
-                Quinzena = quinzena
+                Quinzena = quinzena,
+                SearchString = searchString
             };
 
             return View(viewModel);
         }
+
 
 
         [Authorize(Roles = "Admin")]

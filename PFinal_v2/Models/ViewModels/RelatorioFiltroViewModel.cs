@@ -10,5 +10,7 @@ namespace PFinal_v2.Models.ViewModels
 
         [DataType(DataType.Date)]
         public string? Mes { get; set; }
-        public int? Quinzena { get; set; }    }
+        public int? Quinzena { get; set; }
+        public string? SearchString { get; set; }
+    }
 }
