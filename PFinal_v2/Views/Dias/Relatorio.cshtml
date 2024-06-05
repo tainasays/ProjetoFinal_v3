@@ -5,7 +5,7 @@
 }
 
 <h2>@ViewData["Title"]</h2>
-<form method="get" asp-action="Relatorio" class="row align-items-end mb-3">
+<form method="get" asp-action="Relatorio" class="row align-items-end mb-3" id="filtroForm">
 
     <div class="col-3">
         <div class="form-group">
@@ -35,20 +35,14 @@
             </select>
         </div>
     </div>
-    <!--
-    <div class="col-1 mb-0.5">
-        <button type="submit" class="custom-filter-button">
-            <i class="bi bi-search"></i>
-        </button>
-    </div>
-    -->
+  
     <div class="col-4">
         <div class="form-group">
             <input type="text" name="SearchString" id="searchString" placeholder="Descricao" class="custom-search-input" value="@Model.SearchString" />
             <button type="submit" class="custom-filter-button">
                 <i class="bi bi-search"></i>
             </button>
-            <button type="button" id="limparFiltro" class="custom-filter-button">
+            <button type="button" id="limparFiltro" class="custom-filter-button" onclick="limparFiltro()">
                 <i class="bi bi-x-lg"></i>
             </button>
         </div>
@@ -82,7 +76,7 @@
     </table>
 
     <div class="form-group mt-3">
-        <a href="@Url.Action("ExportarRelatorio", new { usuarioId = Model.UsuarioSelecionadoId, mes = Model.Mes, quinzena = Model.Quinzena })" class="custom-filter-button">Exportar para Excel</a>
+        <a href="@Url.Action("ExportarRelatorioIndividual", new { usuarioId = Model.UsuarioSelecionadoId, mes = Model.Mes, quinzena = Model.Quinzena, searchString = Model.SearchString })" class="custom-filter-button">Exportar para Excel</a>
     </div>
 }
 else
@@ -93,3 +87,13 @@ else
 <div class="form-group mt-3">
     <a href="@Url.Action("Index", "Admin")" class="custom-filter-button">Voltar</a>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#limparFiltro").click(function () {
+            $("#searchString").val(""); // Limpa o campo de filtro
+            $("#filtroForm").submit(); // Submete o formulário
+        });
+    });
+</script>

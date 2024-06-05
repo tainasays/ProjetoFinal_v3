@@ -124,7 +124,8 @@
                         </div>
                         <br>
                         <div class="form-group mt-3 button-container">
-                            <button type="submit" class="custom-filter-button">Adicionar</button>
+                            @* botao com modal *@
+                            <button type="submit" class="custom-filter-button" data-toggle="modal" data-target="#successModal">Adicionar</button>
                             <a href="@Url.Action("Index", "Admin")" class="custom-filter-button">Voltar</a>
                         </div>
                     </form>
@@ -134,8 +135,12 @@
     </div>
 </div>
 
-@section Scripts {
+
+
+
+ @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-}
+    
+} 

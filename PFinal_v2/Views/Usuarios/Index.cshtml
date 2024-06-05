@@ -6,13 +6,43 @@
 }
 
 <style>
-.custom-table {
-        border-radius: 5px; 
+    .table.custom-table td {
+        white-space: nowrap;
+    }
+    .icons-container {
+        display: flex;
+    }
+
+    .custom-table {
+        border-radius: 5px; /* Cantos mais arredondados */
         overflow: hidden;
-        background-color: #f2f2f2; 
+        background-color: #f2f2f2; /* Cor de fundo da tabela */
         border-bottom: 2px solid #A76C38;
-}
+    }
+
+    .password-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .toggle-password {
+        cursor: pointer;
+        margin-left: 10px;
+    }
 </style>
+
+@if (TempData["SuccessMessage"] != null)
+
+{
+
+    <div class="alert alert-success" role="alert">
+
+        @TempData["SuccessMessage"]
+
+    </div>
+
+}
+
 
 <h2 style="margin-bottom: 40px;">Funcionários cadastrados </h2>
 
@@ -47,7 +77,8 @@
     </div>
 
 
-<table class="table custom-table" style="margin-top: 40px;">
+
+    <table class="table custom-table" style="margin-top: 40px;">
     <thead>
         <tr>
             <th scope="col" class=" text-center">Nome</th>
@@ -119,7 +150,7 @@
 </div>
 
 
-<a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar</a>
+<a href="@Url.Action("Index", "Admin")" class="custom-filter-button" style="margin-bottom: 40px;">Voltar</a> 
 
 @section Scripts {
     <script>
@@ -156,9 +187,9 @@
             $('#confirmModal').modal('hide');
         }
 
-      
-            // Seleciona o botão de limpar filtro
-            var limparFiltroBtn = document.getElementById('limparFiltro');
+
+        // Seleciona o botão de limpar filtro
+        var limparFiltroBtn = document.getElementById('limparFiltro');
 
         // Adiciona um evento de clique ao botão de limpar filtro
         limparFiltroBtn.addEventListener('click', function () {
@@ -167,8 +198,13 @@
             // Redireciona para a mesma página sem parâmetros de filtro
             window.location.href = '/Usuarios/Index';
         });
-    
-    
+
+            
+          $(document).ready(function () {
+             $('#successModal').modal('show');
+          });
+       
 
     </script>
 }
+
