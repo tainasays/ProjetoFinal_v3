@@ -5,11 +5,7 @@
 }
 
 <style>
-.icons-container {
-        display: flex;
-    }
-
-    .custom-table {
+.custom-table {
         border-radius: 5px; /* Cantos mais arredondados */
         overflow: hidden;
         background-color: #f2f2f2; /* Cor de fundo da tabela */
@@ -38,7 +34,7 @@
             </form>
         </div>
 
-        <div class="col-1 mt-3">
+        <div class="col-1 mt-3 d-flex justify-content-end">
             <p>
                 <a asp-action="Create">
                     <button type="submit" class="custom-filter-button">
@@ -48,10 +44,6 @@
             </p>
         </div>
     </div>
-
-
-
-
 
     <table class="table">
         <table class="table custom-table" style="margin-top: 40px;">

@@ -48,7 +48,7 @@ namespace PFinal_v2.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         // GET: Usuarios/Details/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
@@ -71,6 +71,7 @@ namespace PFinal_v2.Controllers
             return View(usuario);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Usuarios/Create
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
@@ -80,6 +81,7 @@ namespace PFinal_v2.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Usuarios/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -100,7 +102,7 @@ namespace PFinal_v2.Controllers
             return View(usuario);
         }
 
-
+        [Authorize(Roles = "Admin")]
         // GET: Usuarios/Edit/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
@@ -120,6 +122,7 @@ namespace PFinal_v2.Controllers
             return View(usuario);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Usuarios/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -157,6 +160,7 @@ namespace PFinal_v2.Controllers
             return View(usuario);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Usuarios/Delete/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
@@ -176,6 +180,7 @@ namespace PFinal_v2.Controllers
             return View(usuario);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Usuarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

@@ -41,7 +41,7 @@ namespace PFinal_v2.Models
                     },
                     new Wbs
                     {
-                        Codigo = "WBS09120087",
+                        Codigo = "WBS0912009",
                         Descricao = "Desenvolvimento",
                     }
                 );

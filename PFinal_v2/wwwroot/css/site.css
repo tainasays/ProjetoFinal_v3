@@ -231,3 +231,24 @@ body {
     display: flex;
     justify-content: center;
 }
+
+/*password*/
+.password-container {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.icons-container {
+    display: flex;
+}
+
+.button-container {
+    display: flex;
+    align-items: center; /* Alinha verticalmente no centro */
+    justify-content: center;
+}
