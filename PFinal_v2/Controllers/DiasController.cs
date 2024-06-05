@@ -330,7 +330,6 @@ namespace PFinal_v2.Controllers
 
             DateTime endDate = startDate.AddMonths(1).AddDays(-1);
 
-            // Ajusta as datas conforme a quinzena, se fornecida
             if (quinzena.HasValue)
             {
                 if (quinzena == 1)
@@ -343,26 +342,25 @@ namespace PFinal_v2.Controllers
                 }
             }
 
-            // Consulta inicial para buscar as WBS com as horas totais trabalhadas
             var relatorioQuery = _context.Dia
                 .Include(d => d.Wbs)
                 .Where(d => d.UsuarioId == usuarioSelecionadoId && d.DiaData >= startDate && d.DiaData <= endDate);
 
-            // Aplica o filtro de descrição, se fornecido
             if (!string.IsNullOrEmpty(searchString))
             {
                 relatorioQuery = relatorioQuery.Where(d => d.Wbs.Descricao.Contains(searchString));
             }
 
             var relatorio = await relatorioQuery
-                .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
+                .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, d.DiaData, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
                 .Select(g => new RelatorioViewModel
                 {
                     WbsId = g.Key.WbsId,
                     Codigo = g.Key.Codigo,
                     Descricao = g.Key.Descricao,
                     Tipo = g.Key.Tipo,
-                    HorasTotais = g.Sum(d => d.Horas)
+                    HorasTotais = g.Sum(d => d.Horas),
+                    DiaData = g.Key.DiaData 
                 })
                 .OrderByDescending(w => w.HorasTotais)
                 .ToListAsync();
@@ -381,83 +379,8 @@ namespace PFinal_v2.Controllers
         }
 
 
-
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RelatorioTotal(string mes, int? quinzena)
-        {
-
-            if (string.IsNullOrEmpty(mes))
-            {
-                mes = DateTime.Now.ToString("yyyy-MM");
-            }
-
-            DateTime mesDateTime;
-            if (!DateTime.TryParseExact(mes, "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out mesDateTime))
-            {
-
-                throw new ArgumentException("Formato de mês inválido");
-            }
-
-            var startDate = new DateTime(mesDateTime.Year, mesDateTime.Month, 1);
-            var endDate = startDate.AddMonths(1).AddDays(-1);
-
-
-            if (quinzena.HasValue)
-            {
-                if (quinzena == 1)
-                {
-                    endDate = startDate.AddDays(14);
-                }
-                else
-                {
-                    startDate = startDate.AddDays(15);
-                    endDate = startDate.AddMonths(1).AddDays(-1);
-                }
-            }
-
-
-            var relatorioQuery = _context.Dia
-                .Include(d => d.Wbs)
-                .Where(d => d.DiaData >= startDate && d.DiaData <= endDate)
-                .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
-                .Select(g => new RelatorioViewModel
-                {
-                    WbsId = g.Key.WbsId,
-                    Codigo = g.Key.Codigo,
-                    Descricao = g.Key.Descricao,
-                    Tipo = g.Key.Tipo,
-                    HorasTotais = g.Sum(d => d.Horas)
-                });
-
-            var relatorio = await relatorioQuery
-                .OrderByDescending(w => w.HorasTotais)
-                .ToListAsync();
-
-            if (quinzena.HasValue)
-            {
-                if (quinzena == 1)
-                {
-                    endDate = startDate.AddDays(14);
-                }
-                else
-                {
-                    startDate = startDate.AddDays(15);
-                    endDate = startDate.AddMonths(1).AddDays(-1);
-                }
-            }
-
-            var viewModel = new RelatorioFiltroViewModel
-            {
-                Relatorio = relatorio,
-                Mes = mes,
-                Quinzena = quinzena
-            };
-
-            return View(viewModel);
-        }
-
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ExportarRelatorio(string mes, int? quinzena)
         {
             if (string.IsNullOrEmpty(mes))
             {
@@ -479,13 +402,12 @@ namespace PFinal_v2.Controllers
                 if (quinzena == 1)
                 {
                     endDate = startDate.AddDays(14);
-                    periodo = $"Primeira quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
+                    periodo = $"1° quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
                 }
                 else
                 {
                     startDate = startDate.AddDays(15);
-                    endDate = startDate.AddMonths(1).AddDays(-1);
-                    periodo = $"Segunda quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
+                    periodo = $"2° quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
                 }
             }
             else
@@ -494,25 +416,182 @@ namespace PFinal_v2.Controllers
             }
 
             var relatorioQuery = _context.Dia
-                .Include(d => d.Wbs)
-                .Where(d => d.DiaData >= startDate && d.DiaData <= endDate)
-                .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
+                .Where(d => d.DiaData >= startDate && d.DiaData <= endDate);
+
+            var relatorio = await relatorioQuery
+                .GroupBy(d => new { d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
                 .Select(g => new RelatorioViewModel
                 {
-                    WbsId = g.Key.WbsId,
                     Codigo = g.Key.Codigo,
                     Descricao = g.Key.Descricao,
                     Tipo = g.Key.Tipo,
                     HorasTotais = g.Sum(d => d.Horas)
-                });
+                })
+                .OrderByDescending(w => w.HorasTotais)
+                .ToListAsync();
+
+            var viewModel = new RelatorioFiltroViewModel
+            {
+                Relatorio = relatorio,
+                Mes = mes,
+                Quinzena = quinzena
+            };
+
+            return View(viewModel);
+        }
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ExportarRelatorioIndividual(int? usuarioId, string mes, int? quinzena, string searchString)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Conta");
+            }
+
+            int usuarioIdLogado = int.Parse(User.FindFirst("UsuarioId").Value);
+            int usuarioSelecionadoId = usuarioId ?? usuarioIdLogado;
+
+            var usuarios = await _context.Usuario.ToListAsync();
+
+            if (string.IsNullOrEmpty(mes))
+            {
+                mes = DateTime.Now.ToString("yyyy-MM");
+            }
+
+            if (!DateTime.TryParseExact(mes + "-01", "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startDate))
+            {
+                throw new ArgumentException("Formato de mês inválido");
+            }
+
+            DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+
+            if (quinzena.HasValue)
+            {
+                if (quinzena == 1)
+                {
+                    endDate = startDate.AddDays(14);
+                }
+                else
+                {
+                    startDate = startDate.AddDays(15);
+                }
+            }
+
+            var relatorioQuery = _context.Dia
+                .Include(d => d.Wbs)
+                .Where(d => d.UsuarioId == usuarioSelecionadoId && d.DiaData >= startDate && d.DiaData <= endDate);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                relatorioQuery = relatorioQuery.Where(d => d.Wbs.Descricao.Contains(searchString));
+            }
 
             var relatorio = await relatorioQuery
+                .GroupBy(d => new { d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não", d.DiaData })
+                .Select(g => new
+                {
+                    Codigo = g.Key.Codigo,
+                    Descricao = g.Key.Descricao,
+                    Chargeability = g.Key.Tipo,
+                    Data = g.Key.DiaData,
+                    HorasTotais = g.Sum(d => d.Horas)
+                })
                 .OrderByDescending(w => w.HorasTotais)
                 .ToListAsync();
 
             using (var workbook = new XLWorkbook())
             {
-                var worksheet = workbook.Worksheets.Add("Relatório");
+                var worksheet = workbook.Worksheets.Add("Relatório Individual");
+
+                // Título
+                worksheet.Cell(1, 1).Value = "Relatório de WBS (Individual)";
+                worksheet.Cell(2, 1).Value = "Selecione o colaborador:";
+                worksheet.Cell(2, 2).Value = usuarios.FirstOrDefault(u => u.UsuarioId == usuarioSelecionadoId)?.Nome;
+                worksheet.Cell(3, 1).Value = mes;
+                worksheet.Cell(4, 1).Value = quinzena == 1 ? "1ª" : "2ª";
+                worksheet.Cell(6, 1).Value = "Código";
+                worksheet.Cell(6, 2).Value = "Descrição";
+                worksheet.Cell(6, 3).Value = "Chargeability";
+                worksheet.Cell(6, 4).Value = "Data";
+                worksheet.Cell(6, 5).Value = "Horas Totais";
+
+                // Dados
+                for (int i = 0; i < relatorio.Count; i++)
+                {
+                    worksheet.Cell(i + 7, 1).Value = relatorio[i].Codigo;
+                    worksheet.Cell(i + 7, 2).Value = relatorio[i].Descricao;
+                    worksheet.Cell(i + 7, 3).Value = relatorio[i].Chargeability;
+                    worksheet.Cell(i + 7, 4).Value = relatorio[i].Data.ToString("dd/MM/yyyy");
+                    worksheet.Cell(i + 7, 5).Value = relatorio[i].HorasTotais;
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "RelatorioIndividual.xlsx");
+                }
+            }
+        }
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ExportarRelatorio(int? usuarioId, string mes, int? quinzena, string searchString)
+        {
+            if (string.IsNullOrEmpty(mes))
+            {
+                mes = DateTime.Now.ToString("yyyy-MM");
+            }
+
+            DateTime mesDateTime;
+            if (!DateTime.TryParseExact(mes, "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out mesDateTime))
+            {
+                throw new ArgumentException("Formato de mês inválido");
+            }
+
+            var startDate = new DateTime(mesDateTime.Year, mesDateTime.Month, 1);
+            var endDate = startDate.AddMonths(1).AddDays(-1);
+
+            string periodo;
+            if (quinzena.HasValue)
+            {
+                if (quinzena == 1)
+                {
+                    endDate = startDate.AddDays(14);
+                    periodo = $"1° quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
+                }
+                else
+                {
+                    startDate = startDate.AddDays(15);
+                    periodo = $"2° quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
+                }
+            }
+            else
+            {
+                periodo = $"Mês de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
+            }
+
+            var relatorioQuery = _context.Dia
+                .Where(d => d.DiaData >= startDate && d.DiaData <= endDate);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                relatorioQuery = relatorioQuery.Where(d => d.Wbs.Descricao.Contains(searchString));
+            }
+
+            var relatorio = await relatorioQuery
+                .GroupBy(d => new { d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
+                .Select(g => new
+                {
+                    Codigo = g.Key.Codigo,
+                    Descricao = g.Key.Descricao,
+                    Chargeability = g.Key.Tipo,
+                    HorasTotais = g.Sum(d => d.Horas)
+                })
+                .OrderByDescending(w => w.HorasTotais)
+                .ToListAsync();
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Relatório Total");
 
                 // Período
                 worksheet.Cell(1, 1).Value = "Período:";
@@ -529,7 +608,7 @@ namespace PFinal_v2.Controllers
                 {
                     worksheet.Cell(i + 4, 1).Value = relatorio[i].Codigo;
                     worksheet.Cell(i + 4, 2).Value = relatorio[i].Descricao;
-                    worksheet.Cell(i + 4, 3).Value = relatorio[i].Tipo;
+                    worksheet.Cell(i + 4, 3).Value = relatorio[i].Chargeability;
                     worksheet.Cell(i + 4, 4).Value = relatorio[i].HorasTotais;
                 }
 
@@ -538,9 +617,10 @@ namespace PFinal_v2.Controllers
                     workbook.SaveAs(stream);
                     var content = stream.ToArray();
 
-                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Relatorio.xlsx");
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "RelatorioTotal.xlsx");
                 }
             }
         }
+
     }
 }

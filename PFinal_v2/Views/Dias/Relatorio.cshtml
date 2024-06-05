@@ -82,7 +82,7 @@
     </table>
 
     <div class="form-group mt-3">
-        <a href="@Url.Action("ExportarRelatorio", new { usuarioId = Model.UsuarioSelecionadoId, mes = Model.Mes, quinzena = Model.Quinzena })" class="custom-filter-button">Exportar para Excel</a>
+        <a href="@Url.Action("ExportarRelatorioIndividual", new { usuarioId = Model.UsuarioSelecionadoId, mes = Model.Mes, quinzena = Model.Quinzena, searchString = Model.SearchString })" class="custom-filter-button">Exportar para Excel</a>
     </div>
 }
 else
