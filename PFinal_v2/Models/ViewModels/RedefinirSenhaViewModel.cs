@@ -8,6 +8,7 @@ namespace PFinal_v2.Models.ViewModels
 
         [Required(ErrorMessage = "O campo Nova senha é obrigatório")]
         [DataType(DataType.Password)]
+        [StringLength(10, MinimumLength = 5, ErrorMessage = "A senha deve ter entre 5 e 10 caracteres")]
         public string? NovaSenha { get; set; }
 
         [Required(ErrorMessage = "O campo Confirmar senha é obrigatório")]
