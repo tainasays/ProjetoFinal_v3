@@ -12,5 +12,7 @@ namespace PFinal_v2.Models.ViewModels
         public string? Mes { get; set; }
         public int? Quinzena { get; set; }
         public string? SearchString { get; set; }
+
+        public string? TipoAgrupamento { get; set; }
     }
 }

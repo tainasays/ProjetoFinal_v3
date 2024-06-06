@@ -405,8 +405,7 @@ namespace PFinal_v2.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RelatorioTotal(string mes, int? quinzena)
+        public async Task<IActionResult> RelatorioTotal(string mes, int? quinzena, string tipoAgrupamento)
         {
             if (string.IsNullOrEmpty(mes))
             {
@@ -428,12 +427,13 @@ namespace PFinal_v2.Controllers
                 if (quinzena == 1)
                 {
                     endDate = startDate.AddDays(14);
-                    periodo = $"1° quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
+                    periodo = $"Primeira quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
                 }
                 else
                 {
                     startDate = startDate.AddDays(15);
-                    periodo = $"2° quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
+                    endDate = startDate.AddMonths(1).AddDays(-1);
+                    periodo = $"Segunda quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
                 }
             }
             else
@@ -441,30 +441,70 @@ namespace PFinal_v2.Controllers
                 periodo = $"Mês de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
             }
 
-            var relatorioQuery = _context.Dia
-                .Where(d => d.DiaData >= startDate && d.DiaData <= endDate);
+            IQueryable<RelatorioViewModel> relatorioQuery;
+
+            switch (tipoAgrupamento)
+            {
+                case "Localizacao":
+                    relatorioQuery = _context.Dia
+                        .Include(d => d.Usuario)
+                        .Where(d => d.DiaData >= startDate && d.DiaData <= endDate)
+                        .GroupBy(d => new { d.Usuario.LocalTrabalho })
+                        .Select(g => new RelatorioViewModel
+                        {
+                            LocalTrabalho = g.Key.LocalTrabalho.ToString(),
+                            HorasTotais = g.Sum(d => d.Horas)
+                        });
+                    break;
+
+                case "Ambos":
+                    relatorioQuery = _context.Dia
+                        .Include(d => d.Wbs)
+                        .Include(d => d.Usuario)
+                        .Where(d => d.DiaData >= startDate && d.DiaData <= endDate)
+                        .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, d.Usuario.LocalTrabalho, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
+                        .Select(g => new RelatorioViewModel
+                        {
+                            WbsId = g.Key.WbsId,
+                            Codigo = g.Key.Codigo,
+                            Descricao = g.Key.Descricao,
+                            Tipo = g.Key.Tipo,
+                            LocalTrabalho = g.Key.LocalTrabalho.ToString(),
+                            HorasTotais = g.Sum(d => d.Horas)
+                        });
+                    break;
+
+                default:
+                    relatorioQuery = _context.Dia
+                        .Include(d => d.Wbs)
+                        .Where(d => d.DiaData >= startDate && d.DiaData <= endDate)
+                        .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
+                        .Select(g => new RelatorioViewModel
+                        {
+                            WbsId = g.Key.WbsId,
+                            Codigo = g.Key.Codigo,
+                            Descricao = g.Key.Descricao,
+                            Tipo = g.Key.Tipo,
+                            HorasTotais = g.Sum(d => d.Horas)
+                        });
+                    break;
+            }
 
             var relatorio = await relatorioQuery
-                .GroupBy(d => new { d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
-                .Select(g => new RelatorioViewModel
-                {
-                    Codigo = g.Key.Codigo,
-                    Descricao = g.Key.Descricao,
-                    Tipo = g.Key.Tipo,
-                    HorasTotais = g.Sum(d => d.Horas)
-                })
                 .OrderByDescending(w => w.HorasTotais)
                 .ToListAsync();
 
             var viewModel = new RelatorioFiltroViewModel
             {
-                Relatorio = relatorio,
                 Mes = mes,
-                Quinzena = quinzena
+                Quinzena = quinzena,
+                TipoAgrupamento = tipoAgrupamento,
+                Relatorio = relatorio
             };
 
             return View(viewModel);
         }
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ExportarRelatorioIndividual(int? usuarioId, string mes, int? quinzena, string searchString)
         {
@@ -559,8 +599,9 @@ namespace PFinal_v2.Controllers
                 }
             }
         }
+
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ExportarRelatorio(int? usuarioId, string mes, int? quinzena, string searchString)
+        public async Task<IActionResult> ExportarRelatorio(string mes, int? quinzena, string tipoAgrupamento)
         {
             if (string.IsNullOrEmpty(mes))
             {
@@ -582,12 +623,12 @@ namespace PFinal_v2.Controllers
                 if (quinzena == 1)
                 {
                     endDate = startDate.AddDays(14);
-                    periodo = $"1° quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
+                    periodo = $"Primeira quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
                 }
                 else
                 {
                     startDate = startDate.AddDays(15);
-                    periodo = $"2° quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
+                    periodo = $"Segunda quinzena de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
                 }
             }
             else
@@ -595,47 +636,103 @@ namespace PFinal_v2.Controllers
                 periodo = $"Mês de {mesDateTime.ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"))} de {mesDateTime.Year}";
             }
 
-            var relatorioQuery = _context.Dia
-                .Where(d => d.DiaData >= startDate && d.DiaData <= endDate);
+            IQueryable<RelatorioViewModel> relatorioQuery;
 
-            if (!string.IsNullOrEmpty(searchString))
+            switch (tipoAgrupamento)
             {
-                relatorioQuery = relatorioQuery.Where(d => d.Wbs.Descricao.Contains(searchString));
+                case "Localizacao":
+                    relatorioQuery = _context.Dia
+                        .Include(d => d.Usuario)
+                        .Where(d => d.DiaData >= startDate && d.DiaData <= endDate)
+                        .GroupBy(d => new { d.Usuario.LocalTrabalho })
+                        .Select(g => new RelatorioViewModel
+                        {
+                            LocalTrabalho = g.Key.LocalTrabalho.ToString(),
+                            HorasTotais = g.Sum(d => d.Horas)
+                        });
+                    break;
+
+                case "Ambos":
+                    relatorioQuery = _context.Dia
+                        .Include(d => d.Wbs)
+                        .Include(d => d.Usuario)
+                        .Where(d => d.DiaData >= startDate && d.DiaData <= endDate)
+                        .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, d.Usuario.LocalTrabalho, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
+                        .Select(g => new RelatorioViewModel
+                        {
+                            WbsId = g.Key.WbsId,
+                            Codigo = g.Key.Codigo,
+                            Descricao = g.Key.Descricao,
+                            Tipo = g.Key.Tipo,
+                            LocalTrabalho = g.Key.LocalTrabalho.ToString(),
+                            HorasTotais = g.Sum(d => d.Horas)
+                        });
+                    break;
+
+                default:
+                    relatorioQuery = _context.Dia
+                        .Include(d => d.Wbs)
+                        .Where(d => d.DiaData >= startDate && d.DiaData <= endDate)
+                        .GroupBy(d => new { d.Wbs.WbsId, d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
+                        .Select(g => new RelatorioViewModel
+                        {
+                            WbsId = g.Key.WbsId,
+                            Codigo = g.Key.Codigo,
+                            Descricao = g.Key.Descricao,
+                            Tipo = g.Key.Tipo,
+                            HorasTotais = g.Sum(d => d.Horas)
+                        });
+                    break;
             }
 
-            var relatorio = await relatorioQuery
-                .GroupBy(d => new { d.Wbs.Codigo, d.Wbs.Descricao, Tipo = d.Wbs.IsChargeable ? "Sim" : "Não" })
-                .Select(g => new
-                {
-                    Codigo = g.Key.Codigo,
-                    Descricao = g.Key.Descricao,
-                    Chargeability = g.Key.Tipo,
-                    HorasTotais = g.Sum(d => d.Horas)
-                })
-                .OrderByDescending(w => w.HorasTotais)
-                .ToListAsync();
+            // Adiciona um log para verificar a consulta
+            var relatorio = await relatorioQuery.OrderByDescending(w => w.HorasTotais).ToListAsync();
+            if (relatorio == null || !relatorio.Any())
+            {
+                throw new Exception("Nenhum dado encontrado para o período e agrupamento especificados.");
+            }
 
             using (var workbook = new XLWorkbook())
             {
-                var worksheet = workbook.Worksheets.Add("Relatório Total");
+                var worksheet = workbook.Worksheets.Add("Relatório Geral");
 
-                // Período
-                worksheet.Cell(1, 1).Value = "Período:";
-                worksheet.Cell(1, 2).Value = periodo;
-
-                // Cabeçalhos
-                worksheet.Cell(3, 1).Value = "Código";
-                worksheet.Cell(3, 2).Value = "Descrição";
-                worksheet.Cell(3, 3).Value = "Chargeability";
-                worksheet.Cell(3, 4).Value = "Horas Totais";
+                // Título
+                worksheet.Cell(1, 1).Value = "Relatório Geral de WBS";
+                worksheet.Cell(2, 1).Value = "Período:";
+                worksheet.Cell(2, 2).Value = periodo;
+                worksheet.Cell(4, 1).Value = "Código";
+                worksheet.Cell(4, 2).Value = "Descrição";
+                worksheet.Cell(4, 3).Value = "Chargeability";
+                worksheet.Cell(4, 4).Value = "Local Trabalho";
+                worksheet.Cell(4, 5).Value = "Horas Totais";
 
                 // Dados
                 for (int i = 0; i < relatorio.Count; i++)
                 {
-                    worksheet.Cell(i + 4, 1).Value = relatorio[i].Codigo;
-                    worksheet.Cell(i + 4, 2).Value = relatorio[i].Descricao;
-                    worksheet.Cell(i + 4, 3).Value = relatorio[i].Chargeability;
-                    worksheet.Cell(i + 4, 4).Value = relatorio[i].HorasTotais;
+                    worksheet.Cell(i + 5, 1).Value = relatorio[i].Codigo;
+                    worksheet.Cell(i + 5, 2).Value = relatorio[i].Descricao;
+                    worksheet.Cell(i + 5, 3).Value = relatorio[i].Tipo;
+                    worksheet.Cell(i + 5, 4).Value = relatorio[i].LocalTrabalho;
+                    worksheet.Cell(i + 5, 5).Value = relatorio[i].HorasTotais;
+                }
+
+                // Remove colunas vazias
+                for (int col = worksheet.FirstColumnUsed().ColumnNumber(); col <= worksheet.LastColumnUsed().ColumnNumber(); col++)
+                {
+                    bool isColumnEmpty = true;
+                    for (int row = worksheet.FirstRowUsed().RowNumber() + 1; row <= worksheet.LastRowUsed().RowNumber(); row++)
+                    {
+                        if (!worksheet.Cell(row, col).IsEmpty())
+                        {
+                            isColumnEmpty = false;
+                            break;
+                        }
+                    }
+
+                    if (isColumnEmpty)
+                    {
+                        worksheet.Column(col).Delete();
+                    }
                 }
 
                 using (var stream = new MemoryStream())
@@ -643,10 +740,9 @@ namespace PFinal_v2.Controllers
                     workbook.SaveAs(stream);
                     var content = stream.ToArray();
 
-                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "RelatorioTotal.xlsx");
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "RelatorioGeral.xlsx");
                 }
             }
         }
-
     }
 }
