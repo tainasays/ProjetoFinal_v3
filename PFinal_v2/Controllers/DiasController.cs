@@ -53,6 +53,16 @@ namespace PFinal_v2.Controllers
 
             // define primeira e segunda quinzena
 
+            //DateTime endDate;
+            //if (quinzena == 1)
+            //{
+            //    endDate = startDate.AddDays(14);
+            //}
+            //else
+            //{
+            //    startDate = startDate.AddDays(15);
+            //    endDate = startDate.AddMonths(1).AddDays(-1);
+            //}
             DateTime endDate;
             if (quinzena == 1)
             {
@@ -60,9 +70,11 @@ namespace PFinal_v2.Controllers
             }
             else
             {
-                startDate = startDate.AddDays(15);
-                endDate = startDate.AddMonths(1).AddDays(-1);
+                startDate = startDate.AddDays(15); // 16º dia do mês
+                endDate = new DateTime(startDate.Year, startDate.Month, DateTime.DaysInMonth(startDate.Year, startDate.Month));
             }
+
+
 
             // busca os lançamentos do usuário no período definido
             var diasDoUsuario = await _context.Dia
