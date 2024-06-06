@@ -673,7 +673,12 @@ namespace PFinal_v2.Controllers
                     break;
             }
 
+            // Adiciona um log para verificar a consulta
             var relatorio = await relatorioQuery.OrderByDescending(w => w.HorasTotais).ToListAsync();
+            if (relatorio == null || !relatorio.Any())
+            {
+                throw new Exception("Nenhum dado encontrado para o período e agrupamento especificados.");
+            }
 
             using (var workbook = new XLWorkbook())
             {
