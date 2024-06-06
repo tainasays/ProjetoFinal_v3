@@ -15,5 +15,7 @@ namespace PFinal_v2.Models.ViewModels
         [DataType(DataType.Date)]
         public DateTime? DiaData { get; set; }
 
+        [Display(Name = "Local de Trabalho")]
+        public string? LocalTrabalho { get; set; }
     }
 }
