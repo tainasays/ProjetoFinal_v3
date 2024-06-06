@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -304,6 +305,8 @@ namespace PFinal_v2.Controllers
                 return NotFound();
             }
 
+            var dias = await _context.Dia.Include(d => d.Wbs).ToListAsync();
+
             return View(dia);
         }
 
@@ -386,7 +389,7 @@ namespace PFinal_v2.Controllers
                     Descricao = g.Key.Descricao,
                     Tipo = g.Key.Tipo,
                     HorasTotais = g.Sum(d => d.Horas),
-                    DiaData = g.Key.DiaData 
+                    DiaData = g.Key.DiaData
                 })
                 .OrderByDescending(w => w.HorasTotais)
                 .ToListAsync();
