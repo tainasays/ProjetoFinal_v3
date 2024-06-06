@@ -11,8 +11,9 @@ namespace PFinal_v2.Models
         [Required(ErrorMessage = "O campo Nome é obrigatório")]
         public string? Nome { get; set; }
 
-        [Display(Name = "E-mail")]
+        [Display(Name = "E-mail:")]
         [Required(ErrorMessage = "O campo E-mail é obrigatório")]
+        [RegularExpression(@"^[a-zA-Z]+(([\'\,\.\- ][a-zA-Z ])?[a-zA-Z]*)*\s+<(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})>$|^(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})$", ErrorMessage = "Insira um e-mail válido")]
         public string? Email { get; set; }
 
         [Display(Name = "Departamento")]
@@ -25,10 +26,11 @@ namespace PFinal_v2.Models
         [DataType(DataType.Date)]
         public DateTime DataContratacao { get; set; }
 
-        [Display(Name = "User Admin")]
+        [Display(Name = "Administrador")]
         public bool IsAdmin { get; set; }
 
         [Required(ErrorMessage = "O campo Senha é obrigatório")]
+        [StringLength(10, MinimumLength = 5, ErrorMessage = "A senha deve ter entre 5 e 10 caracteres")]
         public string? Senha { get; set; }
 
         [Display(Name = "Local de Trabalho")]

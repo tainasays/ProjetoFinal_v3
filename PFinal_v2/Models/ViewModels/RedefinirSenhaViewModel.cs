@@ -6,11 +6,11 @@ namespace PFinal_v2.Models.ViewModels
     {
         public int UsuarioId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O campo Nova senha é obrigatório")]
         [DataType(DataType.Password)]
         public string? NovaSenha { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O campo Confirmar senha é obrigatório")]
         [DataType(DataType.Password)]
         [Compare("NovaSenha", ErrorMessage = "As senhas não coincidem.")]
         public string? ConfirmarSenha { get; set; }
