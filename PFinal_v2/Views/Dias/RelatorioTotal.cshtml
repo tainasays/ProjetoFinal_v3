@@ -4,7 +4,28 @@
     ViewData["Title"] = "Relatório de WBS (Geral)";
 }
 
-<h1>Relatório de WBS (Geral)</h1>
+<style>
+    .custom-select-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .custom-select {
+        width: 100%; /* Definir a largura do select para 100% */
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 10.293l5.854-5.854a1 1 0 0 1 1.415 1.415l-6 6a1 1 0 0 1-1.415 0l-6-6a1 1 0 0 1 1.415-1.415L8 10.293z"/></svg>');
+        background-repeat: no-repeat;
+        background-position-x: calc(100% - 12px);
+        background-position-y: 50%;
+        padding-right: 32px;
+        padding-left: 8px;
+        cursor: pointer; /* Altera o cursor ao passar sobre o select */
+    }
+</style>
+
+<h2 style="margin-bottom: 40px;">Relatório de WBS (Geral)</h2>
 
 @using (Html.BeginForm("RelatorioTotal", "Dias", FormMethod.Get))
 {
@@ -34,7 +55,7 @@
         </div>
     </div>
 }
-
+<br>
 @if (Model.Relatorio != null && Model.Relatorio.Any())
 {
     <table class="table table-sm">
