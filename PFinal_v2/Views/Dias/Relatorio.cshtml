@@ -5,6 +5,7 @@
 }
 
 <h2>@ViewData["Title"]</h2>
+<br>
 <form method="get" asp-action="Relatorio" class="row align-items-end mb-3" id="filtroForm">
 
     <div class="col-3">
@@ -48,7 +49,7 @@
         </div>
     </div>
 </form>
-
+<br>
 @if (Model.Relatorio != null && Model.Relatorio.Any())
 {
     <table class="table table-striped">
