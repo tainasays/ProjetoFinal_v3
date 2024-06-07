@@ -19,7 +19,7 @@ namespace PFinal_v2.Models
         [Required(ErrorMessage = "O campo Horas é obrigatório")]
         public double Horas { get; set; }
 
-        // Propriedade de navegação para Usuario (se aplicável)
+        // Propriedade de navegação para Usuario
         public Usuario? Usuario { get; set; }
 
         // Propriedade de navegação para Wbs

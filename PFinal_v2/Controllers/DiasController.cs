@@ -32,7 +32,6 @@ namespace PFinal_v2.Controllers
 
             int usuarioId = int.Parse(User.FindFirst("UsuarioId").Value);
 
-            // se 'mes' é null, a variável recebe mês atual no formato escrito abaixo
             if (string.IsNullOrEmpty(mes))
             {
                 mes = DateTime.Now.ToString("yyyy-MM");
@@ -41,7 +40,6 @@ namespace PFinal_v2.Controllers
             DateTime startDate;
             if (!DateTime.TryParse(mes + "-01", out startDate))
             {
-                // retorna erro se a data não puder ser analisada
                 return BadRequest("Data inválida");
             }
 
@@ -52,18 +50,6 @@ namespace PFinal_v2.Controllers
                 quinzena = diaHoje <= 15 ? 1 : 2;
             }
 
-            // define primeira e segunda quinzena
-
-            //DateTime endDate;
-            //if (quinzena == 1)
-            //{
-            //    endDate = startDate.AddDays(14);
-            //}
-            //else
-            //{
-            //    startDate = startDate.AddDays(15);
-            //    endDate = startDate.AddMonths(1).AddDays(-1);
-            //}
             DateTime endDate;
             if (quinzena == 1)
             {
@@ -75,13 +61,10 @@ namespace PFinal_v2.Controllers
                 endDate = new DateTime(startDate.Year, startDate.Month, DateTime.DaysInMonth(startDate.Year, startDate.Month));
             }
 
-
-
             // busca os lançamentos do usuário no período definido
             var diasDoUsuario = await _context.Dia
                 .Where(d => d.UsuarioId == usuarioId && d.DiaData >= startDate && d.DiaData <= endDate)
                 .ToListAsync();
-
 
             // carrega as wbs
             var wbsCadastrados = await _context.Wbs.ToListAsync();
@@ -110,8 +93,6 @@ namespace PFinal_v2.Controllers
                 Usuario = usuario,
 
             };
-
-
 
             return View(viewModel);
         }
@@ -156,7 +137,7 @@ namespace PFinal_v2.Controllers
 
             if (ModelState.IsValid)
             {
-                // Verifica se as horas estão dentro de um intervalo válido
+
                 if (dia.Horas <= 0 || dia.Horas > 24)
                 {
                     ModelState.AddModelError("Horas", "Insira um valor válido.");
@@ -164,7 +145,6 @@ namespace PFinal_v2.Controllers
                     return View(dia);
                 }
 
-                // Verifica se a data escolhida está dentro do intervalo permitido
                 var hoje = DateTime.Today;
                 DateTime inicioDaQuinzenaAnterior;
                 DateTime fimDaProximaQuinzena;
@@ -250,6 +230,8 @@ namespace PFinal_v2.Controllers
         [Authorize(Roles = "Admin, Colaborador")]
         public async Task<IActionResult> Edit(int id, [Bind("DiaId,WbsId,DiaData,Horas")] Dia dia)
         {
+            var userIdClaim = User.FindFirst("UsuarioId")?.Value;
+
             if (id != dia.DiaId)
             {
                 return NotFound();
@@ -262,11 +244,12 @@ namespace PFinal_v2.Controllers
                 return View(dia);
             }
 
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    dia.UsuarioId = int.Parse(User.FindFirst("UsuarioId").Value);
+                    dia.UsuarioId = int.Parse(userIdClaim);
 
                     _context.Update(dia);
                     await _context.SaveChangesAsync();
