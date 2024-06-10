@@ -26,7 +26,10 @@
 
   <ItemGroup>
     <Content Remove="Views\Conta\NotFound.cshtml" />
+    <Content Remove="Views\Departamentos\Delete.cshtml" />
     <Content Remove="Views\Dias\Local.cshtml" />
+    <Content Remove="Views\Usuarios\Delete.cshtml" />
+    <Content Remove="Views\Wbs\Delete.cshtml" />
     <Content Remove="Views\Wbs\Search.cshtml" />
     <Content Remove="wwwroot\css\Styles.css" />
   </ItemGroup>
