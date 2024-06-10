@@ -30,7 +30,7 @@ Projeto desenvolvido durando o treinamento da Impacta.
 - Apontamento das horas nas atividades específicas. ✅
   
 <h3>➡️ Histórias:</h3>
- <h4>1. Criar tela de login e acesso</h4> ✅
+ <h4>1. Criar tela de login e acesso</h4> 
  
 - Pré-requisitos:
 Ter uma base de dados de usuários cadastrados. ✅
@@ -99,6 +99,54 @@ Cada entrada na lista deve incluir informações detalhadas sobre a WBS (código
 
 O relatório deve ser interativo, permitindo a filtragem dos dados por período de tempo específico, permitindo análise do histórico de apontamentos das horas. ✅
 
-Deve haver opções de visualização gráfica (ex.: gráfico de barras...) para facilitar a compreensão dos dados e possibilitar a identificação das WBS com maior frequência de horas. 
+Deve haver opções de visualização gráfica (ex.: gráfico de barras...) para facilitar a compreensão dos dados e possibilitar a identificação das WBS com maior frequência de horas. ✅
+
+<hr />
+
+<h3>📺Telas </h3>
+
+Login
+![image](https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/dbb82394-539f-4277-9cb0-4e4094b08e03)
+
+Registrar horas e perfil de colaborador
+![image](https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/cc6e1f77-97d7-44e8-97e7-7d5a4659eb93)
+
+Dados pessoais
+![image](https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/708fa11b-99e9-46e9-8757-48572013619c)
+
+Editar localização
+![image](https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/03ce22dd-8015-4e86-80b2-9e4c720eb063)
+
+
+Portal do Admin
+<img width="920" alt="image" src="https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/2c9454ee-875b-4d88-80c9-deb8158fe5ad">
+
+Funcionários
+![image](https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/19c47546-cf8a-416a-83df-e179f8b193d4)
+
+Cadastrar novo funcionário
+![image](https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/e1d3e3a3-e4d7-4892-98a5-1275d8b59ee6)
+
+Códigos de Custo
+![image](https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/ae930b19-22e0-4f40-983b-0436c98128d8)
+
+Cadastrar novo código
+![image](https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/ef464d52-ad04-4208-9aa0-9575883e43e6)
+
+Departamento
+![image](https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/ed0040a9-0c93-4b7f-a17f-82e85c6cbbe3)
+
+Cadastrar novo departamento
+![image](https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/34694f98-6fe7-443e-98a4-781e1897e0ba)
+
+Relatório Individual
+![image](https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/3aa58ce9-b8f5-4a21-99cb-8e37b84efc6a)
+
+Relatório Geral
+![image](https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/c75aae0c-ab21-4ce3-bb85-52abbc1cb066)
+
+Power BI
+![image](https://github.com/tainasays/ProjetoFinal_v3/assets/102188509/be502866-4296-4749-8619-68b29a8dd230)
+
 
 <h4>🪛 Desenvolvido com ASP.NET Core MVC.</h4>
