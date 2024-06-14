@@ -1,5 +1,7 @@
 <h1> Projeto Final - Avaccenture - Gerenciador de Horas</h1>
 
+Projeto desenvolvido durante o treinamento da Impacta.
+
 **Equipe**: 
 
 Júlia Inoscência
@@ -13,13 +15,12 @@ Thayna Santos
 Tiemi Imayoshi
 <hr />
 
-Projeto desenvolvido durando o treinamento da Impacta.
 
 📌 Acesso:
 
- Login de usuário do tipo Administrador: ana@email.com, senha: Senh@123
+* Login de usuário de tipo Administrador: ana@email.com, senha: Senh@123
 
- Login de usuário do tipo Colaborador: joao@email.com, senha: Senh@123
+* Login de usuário de tipo Colaborador: joao@email.com, senha: Senh@123
 
 
 <h2>⚙️ Requisitos:</h3>
